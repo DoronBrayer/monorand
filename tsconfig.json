@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "declaration": true,
+    "outDir": "./dist", // All output will go to 'dist'
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "lib": ["ESNext", "dom"],
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "index.ts",
+    "src.*.ts",
+    "test.*.ts", // Include test files in the main compilation
+    "run-tests.ts" // Include the test runner
+  ],
+  "exclude": [
+    "node_modules",
+    "./dist" // Exclude the output directory itself
+  ]
+}
