@@ -20,4 +20,4 @@ export const Constants = {
     MAX_FRACTIONAL_DIGITS: 15, // Max precision for doubles (standard JS float precision)
     MIN_FRACTIONAL_DIGITS: 0, // Allow 0 fractional digits for doubles (i.e., integer-like doubles)
     MAX_ATTEMPTS_TO_GENERATE_NUM: 30, // Max retries for exclusion constraints
-} as const
+    } as const

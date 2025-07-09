@@ -33,16 +33,18 @@ import { Constants } from './src.constants.js'
  * @throws {TypeError} - If input parameters do not conform to the schema or if an invalid range is provided.
  */
 export function cryptoRandom(rawParams: RandomParams = {}): number {
-  // Step 1: Assert rawParams against the schema for runtime validation.
-  // This ensures the input structure is valid, but properties are still optional.
-  randomParamsSchema.assert(rawParams);
+// src.function.crypto-random.ts - Cleaned Block
 
-  // Step 2: Create the validatedParams object with default values using ?? operator.
-  // Step 3: Explicitly cast the *entire object literal* to Required<RandomParams>.
-  // This tells TypeScript that all properties are now guaranteed to be non-undefined
-  // because of the defaults applied. This is the most direct way to resolve
-  // the "possibly undefined" errors at compile time.
-  const validatedParams: Required<RandomParams> = {
+// Step 1: Assert rawParams against the schema for runtime validation.
+// This ensures the input structure is valid, but properties are still optional.
+randomParamsSchema.assert(rawParams);
+
+// Step 2: Create the validatedParams object with default values using ?? operator.
+// Step 3: Explicitly cast the *entire object literal* to Required<RandomParams>.
+// This tells TypeScript that all properties are now guaranteed to be non-undefined
+// because of the defaults applied. This is the most direct way to resolve
+// the "possibly undefined" errors at compile time.
+const validatedParams: Required<RandomParams> = {
     lowerBound: rawParams.lowerBound ?? 0,
     upperBound: rawParams.upperBound ?? 1,
     typeOfNum: rawParams.typeOfNum ?? 'integer',
