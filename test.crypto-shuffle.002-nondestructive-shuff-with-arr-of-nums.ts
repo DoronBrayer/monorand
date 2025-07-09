@@ -15,6 +15,7 @@
 import { strict as assert } from 'node:assert'
 import { cryptoShuffle } from './index.js' // Import the function from your library's barrel file
 import { processArray } from './test.util.process-array.js' // Import processArray for beautified logging
+import { arrayOfNumbers } from './test.types.js' // Import the ArkType schema
 
 /**
  * Runs test case TC002 (Shuffle) for cryptoShuffle: Non-destructive Shuffle (Numbers).
@@ -25,16 +26,24 @@ export function testCryptoShuffleTC002(): void {
     console.log(`\n--- Running cryptoShuffle Test Case ${testID}: Non-destructive Shuffle (Numbers) ---`)
 
     try {
-        const originalArray = [6, 5, 4, 3, 2, 1]
+        // Original array for the test case
+        const originalArray = [6, 5, 4, 3, 2, 1] // <-- CORRECTED: Back to its original value
+
+        // Validate the originalArray against the ArkType schema (should pass now)
+        arrayOfNumbers.assert(originalArray)
+
         const isDestructive = false
 
         // Log initial state and parameters for clarity
         console.log(`[${testID}] Testing cryptoShuffle with:`)
-        console.log(`  - arr: ${processArray(originalArray)} (length: ${originalArray.length})`)
-        console.log(`  - isDestructive: ${isDestructive}`)
+        console.log(` - arr: ${processArray(originalArray)} (length: ${originalArray.length})`)
+        console.log(` - isDestructive: ${isDestructive}`)
 
         // Perform the shuffle
         const shuffledArray = cryptoShuffle({ arr: originalArray, isDestructive: isDestructive })
+
+        // Validate the shuffledArray against the ArkType schema (should pass)
+        arrayOfNumbers.assert(shuffledArray)
 
         // Log results and state after shuffle
         console.log(
@@ -45,7 +54,6 @@ export function testCryptoShuffleTC002(): void {
         )
 
         // --- ASSERTIONS FOR TEST PASS/FAIL ---
-
         // 1. Assert that the original array remains unchanged (non-destructive)
         assert.deepStrictEqual(
             originalArray,
@@ -79,14 +87,13 @@ export function testCryptoShuffleTC002(): void {
         // 5. Robust Probabilistic Check: Ensure the array is actually shuffled (i.e., not identical to original)
         const NUM_SHUFFLE_ATTEMPTS = 100
         let hasShuffledDifferently = false
-        const originalArrayString = JSON.stringify(originalArray) // Stringify once for efficiency
+        const originalArrayString = JSON.stringify(originalArray)
 
         for (let i = 0; i < NUM_SHUFFLE_ATTEMPTS; i++) {
             const currentShuffled = cryptoShuffle({ arr: originalArray, isDestructive: false })
-            // Compare stringified versions to check for difference
             if (JSON.stringify(currentShuffled) !== originalArrayString) {
                 hasShuffledDifferently = true
-                break // Found a different shuffle, no need to continue
+                break
             }
         }
         assert(
@@ -95,6 +102,7 @@ export function testCryptoShuffleTC002(): void {
         )
 
         console.log(`[${testID}] Passed: Non-destructive Shuffle (Numbers).`)
+
     } catch (e: any) {
         console.error(`[${testID}] Test Failed: ${e.message}`)
     }
