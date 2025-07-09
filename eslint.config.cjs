@@ -37,18 +37,30 @@ module.exports = [
             // Enforce consistent line endings (LF for Unix/Git compatibility)
             'linebreak-style': ['error', 'unix'],
 
+            // ADDED as per expert's suggestion: Disallow trailing whitespace (fixes CI error)
+            'no-trailing-spaces': 'error',
+            // ADDED as per expert's suggestion: Enforce a newline at the end of files (fixes CI error)
+            'eol-last': 'error',
+
             // --- Custom Rules (apply to both JS and TS unless overridden later) ---
             // Enforce consistent spacing before and after keywords (e.g., if, for, while)
             'keyword-spacing': ['error', { before: true, after: true }],
             // Require or disallow trailing commas in object literals, arrays, etc.
             'comma-dangle': ['error', 'always-multiline'],
-            // Enforce a consistent indentation style (4 spaces)
-            indent: ['error', 4, { SwitchCase: 1 }],
+            // REMOVED: 'indent' rule. Prettier (which is last in the config) will handle indentation.
+            // This aligns with the expert's implicit suggestion to let Prettier manage formatting.
             // Do not enforce semicolons at the end of statements (your preference)
             semi: 'off',
-            // Enforce the use of single quotes for string literals
+            // Enforce the use of single quotes for string literals (your preference)
             quotes: ['error', 'single'],
-            // Enforce a maximum line length for code (warns, doesn't error)
+
+            // ADDED as per expert's suggestion: Disable specific TypeScript ESLint rules globally
+            '@typescript-eslint/explicit-function-return-type': 'off',
+            '@typescript-eslint/explicit-module-boundary-types': 'off',
+            '@typescript-eslint/no-explicit-any': 'off',
+            '@typescript-eslint/no-unused-vars': 'off',
+
+            // Enforce a maximum line length for code (warns, doesn't error) (your preference)
             'max-len': [
                 'warn',
                 {
@@ -78,14 +90,11 @@ module.exports = [
         // as `tseslint.configs.recommended` already handles that at the top level.
         rules: {
             // --- TypeScript-specific Rule Overrides (from recommended or custom) ---
-            // Warn about unused variables, but ignore variables that start with an underscore (e.g., _event)
-            '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-            // Allow the use of 'any' type in TypeScript (your preference)
-            '@typescript-eslint/no-explicit-any': 'off',
-            // Allow empty functions (e.g., no-op functions)
+            // Removed specific overrides for rules now handled globally in section 3:
+            // '@typescript-eslint/no-unused-vars' and '@typescript-eslint/no-explicit-any'
+            // Allow empty functions (e.g., no-op functions) (your preference)
             '@typescript-eslint/no-empty-function': 'off',
-            // Allow the use of `require()` in TypeScript files generally (if needed)
-            // This rule is often enabled by recommended configs, so explicitly turn it off if you need it.
+            // Allow the use of `require()` in TypeScript files generally (if needed) (your preference)
             '@typescript-eslint/no-var-requires': 'off',
         },
     },
@@ -105,7 +114,7 @@ module.exports = [
     {
         files: ['test/**/*.ts', 'run-tests.ts'], // Apply this config ONLY to test files
         rules: {
-            // Allow all console methods in test files
+            // Allow all console methods in test files (your preference)
             'no-console': 'off',
         },
     },

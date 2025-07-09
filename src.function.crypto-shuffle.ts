@@ -42,7 +42,7 @@ export function cryptoShuffle<T>(rawParams: ShuffleParams<T> = {}): T[] {
             arr: rawParams.arr ?? [],
             isDestructive: rawParams.isDestructive ?? false,
             preventIdentical: rawParams.preventIdentical ?? false,
-        } as Required<ShuffleParams<T>>;
+        } as Required<ShuffleParams<T>>
     } catch (e: any) {
         throw new TypeError(`Invalid cryptoShuffle parameters: ${e.summary || e.message}`)
     }
@@ -50,12 +50,12 @@ export function cryptoShuffle<T>(rawParams: ShuffleParams<T> = {}): T[] {
 
     const { arr, isDestructive, preventIdentical } = validatedParams
 
-    let workingArray = isDestructive ? arr : [...arr]
+    const workingArray = isDestructive ? arr : [...arr]
     const length = workingArray.length
 
     // Store a copy of the original array for comparison if preventIdentical is true
     // This is only needed if preventIdentical is true AND the shuffle is non-destructive
-    const originalArrayCopy = preventIdentical && !isDestructive ? JSON.stringify(arr) : null;
+    const originalArrayCopy = preventIdentical && !isDestructive ? JSON.stringify(arr) : null
 
     // --- Standard Fisher-Yates Shuffle Logic (single pass) ---
     for (let i = length - 1; i > 0; i--) {
@@ -73,9 +73,14 @@ export function cryptoShuffle<T>(rawParams: ShuffleParams<T> = {}): T[] {
     // HERE: Conditional swap logic for preventIdentical
     // If preventIdentical is true, and the shuffled array is identical to the original,
     // and the array has at least 2 elements, perform the swap.
-    if (preventIdentical && originalArrayCopy !== null && JSON.stringify(workingArray) === originalArrayCopy && length > 1) {
+    if (
+        preventIdentical &&
+        originalArrayCopy !== null &&
+        JSON.stringify(workingArray) === originalArrayCopy &&
+        length > 1
+    ) {
         // Swap the first and last elements to guarantee a different result
-        [workingArray[0], workingArray[length - 1]] = [workingArray[length - 1], workingArray[0]];
+        ;[workingArray[0], workingArray[length - 1]] = [workingArray[length - 1], workingArray[0]]
     }
 
     return workingArray

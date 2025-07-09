@@ -8,10 +8,10 @@ import { type } from 'arktype' // Import ArkType for schema definitions
 
 // Define an ArkType schema for an array containing only numbers,
 // with at least 4 and at most 100 elements, using the programmatic API.
-export const arrayOfNumbers = type("number")
-  .array()               // -> number[]
-  .atLeastLength(4)      // length >= 4
-  .atMostLength(100)     // length <= 100
+export const arrayOfNumbers = type('number')
+    .array() // -> number[]
+    .atLeastLength(4) // length >= 4
+    .atMostLength(100) // length <= 100
 
 // Example: If you needed a specific interface for a test result object
 // export interface TestResult {

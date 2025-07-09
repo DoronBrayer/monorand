@@ -102,7 +102,6 @@ export function testCryptoShuffleTC002(): void {
         )
 
         console.log(`[${testID}] Passed: Non-destructive Shuffle (Numbers).`)
-
     } catch (e: any) {
         console.error(`[${testID}] Test Failed: ${e.message}`)
     }
