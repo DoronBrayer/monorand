@@ -19,7 +19,6 @@ jobs:
       contents: read # Required for actions/checkout
       packages: write # Required for publishing to GitHub Packages (good practice even if not using it yet)
       id-token: write # Required for OIDC, if you ever use it
-      secrets: write # Explicitly allow access to secrets
 
     steps:
       - uses: actions/checkout@v4
