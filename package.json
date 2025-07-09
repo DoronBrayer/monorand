@@ -6,10 +6,17 @@
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "test": "pnpm run build && node --experimental-specifier-resolution=node dist/run-tests.js"
+    "test": "pnpm run build && node --experimental-specifier-resolution=node dist/run-tests.js",
+    "clean": "rm -rf dist",
+    "lint": "echo 'No linting configured yet. Run eslint . --ext .ts --fix' || true"
   },
   "keywords": [
     "algorithm",
@@ -80,6 +87,17 @@
   ],
   "author": "Doron Brayer <doronbrayer@outlook.com>",
   "license": "MIT",
+  "homepage": "https://github.com/DoronBrayer/shuffrand",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DoronBrayer/shuffrand.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DoronBrayer/shuffrand/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@types/node": "^24.0.0",
     "typescript": "^5.0.0"

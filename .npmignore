@@ -1,0 +1,26 @@
+# .npmignore
+# This file is now very simple because 'package.json's "files" array
+# explicitly lists what to include. This file handles additional exclusions.
+
+# --- Common temporary/system files (not controlled by "files" array) ---
+*.log
+*.env
+.env.*
+npm-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
+
+# --- Editor-specific configurations (often ignored regardless of "files") ---
+.vscode/
+
+# --- Git-related files (often ignored regardless of "files") ---
+.git/
+.gitignore
+.gitattributes
+
+# --- GitHub-specific directories and CI/CD workflows (for repo only, not package) ---
+.github/
+
+# --- pnpm specific files (not needed in published package) ---
+pnpm-lock.yaml
