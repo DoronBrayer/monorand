@@ -2,7 +2,7 @@
   "name": "shuffrand",
   "version": "1.0.4",
   "type": "module",
-  "description": "Cryptographically secure randomness and shuffling — with soul.",
+  "description": "Cryptographically secure randomness and shuffling — with soul.",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,7 +14,8 @@
   "scripts": {
     "build": "tsc",
     "test": "pnpm run build && node --experimental-specifier-resolution=node dist/run-tests.js",
-    "clean": "rmdir /s /q dist"
+    "clean": "rmdir /s /q dist",
+    "lint": "eslint . --ext .ts"
   },
   "keywords": [
     "algorithm",
