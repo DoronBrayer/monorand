@@ -11,32 +11,32 @@
  */
 
 // Import ArkType for defining schemas that mirror TypeScript types
-import { type, Type } from 'arktype';
+import { type } from 'arktype'
 
 // Type definitions for parameters
-export type NumberType = "integer" | "double";
+export type NumberType = 'integer' | 'double'
 
 export interface RandomNumParams {
     /**
      * The lower bound for the random number (inclusive).
      * Defaults to 0 if not provided.
      */
-    lowerBound?: number;
+    lowerBound?: number
     /**
      * The upper bound for the random number (inclusive).
      * Defaults to 1 if not provided.
      */
-    upperBound?: number;
+    upperBound?: number
     /**
      * The type of number to generate: 'integer' or 'double'.
      * Defaults to 'double'.
      */
-    typeOfNum?: NumberType;
+    typeOfNum?: NumberType
     /**
      * The maximum number of fractional digits for 'double' type.
      * Semi-ignored if 'integer' is targeted. Defaults to 3.
      */
-    maxFracDigits?: number | null;
+    maxFracDigits?: number | null
     /**
      * Specifies which bounds to exclude from the result.
      * - 'none': No bounds are excluded.
@@ -44,31 +44,31 @@ export interface RandomNumParams {
      * - 'upper bound': Excludes the upper bound.
      * - 'both': Excludes both bounds.
      */
-    exclusion?: "lower bound" | "upper bound" | "both" | "none";
+    exclusion?: 'lower bound' | 'upper bound' | 'both' | 'none'
 }
 
 // Define the ArkType schema for RandomNumParams
 // This schema provides runtime validation and can be used to infer types.
 // It explicitly defines the structure and expected types for cryptoRandom's parameters.
 export const randomNumParamsSchema = type({
-    "lowerBound?": "number",
-    "upperBound?": "number",
-    "typeOfNum?": "'integer'|'double'",
-    "maxFracDigits?": "number | null",
-    "exclusion?": "'none'|'lower bound'|'upper bound'|'both'"
-});
+    'lowerBound?': 'number',
+    'upperBound?': 'number',
+    'typeOfNum?': "'integer'|'double'",
+    'maxFracDigits?': 'number | null',
+    'exclusion?': "'none'|'lower bound'|'upper bound'|'both'",
+})
 
 export interface ShuffleParams<T> {
     /**
      * The array to be shuffled.
      * Defaults to an empty array if not provided or not an array.
      */
-    arr?: T[];
+    arr?: T[]
     /**
      * If true, the original array will be modified. If false, a new shuffled array will be returned.
      * Defaults to false.
      */
-    isDestructive?: boolean;
+    isDestructive?: boolean
 }
 
 // Define the ArkType schema for ShuffleParams
@@ -76,6 +76,6 @@ export interface ShuffleParams<T> {
 // Note: ArkType's array syntax with generics is handled by validating 'arr' as 'any[]'
 // at runtime, as the generic type T is a TypeScript compile-time concept.
 export const shuffleParamsSchema = type({
-    "arr?": "unknown[]", // Optional array of any type at runtime
-    "isDestructive?": "boolean" // Optional boolean
-});
+    'arr?': 'unknown[]', // Optional array of any type at runtime
+    'isDestructive?': 'boolean', // Optional boolean
+})

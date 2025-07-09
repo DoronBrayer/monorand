@@ -9,12 +9,12 @@
  */
 
 // Re-export constants
-export { Constants } from './src.constants.js';
+export { Constants } from './src.constants.js'
 
 // Re-export types
-export type { NumberType, RandomNumParams, ShuffleParams } from './src.types.js';
+export type { NumberType, RandomNumParams, ShuffleParams } from './src.types.js'
 
 // Re-export functions
-export { cryptoRandom } from './src.function.crypto-random.js';
-export { cryptoShuffle } from './src.function.crypto-shuffle.js';
+export { cryptoRandom } from './src.function.crypto-random.js'
+export { cryptoShuffle } from './src.function.crypto-shuffle.js'
 // export { processArray } from './src.util.process-array.js'; // Example for future src.util

@@ -17,28 +17,29 @@
  * @returns {string} The processed string representation of the array.
  */
 export function processArray(arr: any[] = [], desiredCharCount: number = 100): string {
-  // Ensure 'arr' is an array
-  if (!Array.isArray(arr)) {
-    arr = [];
-  }
+    // Ensure 'arr' is an array
+    if (!Array.isArray(arr)) {
+        arr = []
+    }
 
-  // Ensure 'desiredCharCount' is a finite positive number
-  if (typeof desiredCharCount !== 'number' || !Number.isFinite(desiredCharCount)) {
-    desiredCharCount = 100;
-  } else if (desiredCharCount <= 4) { // Minimum for '...]'
-    desiredCharCount = 3;
-  }
+    // Ensure 'desiredCharCount' is a finite positive number
+    if (typeof desiredCharCount !== 'number' || !Number.isFinite(desiredCharCount)) {
+        desiredCharCount = 100
+    } else if (desiredCharCount <= 4) {
+        // Minimum for '...]'
+        desiredCharCount = 3
+    }
 
-  // Stringify the array
-  let stringifiedArr = JSON.stringify(arr);
+    // Stringify the array
+    let stringifiedArr = JSON.stringify(arr)
 
-  // Process the stringified array based on the desired character count
-  // If the stringified array is longer than desiredCharCount, truncate and add '...]'
-  if (stringifiedArr.length > desiredCharCount) {
-    // Ensure we leave enough space for '...]'
-    const truncateLength = Math.max(0, desiredCharCount - 4); // At least 0, but ideally leaving 4 for '...]'
-    stringifiedArr = stringifiedArr.slice(0, truncateLength) + '...]';
-  }
+    // Process the stringified array based on the desired character count
+    // If the stringified array is longer than desiredCharCount, truncate and add '...]'
+    if (stringifiedArr.length > desiredCharCount) {
+        // Ensure we leave enough space for '...]'
+        const truncateLength = Math.max(0, desiredCharCount - 4) // At least 0, but ideally leaving 4 for '...]'
+        stringifiedArr = stringifiedArr.slice(0, truncateLength) + '...]'
+    }
 
-  return stringifiedArr;
+    return stringifiedArr
 }

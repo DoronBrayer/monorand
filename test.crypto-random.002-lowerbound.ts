@@ -10,24 +10,26 @@
  * @license MIT
  */
 
-import { strict as assert } from 'node:assert';
-import { cryptoRandom } from './index.js'; // Import the function from your library's barrel file
+import { strict as assert } from 'node:assert'
+import { cryptoRandom } from './index.js' // Import the function from your library's barrel file
 
 /**
  * Runs test case TC02 for cryptoRandom: Single Parameter: lowerBound (Integer).
  * @returns {void}
  */
 export function testCryptoRandomTC002(): void {
-    const testID = 'TC002';
-    console.log(`\n--- Running cryptoRandom Test Case ${testID}: Single Parameter: lowerBound (Integer) ---`);
+    const testID = 'TC002'
+    console.log(`\n--- Running cryptoRandom Test Case ${testID}: Single Parameter: lowerBound (Integer) ---`)
 
     try {
-        const lowerBound = -1;
-        const result = cryptoRandom({ lowerBound });
-        assert(result >= -1 && result <= 2 && Number.isInteger(result),
-            `[${testID}] Failed: Expected integer in [-1, 2], got ${result}`);
-        console.log(`[${testID}] Passed: Single Parameter: lowerBound (Integer). Result: ${result}`);
+        const lowerBound = -1
+        const result = cryptoRandom({ lowerBound })
+        assert(
+            result >= -1 && result <= 2 && Number.isInteger(result),
+            `[${testID}] Failed: Expected integer in [-1, 2], got ${result}`
+        )
+        console.log(`[${testID}] Passed: Single Parameter: lowerBound (Integer). Result: ${result}`)
     } catch (e: any) {
-        console.error(`[${testID}] Test Failed: ${e.message}`);
+        console.error(`[${testID}] Test Failed: ${e.message}`)
     }
 }
