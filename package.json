@@ -1,6 +1,6 @@
 {
   "name": "shuffrand",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "description": "Cryptographically secure randomness and shuffling — with soul.",
   "main": "dist/index.js",
@@ -13,10 +13,8 @@
   ],
   "scripts": {
     "build": "tsc",
-    "watch": "tsc --watch",
     "test": "pnpm run build && node --experimental-specifier-resolution=node dist/run-tests.js",
-    "clean": "rm -rf dist",
-    "lint": "eslint . --ext .ts --fix"
+    "clean": "rmdir /s /q dist"
   },
   "keywords": [
     "algorithm",
@@ -83,7 +81,14 @@
     "uncertainty",
     "unpredictable",
     "utility",
-    "Yates"
+    "Yates",
+    "TTRPG",
+    "Donald",
+    "Knuth",
+    "token",
+    "fair",
+    "principle",
+    "probabilistic"
   ],
   "author": "Doron Brayer <doronbrayer@outlook.com>",
   "license": "MIT",

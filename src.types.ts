@@ -1,81 +1,60 @@
 // src.types.ts
 
-/**
- * shuffrand Type Definitions
- *
- * This file defines the core type interfaces used throughout the shuffrand module,
- * adhering to a flat, dot-categorized structure for clarity.
- *
- * @author Doron Brayer <doronbrayer@outlook.com>
- * @license MIT
- */
-
-// Import ArkType for defining schemas that mirror TypeScript types
 import { type } from 'arktype'
+import { Constants } from './src.constants.js'
 
-// Type definitions for parameters
-export type NumberType = 'integer' | 'double'
-
-export interface RandomNumParams {
-    /**
-     * The lower bound for the random number (inclusive).
-     * Defaults to 0 if not provided.
-     */
-    lowerBound?: number
-    /**
-     * The upper bound for the random number (inclusive).
-     * Defaults to 1 if not provided.
-     */
-    upperBound?: number
-    /**
-     * The type of number to generate: 'integer' or 'double'.
-     * Defaults to 'double'.
-     */
-    typeOfNum?: NumberType
-    /**
-     * The maximum number of fractional digits for 'double' type.
-     * Semi-ignored if 'integer' is targeted. Defaults to 3.
-     */
-    maxFracDigits?: number | null
-    /**
-     * Specifies which bounds to exclude from the result.
-     * - 'none': No bounds are excluded.
-     * - 'lower bound': Excludes the lower bound.
-     * - 'upper bound': Excludes the upper bound.
-     * - 'both': Excludes both bounds.
-     */
-    exclusion?: 'lower bound' | 'upper bound' | 'both' | 'none'
+/**
+ * Parameters for the cryptoRandom function.
+ */
+export interface RandomParams {
+  lowerBound?: number;
+  upperBound?: number;
+  typeOfNum?: 'integer' | 'double';
+  exclusion?: 'none' | 'lower bound' | 'upper bound' | 'both';
+  /**
+   * The maximum number of fractional digits for 'double' type numbers.
+   * If specified, the generated double will be rounded to this many decimal places.
+   * Must be a non-negative integer. Defaults to `3`.
+   */
+  maxFracDigits?: number; // <-- CORRECTED: This MUST be 'number', not a string literal
 }
 
-// Define the ArkType schema for RandomNumParams
-// This schema provides runtime validation and can be used to infer types.
-// It explicitly defines the structure and expected types for cryptoRandom's parameters.
-export const randomNumParamsSchema = type({
-    'lowerBound?': 'number',
-    'upperBound?': 'number',
-    'typeOfNum?': "'integer'|'double'",
-    'maxFracDigits?': 'number | null',
-    'exclusion?': "'none'|'lower bound'|'upper bound'|'both'",
+/**
+ * ArkType schema for validating RandomParams.
+ */
+export const randomParamsSchema = type({
+  lowerBound: `number >= ${Constants.MIN_SAFE_INT}?`,
+  upperBound: `number <= ${Constants.MAX_SAFE_INT}?`,
+  typeOfNum: "'integer'|'double'?",
+  exclusion: "'none'|'lower bound'|'upper bound'|'both'?",
+  // This schema string is correct for validation, it implies a number type.
+  maxFracDigits: `${Constants.MIN_FRACTIONAL_DIGITS} <= number.integer <= ${Constants.MAX_FRACTIONAL_DIGITS}?`,
 })
 
+/**
+ * Parameters for the cryptoShuffle function.
+ * @template T The type of elements in the array.
+ */
 export interface ShuffleParams<T> {
-    /**
-     * The array to be shuffled.
-     * Defaults to an empty array if not provided or not an array.
-     */
-    arr?: T[]
-    /**
-     * If true, the original array will be modified. If false, a new shuffled array will be returned.
-     * Defaults to false.
-     */
-    isDestructive?: boolean
+  arr?: T[];
+  isDestructive?: boolean;
+  /**
+   * If true, the function will attempt to prevent the shuffled array from being
+   * identical to the original input array. This introduces a statistical bias
+   * by excluding the original permutation. Do not use in cryptographic or
+   * fairness-critical contexts where absolute unbiased randomness is required.
+   * Defaults to `false`.
+   */
+  preventIdentical?: boolean;
+  // maxRetries is intentionally NOT re-added here as it will be an internal constant
 }
 
-// Define the ArkType schema for ShuffleParams
-// This schema will be used for runtime validation of the input parameters for cryptoShuffle.
-// Note: ArkType's array syntax with generics is handled by validating 'arr' as 'any[]'
-// at runtime, as the generic type T is a TypeScript compile-time concept.
+/**
+ * ArkType schema for validating ShuffleParams.
+ */
 export const shuffleParamsSchema = type({
-    'arr?': 'unknown[]', // Optional array of any type at runtime
-    'isDestructive?': 'boolean', // Optional boolean
+  arr: 'unknown[]?',
+  isDestructive: 'boolean?',
+  preventIdentical: 'boolean?',
+  // maxRetries is intentionally NOT re-added here as it will be an internal constant
 })

@@ -11,8 +11,11 @@
  */
 
 // Import types and the cryptoRandom function from their respective dot-categorized files
-import { ShuffleParams, shuffleParamsSchema } from './src.types.js' // Added shuffleParamsSchema
+import { ShuffleParams, shuffleParamsSchema } from './src.types.js'
 import { cryptoRandom } from './src.function.crypto-random.js'
+// REMOVED: import { Constants } from './src.constants.js' // No longer needed for MAX_SHUFFLE_ATTEMPTS
+
+// REMOVED: const MAX_SHUFFLE_ATTEMPTS = 12; // This constant is no longer needed
 
 /**
  * Shuffles an array using the cryptographically secure Fisher–Yates algorithm.
@@ -21,51 +24,58 @@ import { cryptoRandom } from './src.function.crypto-random.js'
  * @param {ShuffleParams<T>} [rawParams={}] - The raw parameters for shuffling the array.
  * @param {T[]} [rawParams.arr=[]] - The array to shuffle.
  * @param {boolean} [rawParams.isDestructive=false] - Whether to shuffle the array in place (destructive) or create a new shuffled array (non-destructive).
+ * @param {boolean} [rawParams.preventIdentical=false] - If true, and the initial shuffle results in an array identical to the original input,
+ * the first and last elements will be swapped to guarantee a different result.
+ * This introduces a statistical bias by excluding the original permutation. Do not use in cryptographic or
+ * fairness-critical contexts where absolute unbiased randomness is required.
  * @returns {T[]} - The shuffled array.
  * @throws {TypeError} - If input parameters do not conform to the schema.
  */
 export function cryptoShuffle<T>(rawParams: ShuffleParams<T> = {}): T[] {
-    let validatedParams: Required<ShuffleParams<T>> // Declare validatedParams, explicitly making all properties required
+    let validatedParams: Required<ShuffleParams<T>>
 
     // --- ArkType Input Validation and Default Application ---
     try {
-        // Validate the raw input parameters using the ArkType schema.
-        // If validation fails, ArkType's .assert() method will throw an ArkErrors instance.
         shuffleParamsSchema.assert(rawParams)
 
-        // If validation passes, apply default values to ensure all properties are present
-        // in 'validatedParams' for consistent subsequent logic.
         validatedParams = {
             arr: rawParams.arr ?? [],
             isDestructive: rawParams.isDestructive ?? false,
-        }
+            preventIdentical: rawParams.preventIdentical ?? false,
+        } as Required<ShuffleParams<T>>;
     } catch (e: any) {
-        // Catch the ArkErrors instance thrown by .assert() and re-throw a TypeError
-        // with a user-friendly summary of the validation problems.
         throw new TypeError(`Invalid cryptoShuffle parameters: ${e.summary || e.message}`)
     }
     // --- END ArkType Input Validation and Default Application ---
 
-    // The manual assert statement for 'arr' is now handled by ArkType validation and has been removed.
-    // assert(Array.isArray(arr), "Input 'arr' must be an array.");
+    const { arr, isDestructive, preventIdentical } = validatedParams
 
-    const { arr, isDestructive } = validatedParams // Destructure from validatedParams
-
-    const workingArray = isDestructive ? arr : [...arr]
+    let workingArray = isDestructive ? arr : [...arr]
     const length = workingArray.length
 
+    // Store a copy of the original array for comparison if preventIdentical is true
+    // This is only needed if preventIdentical is true AND the shuffle is non-destructive
+    const originalArrayCopy = preventIdentical && !isDestructive ? JSON.stringify(arr) : null;
+
+    // --- Standard Fisher-Yates Shuffle Logic (single pass) ---
     for (let i = length - 1; i > 0; i--) {
-        // Generate a cryptographically secure random index 'j' such that 0 <= j <= i (inclusive)
-        // Since cryptoRandom now has an inclusive upper bound, we pass 'i'.
         const j = cryptoRandom({
             lowerBound: 0,
-            upperBound: i, // Correct for Fisher–Yates (inclusive upper bound in cryptoRandom)
+            upperBound: i,
             typeOfNum: 'integer',
-            exclusion: 'none', // Always 'none' for random index generation
+            exclusion: 'none',
         })
 
-        // Swap elements at indices i and j
         ;[workingArray[i], workingArray[j]] = [workingArray[j], workingArray[i]]
+    }
+    // --- End Standard Fisher-Yates Shuffle Logic ---
+
+    // HERE: Conditional swap logic for preventIdentical
+    // If preventIdentical is true, and the shuffled array is identical to the original,
+    // and the array has at least 2 elements, perform the swap.
+    if (preventIdentical && originalArrayCopy !== null && JSON.stringify(workingArray) === originalArrayCopy && length > 1) {
+        // Swap the first and last elements to guarantee a different result
+        [workingArray[0], workingArray[length - 1]] = [workingArray[length - 1], workingArray[0]];
     }
 
     return workingArray

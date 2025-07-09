@@ -12,7 +12,7 @@
 export { Constants } from './src.constants.js'
 
 // Re-export types
-export type { NumberType, RandomNumParams, ShuffleParams } from './src.types.js'
+export type { RandomParams, ShuffleParams } from './src.types.js' // <-- CORRECTED: NumberType removed
 
 // Re-export functions
 export { cryptoRandom } from './src.function.crypto-random.js'

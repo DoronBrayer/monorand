@@ -6,186 +6,203 @@
  * This file contains the core logic for generating cryptographically secure random numbers,
  * adhering to a flat, dot-categorized structure for clarity.
  *
- * @author Doron Brayer <doronbrayer@outlook.0com>
+ * @author Doron Brayer <doronbrayer@outlook.com>
  * @license MIT
  */
 
 // Import Node.js built-in modules for cryptographic randomness and assertions
 import { webcrypto } from 'node:crypto'
+import { strict as assert } from 'node:assert'
 
 // Import types, constants, and ArkType schema from their respective dot-categorized files
-import { RandomNumParams, randomNumParamsSchema } from './src.types.js'
+import { RandomParams, randomParamsSchema } from './src.types.js'
 import { Constants } from './src.constants.js'
 
 /**
  * Generates a cryptographically secure random number within a specified range.
- * Both lowerBound and upperBound are inclusive for both integers and doubles.
  *
- * @param {RandomNumParams} [rawParams={}] - The raw parameters object for generating the random number.
- * @param {number} [rawParams.lowerBound=0] - The lower bound (inclusive).
- * @param {number} [rawParams.upperBound=1] - The upper bound (inclusive).
- * @param {'integer'|'double'} [rawParams.typeOfNum='integer'] - The type of number to generate ('integer' or 'double').
- * @param {number | null} [rawParams.maxFracDigits=3] - The maximum number of fractional digits for doubles. Semi-ignored if 'integer' is targeted.
- * @param {'none'|'lower bound'|'upper bound'|'both'} [rawParams.exclusion='none'] - Which bound to exclude.
- * @returns {number} - The generated random number.
- * @throws {TypeError} - If input parameters do not conform to the schema or are not finite numbers.
- * @throws {Error} - If unable to generate a random number that satisfies exclusion constraints.
+ * @param {RandomParams} [rawParams={}] - The raw parameters for random number generation.
+ * @param {number} [rawParams.lowerBound=0] - The lower bound (inclusive) of the random number.
+ * @param {number} [rawParams.upperBound=1] - The upper bound (exclusive for doubles, inclusive for integers) of the random number.
+ * @param {'integer'|'double'} [rawParams.typeOfNum='integer'] - The type of number to generate ('integer' (default) or 'double').
+ * @param {'none'|'lower bound'|'upper bound'|'both'} [rawParams.exclusion='none'] - Specifies which bounds to exclude.
+ * @param {number} [rawParams.maxFracDigits=3] - The maximum number of fractional digits for 'double' type numbers.
+ * If specified, the generated double will be rounded to this many decimal places.
+ * Must be a non-negative integer between 0 and 15. Defaults to `3`.
+ * @returns {number} - A cryptographically secure random number.
+ * @throws {TypeError} - If input parameters do not conform to the schema or if an invalid range is provided.
  */
-export function cryptoRandom(rawParams: RandomNumParams = {}): number {
-    let validatedParams: Required<RandomNumParams> // Declare validatedParams, explicitly making all properties required after defaults
+export function cryptoRandom(rawParams: RandomParams = {}): number {
+  // Step 1: Assert rawParams against the schema for runtime validation.
+  // This ensures the input structure is valid, but properties are still optional.
+  randomParamsSchema.assert(rawParams);
 
-    // --- ArkType Input Validation and Default Application ---
-    try {
-        // Validate the raw input parameters using the ArkType schema.
-        // If validation fails, ArkType's .assert() method will throw an ArkErrors instance.
-        randomNumParamsSchema.assert(rawParams)
+  // Step 2: Create the validatedParams object with default values using ?? operator.
+  // Step 3: Explicitly cast the *entire object literal* to Required<RandomParams>.
+  // This tells TypeScript that all properties are now guaranteed to be non-undefined
+  // because of the defaults applied. This is the most direct way to resolve
+  // the "possibly undefined" errors at compile time.
+  const validatedParams: Required<RandomParams> = {
+    lowerBound: rawParams.lowerBound ?? 0,
+    upperBound: rawParams.upperBound ?? 1,
+    typeOfNum: rawParams.typeOfNum ?? 'integer',
+    exclusion: rawParams.exclusion ?? 'none',
+    maxFracDigits: rawParams.maxFracDigits ?? 3,
+  };
 
-        // If validation passes, apply default values to ensure all properties are present
-        // in 'validatedParams' for consistent subsequent logic.
-        validatedParams = {
-            lowerBound: rawParams.lowerBound ?? 0,
-            upperBound: rawParams.upperBound ?? (rawParams.typeOfNum === 'integer' ? 1 : 1),
-            typeOfNum: rawParams.typeOfNum ?? 'integer',
-            maxFracDigits: rawParams.maxFracDigits ?? 3,
-            exclusion: rawParams.exclusion ?? 'none',
-        }
-    } catch (e: any) {
-        // Catch the ArkErrors instance thrown by .assert() and re-throw a TypeError
-        // with a user-friendly summary of the validation problems.
-        throw new TypeError(`Invalid cryptoRandom parameters: ${e.summary || e.message}`)
+  // Destructure directly from the explicitly typed validatedParams constant.
+  // TypeScript should now correctly infer all these as non-nullable.
+  const {
+    lowerBound,
+    upperBound,
+    typeOfNum,
+    exclusion,
+    maxFracDigits,
+  } = validatedParams;
+
+  // Ensure min is always the lower value and max is always the higher value
+  let min = Math.min(lowerBound, upperBound);
+  let max = Math.max(lowerBound, upperBound);
+
+  // Handle edge case where lowerBound equals upperBound
+  if (min === max) {
+    // If typeOfNum === 'double' and exclusion is 'both', it's an invalid range
+    if (typeOfNum === 'double' && exclusion === 'both') {
+      throw new TypeError(
+        `Invalid range for double with 'both' exclusion: lowerBound (${lowerBound}) equals upperBound (${upperBound}).`
+      )
     }
-    // --- END ArkType Input Validation and Default Application ---
+    return min; // Return the single possible value
+  }
 
-    // Destructure parameters from the fully validated and defaulted 'validatedParams' object.
-    // No need for default assignments here as they've been applied above.
-    const {
-        lowerBound: initialLowerBound,
-        upperBound: initialUpperBound,
-        typeOfNum,
-        maxFracDigits,
-        exclusion,
-    } = validatedParams
+  let result: number;
+  let attempts = 0;
+  const maxAttempts = Constants.MAX_ATTEMPTS_TO_GENERATE_NUM; // CORRECTED: Constant name
 
-    // The manual assert statements for lowerBound and upperBound type/finiteness
-    // are now handled by ArkType validation and have been removed.
+  do {
+    let currentLowerBound = min;
+    let currentUpperBound = max;
 
-    // CRITICAL FIX: Only shortcut if no exclusion is applied for equal bounds
-    if (initialLowerBound === initialUpperBound && exclusion === 'none') {
-        return initialLowerBound
-    }
-    // If bounds are equal AND exclusion is NOT 'none', we MUST proceed to check exclusion.
+    // --- Integer Specific Logic & Exclusion Pre-checks ---
+    if (typeOfNum === 'integer') {
+      // Apply exclusion for integers by adjusting bounds
+      if (exclusion === 'lower bound' || exclusion === 'both') {
+        currentLowerBound++;
+      }
+      if (exclusion === 'upper bound' || exclusion === 'both') {
+        currentUpperBound--;
+      }
 
-    // Ensure min is truly the lower bound and max is truly the upper bound
-    let min = Math.min(initialLowerBound, initialUpperBound)
-    let max = Math.max(initialLowerBound, initialUpperBound)
+      // Robust pre-check for integer exclusion (from OLD-but-good)
+      const minInt = Math.ceil(currentLowerBound);
+      const maxInt = Math.floor(currentUpperBound);
+      const totalIntegers = maxInt - minInt + 1;
 
-    const isDouble = typeOfNum === 'double'
+      const thresholds: { [key in Exclude<typeof exclusion, 'none'>]: number } = { // Explicitly type thresholds
+        both: 2,
+        "lower bound": 1,
+        "upper bound": 1
+      };
 
-    // Clamp bounds to safe integer/double limits
-    if (isDouble) {
-        min = Math.max(Constants.MIN_SAFE_DOUBLE, Math.min(Constants.MAX_SAFE_DOUBLE, min))
-        max = Math.max(Constants.MIN_SAFE_DOUBLE, Math.min(Constants.MAX_SAFE_DOUBLE, max))
-    } else {
-        // For integers, ensure bounds are integers themselves for clamping
-        min = Math.ceil(Math.max(Constants.MIN_SAFE_INTEGER, Math.min(Constants.MAX_SAFE_INTEGER, min)))
-        max = Math.floor(Math.max(Constants.MIN_SAFE_INTEGER, Math.min(Constants.MAX_SAFE_INTEGER, max)))
-    }
-
-    // --- NEW PRE-CHECK for impossible exclusion constraints (Integers) ---
-    if (!isDouble) {
-        // Calculate the range of integers that are *potentially* valid
-        // This is [min, max] inclusive
-        let currentMin = min
-        let currentMax = max
-
-        if (exclusion === 'lower bound' || exclusion === 'both') {
-            currentMin++ // Exclude the original lower bound
+      // CORRECTED: Only check threshold if exclusion is not 'none'
+      if (exclusion !== 'none') {
+        const threshold = thresholds[exclusion];
+        if (totalIntegers <= threshold) {
+          throw new TypeError(
+            `No valid integers exist within the range ${min}–${max} under the {exclusion:'${exclusion}'} constraint.`
+          );
         }
-        if (exclusion === 'upper bound' || exclusion === 'both') {
-            currentMax-- // Exclude the original upper bound
+      }
+
+      // If currentLowerBound somehow exceeds currentUpperBound after adjustments, it's an empty range
+      if (currentLowerBound > currentUpperBound) {
+        throw new TypeError(`Invalid integer range after exclusions: lowerBound (${lowerBound}) to upperBound (${upperBound}) with exclusion '${exclusion}' results in an empty range.`);
+      }
+
+      const range = currentUpperBound - currentLowerBound + 1;
+      assert(range > 0, 'Integer range must be positive after exclusions.');
+
+      const bytesNeeded = Math.ceil(Math.log2(range) / 8);
+      const maxValidValue = Math.pow(256, bytesNeeded) - (Math.pow(256, bytesNeeded) % range);
+
+      let randomNumber: number;
+      let byteArray = new Uint8Array(bytesNeeded);
+
+      do {
+        webcrypto.getRandomValues(byteArray);
+        randomNumber = 0;
+        for (let i = 0; i < bytesNeeded; i++) {
+          randomNumber = randomNumber * 256 + byteArray[i];
         }
+      } while (randomNumber >= maxValidValue);
 
-        // If, after applying exclusions, the adjusted min is greater than the adjusted max,
-        // it means there are no valid integers left.
-        if (currentMin > currentMax) {
-            throw new Error(
-                `No valid integers exist within the range [${initialLowerBound}, ${initialUpperBound}] that satisfy the { exclusion: '${exclusion}' } constraint.`
-            )
+      result = currentLowerBound + (randomNumber % range);
+
+    } else { // typeOfNum === 'double'
+      const BYTES_FOR_DOUBLE = 8;
+      const MAX_UINT64 = 2 ** (BYTES_FOR_DOUBLE * 8); // Max value for a 64-bit unsigned integer
+
+      let rawDouble: number;
+      let byteArray = new Uint8Array(BYTES_FOR_DOUBLE);
+
+      // Generate a random double between 0 (inclusive) and 1 (exclusive)
+      do {
+        webcrypto.getRandomValues(byteArray);
+        let randomNumber = 0;
+        for (let i = 0; i < BYTES_FOR_DOUBLE; i++) {
+          randomNumber = randomNumber * 256 + byteArray[i];
         }
-    }
-    // --- END NEW PRE-CHECK ---
+        rawDouble = randomNumber / MAX_UINT64;
+      } while (rawDouble === 1); // Ensure it's strictly less than 1 to avoid issues with upperBound scaling
 
-    let result: number
-    let attempts = 0
-    const maxAttempts = Constants.MAX_GENERATION_ATTEMPTS
+      // Scale to the desired range
+      result = currentLowerBound + rawDouble * (currentUpperBound - currentLowerBound);
 
-    do {
-        const bytes = new Uint32Array(1)
-        webcrypto.getRandomValues(bytes)
-        const value = bytes[0] // Random integer from 0 to 2^32 - 1
-
-        if (!isDouble) {
-            // Integer generation: result is in [min, max] inclusive
-            const range = max - min + 1 // Inclusive range
-            result = min + Math.floor((value / Constants.UINT32_RANGE) * range) // Use UINT32_RANGE for integers
-        } else {
-            // Double generation: result is in [min, max] inclusive
-            // CRITICAL CHANGE: Divide by UINT32_MAX_VALUE to make 'max' reachable
-            result = (value / Constants.UINT32_MAX_VALUE) * (max - min) + min
-
-            // Apply rounding for doubles
-            if (
-                typeof maxFracDigits === 'number' &&
-                maxFracDigits >= Constants.MIN_FRACTIONAL_DIGITS &&
-                maxFracDigits <= Constants.MAX_FRACTIONAL_DIGITS
-            ) {
-                const multiplier = Math.pow(10, maxFracDigits)
-                result = Math.round(result * multiplier) / multiplier
-            }
-        }
-
-        // Exclusion checks (using initial bounds for comparison)
-        let isExcluded = false
-
-        if (exclusion === 'lower bound' || exclusion === 'both') {
-            if (isDouble) {
-                if (Math.abs(result - initialLowerBound) < Number.EPSILON * Math.max(Math.abs(initialLowerBound), 1)) {
-                    isExcluded = true
-                }
-            } else {
-                // Integer
-                if (result === initialLowerBound) {
-                    isExcluded = true
-                }
-            }
-        }
-
-        if (!isExcluded && (exclusion === 'upper bound' || exclusion === 'both')) {
-            if (isDouble) {
-                if (Math.abs(result - initialUpperBound) < Number.EPSILON * Math.max(Math.abs(initialUpperBound), 1)) {
-                    isExcluded = true
-                }
-            } else {
-                // Integer
-                if (result === initialUpperBound) {
-                    isExcluded = true
-                }
-            }
-        }
-
-        if (isExcluded) {
-            attempts++
-            continue
-        }
-
-        break
-    } while (attempts < maxAttempts)
-
-    if (attempts >= maxAttempts) {
-        throw new Error(
-            `Unable to generate a random number within the range [${initialLowerBound}, ${initialUpperBound}] that satisfies the { exclusion: '${exclusion}' } constraint after ${maxAttempts} attempts. Consider adjusting bounds or exclusion.`
-        )
+      // Apply maxFracDigits rounding if specified
+      const actualMaxFracDigits = Number(maxFracDigits); // Robust conversion
+      if (!isNaN(actualMaxFracDigits) && actualMaxFracDigits >= 0) {
+        const factor = Math.pow(10, actualMaxFracDigits);
+        result = Math.round(result * factor) / factor;
+      }
     }
 
-    return result
+    // --- Exclusion checks with appropriate comparison method for both types ---
+    let isExcluded = false;
+
+    if (typeOfNum === 'double') {
+      // For doubles, use epsilon comparison (from OLD-but-good)
+      if (exclusion === "lower bound" && Math.abs(result - min) < Number.EPSILON) {
+        isExcluded = true;
+      } else if (exclusion === "upper bound" && Math.abs(result - max) < Number.EPSILON) {
+        isExcluded = true;
+      } else if (exclusion === "both" && (Math.abs(result - min) < Number.EPSILON || Math.abs(result - max) < Number.EPSILON)) {
+        isExcluded = true;
+      }
+    } else { // typeOfNum === 'integer'
+      // For integers, use exact equality
+      if (exclusion === "lower bound" && result === min) {
+        isExcluded = true;
+      } else if (exclusion === "upper bound" && result === max) {
+        isExcluded = true;
+      } else if (exclusion === "both" && (result === min || result === max)) {
+        isExcluded = true;
+      }
+    }
+
+    if (isExcluded) {
+      attempts++;
+      continue; // Re-roll
+    }
+
+    break; // Exit loop if a valid number is found
+  } while (attempts < maxAttempts);
+
+  // Throw if max attempts reached without finding a valid number
+  if (attempts >= maxAttempts) {
+    throw new Error(
+      `Unable to generate a random number within the range [${min}, ${max}] that satisfies the exclusion constraint: ${exclusion}. Max attempts (${maxAttempts}) reached.`
+    );
+  }
+
+  return result;
 }
