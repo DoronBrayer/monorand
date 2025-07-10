@@ -16,7 +16,7 @@ export const arrayOfOneElement = type('unknown[]').atLeastLength(1).atMostLength
 export const arrayOfTwoOrThreeElements = type('unknown[]').atLeastLength(2).atMostLength(3) // An array containing exactly two or three elements
 
 // Define re-usable ArkType schemas for Date and Function to avoid parsing issues
-const dateSchema = type("Date") // Corrected: Use simple string literal "Date"
+const dateSchema = type('Date') // Corrected: Use simple string literal "Date"
 // const functionSchema = type({ domain: "function" }) // Keep this commented out
 
 // By Content Type (General) - All with default length constraints (4-100 elements)
@@ -37,9 +37,11 @@ export const arrayOfNulls = type('null').array() // An array that can contain on
 export const arrayOfUndefineds = type('undefined').array() // An array that can contain only undefined values
 
 // By Content Type (Mixed)
-export const arrayOfMixedPrimitives = type('string | number | boolean | bigint | symbol').array().atLeastLength(4).atMostLength(100) // An array containing a mix of primitive types
+export const arrayOfMixedPrimitives = type('string | number | boolean | bigint | symbol')
+    .array()
+    .atLeastLength(4)
+    .atMostLength(100) // An array containing a mix of primitive types
 // export const arrayOfMixedComplex = type('object | unknown[]').or(dateSchema).or(functionSchema).array().atLeastLength(4).atMostLength(100) // Keep this commented out
-
 
 // --- Number Schemas ---
 
@@ -53,7 +55,9 @@ export const numberFloat = numberDouble // Nickname for numberDouble
 
 // Corrected: Any finite number (integer or float)
 // Defined as a number that is not infinite.
-export const numberFinite = type('number').exclude(type('number').atLeast(Infinity)).exclude(type('number').atMost(-Infinity))
+export const numberFinite = type('number')
+    .exclude(type('number').atLeast(Infinity))
+    .exclude(type('number').atMost(-Infinity))
 
 // Corrected: Infinite numbers (positive or negative infinity)
 export const numberInfinite = type('number').atLeast(Infinity).or(type('number').atMost(-Infinity))
@@ -68,7 +72,6 @@ export const numberNonpositive = type('number<=0') // Any number less than or eq
 // Corrected: A non-zero number (integer or float)
 // Defined as a number that is either positive or negative.
 export const numberNonzero = type('number>0').or('number<0')
-
 
 // Specific Integer Subtypes
 export const numberNatural = type('number.integer>0') // Natural numbers (positive integers: 1, 2, 3...)
@@ -102,11 +105,9 @@ export const numberNegativeFloat = type('number<0').exclude(type('number.integer
 // Defined as a number between 0 and 1 (exclusive of 0, inclusive of 1) that excludes integers.
 export const numberExtrasmallPositiveFloat = type('number>0').atMost(1).exclude(type('number.integer'))
 
-
 // Extreme Values
 export const numberExtralargePositive = type(`number>${Number.MAX_SAFE_INTEGER}`) // A positive number larger than MAX_SAFE_INTEGER (but not necessarily integer)
 export const numberExtralargeNegative = type(`number<${Number.MIN_SAFE_INTEGER}`) // A negative number smaller than MIN_SAFE_INTEGER (but not necessarily integer)
-
 
 // --- String Schemas (for Enums/Literals) ---
 export const exclusionString = type("'none' | 'lower bound' | 'upper bound' | 'both'") // A schema for valid exclusion strings in cryptoRandom
