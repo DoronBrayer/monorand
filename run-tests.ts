@@ -12,24 +12,29 @@
  * @license MIT
  */
 
-import { test } from 'node:test';
+import { test } from 'node:test'
 // Import the exported test suite from its file
-import { cryptoRandomCoreAndBasicTests } from './test.crypto-random.001-core-and-basic.js';
+import { cryptoRandomCoreAndBasicTests } from './test.crypto-random.001-core-and-basic.js'
 
-// Use template literals for console.log statements and remove trailing semicolons
-console.log(`--- Starting shuffrand test suite (using Node.js native test runner) ---`); // Fix L14, L15
-// The final console log will only appear after the top-level 'Shuffrand Test Suite' completes.
-console.log(`--- Shuffrand test suite finished ---`); // Fix L17, L18, L19
+// Fix L15: Delete ';'
+console.log(`--- Starting shuffrand test suite (using Node.js native test runner) ---`)
 
 // Define the absolute top-level test suite for Shuffrand.
 // This test will explicitly await the completion of all individual test files/suites.
-test(`Shuffrand Test Suite`, async (t) => { // Fix L24, L25, L26
-  // Await the execution of the cryptoRandom core and basic tests.
-  // This ensures that the parent 'Shuffrand Test Suite' waits for all
-  // subtests within cryptoRandomCoreAndBasicTests to complete.
-  await cryptoRandomCoreAndBasicTests; // Fix L27, L29, L30, L31
+// Fix L26, L27, L28, L29: Insert '`' and ensure template literal
+test(`Shuffrand Test Suite`, async (t) => {
+    // Await the execution of the cryptoRandom core and basic tests.
+    // This ensures that the parent 'Shuffrand Test Suite' waits for all
+    // subtests within cryptoRandomCoreAndBasicTests to complete.
+    // Fix L30, L32: Replace '...await cryptoRandomCoreAndBasicTests;' with '...await cryptoRandomCoreAndBasicTests'
+    // Fix L29: Insert '`'
+    await cryptoRandomCoreAndBasicTests
 
-  // Add more test suites here as they are created, awaiting each one:
-  // await cryptoRandomExclusionLogicTests;
-  // await cryptoShuffleTests;
-});
+    // Add more test suites here as they are created, awaiting each one:
+    // await cryptoRandomExclusionLogicTests;
+    // await cryptoShuffleTests;
+})
+
+// Fix L17, L20, L22: Delete ';'
+// The final console log will only appear after the top-level 'Shuffrand Test Suite' completes.
+console.log(`--- Shuffrand test suite finished ---`)
