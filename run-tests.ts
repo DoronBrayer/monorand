@@ -11,11 +11,11 @@
  */
 
 // Import the native Node.js test runner
-import { test } from 'node:test';
+import { test } from 'node:test'
 
 // Define the main test suite structure using `test()` as the top-level describe
 test('Shuffrand Test Suite', async () => {
-    console.log('\n--- Starting shuffrand test suite (using Node.js native test runner) ---');
+    console.log('\n--- Starting shuffrand test suite (using Node.js native test runner) ---')
 
     // --- cryptoRandom Test Cases ---
     // Import consolidated test files for cryptoRandom.
@@ -23,7 +23,7 @@ test('Shuffrand Test Suite', async () => {
     // will automatically discover and run.
 
     // I. Core Functionality & Basic Parameters (TC01-TC10)
-    await import('./test.crypto-random.001-core-and-basic.js');
+    await import('./test.crypto-random.001-core-and-basic.js')
 
     // All other cryptoRandom test groups will be added here as they are converted
     // For now, they remain commented out.
@@ -39,5 +39,5 @@ test('Shuffrand Test Suite', async () => {
     // await import('./test.crypto-shuffle.003-prevent-identical.js'); // TC68-TC71
     // await import('./test.crypto-shuffle.004-error-handling.js'); // TC72-TC77
 
-    console.log('--- Shuffrand test suite finished ---');
-});
+    console.log('--- Shuffrand test suite finished ---')
+})

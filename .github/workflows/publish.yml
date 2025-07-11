@@ -3,76 +3,76 @@
 name: Publish to npm
 
 on:
-  push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+' # Trigger on new tags like v1.0.0, v1.0.1 etc.
-  workflow_dispatch: {} # Allow manual trigger from GitHub Actions UI
+    push:
+        tags:
+            - 'v[0-9]+.[0-9]+.[0-9]+' # Trigger on new tags like v1.0.0, v1.0.1 etc.
+    workflow_dispatch: {} # Allow manual trigger from GitHub Actions UI
 
 concurrency:
-  group: publish-${{ github.ref_name }}
-  cancel-in-progress: true
+    group: publish-${{ github.ref_name }}
+    cancel-in-progress: true
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read # Required for actions/checkout
-      packages: write # Required for publishing to GitHub Packages (good practice even if not using it yet)
-      id-token: write # Required for OIDC, if you ever use it
+    publish:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read # Required for actions/checkout
+            packages: write # Required for publishing to GitHub Packages (good practice even if not using it yet)
+            id-token: write # Required for OIDC, if you ever use it
 
-    steps:
-      - uses: actions/checkout@v4
+        steps:
+            - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20' # Targeting Node.js v20 LTS, which is future-forward and stable.
-          registry-url: 'https://registry.npmjs.org/'
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: '20' # Targeting Node.js v20 LTS, which is future-forward and stable.
+                  registry-url: 'https://registry.npmjs.org/'
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9 # Use pnpm v9, aligning with your project's lockfile
-          run_install: true # Automatically runs pnpm install
+            - name: Set up pnpm
+              uses: pnpm/action-setup@v3
+              with:
+                  version: 9 # Use pnpm v9, aligning with your project's lockfile
+                  run_install: true # Automatically runs pnpm install
 
-      - name: Determine pnpm store path
-        id: store-path
-        run: echo "store=$(pnpm store path)" >> $GITHUB_OUTPUT
+            - name: Determine pnpm store path
+              id: store-path
+              run: echo "store=$(pnpm store path)" >> $GITHUB_OUTPUT
 
-      - name: Cache pnpm store
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.store-path.outputs.store }}
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
+            - name: Cache pnpm store
+              uses: actions/cache@v3
+              with:
+                  path: ${{ steps.store-path.outputs.store }}
+                  key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pnpm-
 
-      - name: Lint code
-        run: pnpm run lint
+            - name: Lint code
+              run: pnpm run lint
 
-      - name: Clean build artifacts
-        run: pnpm run clean || echo "no clean script"
+            - name: Clean build artifacts
+              run: pnpm run clean || echo "no clean script"
 
-      - name: Build project
-        run: pnpm run build
+            - name: Build project
+              run: pnpm run build
 
-      - name: Run tests
-        run: pnpm run test
+            - name: Run tests
+              run: pnpm run test
 
-      - name: Check if version exists
-        id: check_npm_version
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          PKG=$(node -p "require('./package.json').name")
-          if npm view $PKG@$VERSION >/dev/null 2>&1; then
-            echo "should_publish=false" >> $GITHUB_OUTPUT
-          else
-            echo "should_publish=true" >> $GITHUB_OUTPUT
-          fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # Required for npm view to avoid rate limits/auth issues
+            - name: Check if version exists
+              id: check_npm_version
+              run: |
+                  VERSION=$(node -p "require('./package.json').version")
+                  PKG=$(node -p "require('./package.json').name")
+                  if npm view $PKG@$VERSION >/dev/null 2>&1; then
+                    echo "should_publish=false" >> $GITHUB_OUTPUT
+                  else
+                    echo "should_publish=true" >> $GITHUB_OUTPUT
+                  fi
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # Required for npm view to avoid rate limits/auth issues
 
-      - name: Publish to npm
-        if: success() && steps.check_npm_version.outputs.should_publish == 'true'
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # Use a GitHub Secret for npm authentication
+            - name: Publish to npm
+              if: success() && steps.check_npm_version.outputs.should_publish == 'true'
+              run: npm publish --access public
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # Use a GitHub Secret for npm authentication
