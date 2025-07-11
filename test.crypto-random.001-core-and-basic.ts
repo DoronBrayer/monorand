@@ -8,7 +8,8 @@
  * with a nested `test()` block acting as a 'describe' group for these related tests.
  * This version uses direct `node:assert` for assertions, providing stability.
  * Fixes CRTC04, CRTC05, CRTC10 by explicitly setting relevant parameters for doubles.
- * This version now correctly awaits all subtests using Promise.all() to prevent
+ * This version now correctly awaits all subtests using Promise.all() and exports
+ * the main test suite for explicit awaiting in run-tests.ts to prevent
  * 'cancelledByParent' or 'parentAlreadyFinished' errors in CI.
  *
  * @author Doron Brayer <doronbrayer@outlook.com>
@@ -20,8 +21,9 @@ import { test } from 'node:test';
 import { cryptoRandom } from './index.js'; // Imports from the compiled index.js in dist/
 // Removed ArkType imports from test.types.ts as per user preference for direct assertions
 
-// Define a top-level group for these tests, acting as a 'describe' block
-test('cryptoRandom: Core Functionality & Basic Parameters', async (t) => { // 't' is the TestContext for nesting
+// Define a top-level group for these tests, acting as a 'describe' group.
+// IMPORTANT: This test function is now EXPORTED so run-tests.ts can await its completion.
+export const cryptoRandomCoreAndBasicTests = test('cryptoRandom: Core Functionality & Basic Parameters', async (t) => {
     const subtests = []; // Array to hold promises for each subtest
 
     // CRTC01: Default Parameters (Integer)
