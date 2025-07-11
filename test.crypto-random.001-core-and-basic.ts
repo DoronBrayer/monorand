@@ -8,7 +8,8 @@
  * with a nested `test()` block acting as a 'describe' group for these related tests.
  * This version uses direct `node:assert` for assertions, providing stability and
  * resolving TypeScript compilation issues related to ArkType schema methods in tests.
- * Fixes CRTC04 and CRTC05 by explicitly setting upperBound for doubles.
+ * Fixes CRTC04, CRTC05, CRTC10 by explicitly setting relevant parameters for doubles.
+ * This version also correctly awaits subtests to prevent 'cancelledByParent' errors.
  *
  * @author Doron Brayer <doronbrayer@outlook.com>
  * @license MIT
@@ -22,7 +23,7 @@ import { cryptoRandom } from './index.js'; // Imports from the compiled index.js
 // Define a top-level group for these tests, acting as a 'describe' block
 test('cryptoRandom: Core Functionality & Basic Parameters', async (t) => { // 't' is the TestContext for nesting
     // CRTC01: Default Parameters (Integer)
-    t.test('CRTC01: Default Parameters (Integer)', () => {
+    await t.test('CRTC01: Default Parameters (Integer)', () => {
         const testID = 'CRTC01';
         const result = cryptoRandom();
         assert(
@@ -33,7 +34,7 @@ test('cryptoRandom: Core Functionality & Basic Parameters', async (t) => { // 't
     });
 
     // CRTC02: Single Parameter: lowerBound (Integer)
-    t.test('CRTC02: Single Parameter: lowerBound (Integer)', () => {
+    await t.test('CRTC02: Single Parameter: lowerBound (Integer)', () => {
         const testID = 'CRTC02';
         const result = cryptoRandom({ lowerBound: -1 });
         assert(
@@ -44,7 +45,7 @@ test('cryptoRandom: Core Functionality & Basic Parameters', async (t) => { // 't
     });
 
     // CRTC03: Single Parameter: upperBound (Integer)
-    t.test('CRTC03: Single Parameter: upperBound (Integer)', () => {
+    await t.test('CRTC03: Single Parameter: upperBound (Integer)', () => {
         const testID = 'CRTC03';
         const result = cryptoRandom({ upperBound: 3 });
         assert(
@@ -55,7 +56,7 @@ test('cryptoRandom: Core Functionality & Basic Parameters', async (t) => { // 't
     });
 
     // CRTC04: Single Parameter: typeOfNum (Double)
-    t.test('CRTC04: Single Parameter: typeOfNum (Double)', () => {
+    await t.test('CRTC04: Single Parameter: typeOfNum (Double)', () => {
         const testID = 'CRTC04';
         // FIX: Explicitly set upperBound to 1 for double generation to match test expectation
         const result = cryptoRandom({ typeOfNum: 'double', upperBound: 1 });
@@ -73,7 +74,7 @@ test('cryptoRandom: Core Functionality & Basic Parameters', async (t) => { // 't
     });
 
     // CRTC05: Single Parameter: maxFracDigits (Double)
-    t.test('CRTC05: Single Parameter: maxFracDigits (Double)', () => {
+    await t.test('CRTC05: Single Parameter: maxFracDigits (Double)', () => {
         const testID = 'CRTC05';
         // FIX: Explicitly set typeOfNum to 'double' and upperBound to 1 for this test
         const result = cryptoRandom({ typeOfNum: 'double', upperBound: 1, maxFracDigits: 5 });
@@ -90,7 +91,7 @@ test('cryptoRandom: Core Functionality & Basic Parameters', async (t) => { // 't
     });
 
     // CRTC06: Single Parameter: exclusion (Integer - 'both')
-    t.test('CRTC06: Single Parameter: exclusion (Integer - \'both\')', () => {
+    await t.test('CRTC06: Single Parameter: exclusion (Integer - \'both\')', () => {
         const testID = 'CRTC06';
         const result = cryptoRandom({ exclusion: 'both' });
         // Assuming default bounds of [0, 2], 'both' exclusion means only 1 is expected
@@ -102,7 +103,7 @@ test('cryptoRandom: Core Functionality & Basic Parameters', async (t) => { // 't
     });
 
     // CRTC07: Integer Generation: No Exclusion
-    t.test('CRTC07: Integer Generation: No Exclusion', () => {
+    await t.test('CRTC07: Integer Generation: No Exclusion', () => {
         const testID = 'CRTC07';
         const lower = 10;
         const upper = 20;
@@ -115,7 +116,7 @@ test('cryptoRandom: Core Functionality & Basic Parameters', async (t) => { // 't
     });
 
     // CRTC08: Integer Generation: No Exclusion (Narrow Range)
-    t.test('CRTC08: Integer Generation: No Exclusion (Narrow Range)', () => {
+    await t.test('CRTC08: Integer Generation: No Exclusion (Narrow Range)', () => {
         const testID = 'CRTC08';
         const lower = 11;
         const upper = 13;
@@ -128,7 +129,7 @@ test('cryptoRandom: Core Functionality & Basic Parameters', async (t) => { // 't
     });
 
     // CRTC09: Double Generation: No Exclusion (Specific Frac Digits)
-    t.test('CRTC09: Double Generation: No Exclusion (Specific Frac Digits)', () => {
+    await t.test('CRTC09: Double Generation: No Exclusion (Specific Frac Digits)', () => {
         const testID = 'CRTC09';
         const lower = 1.5;
         const upper = 5.5;
@@ -147,11 +148,12 @@ test('cryptoRandom: Core Functionality & Basic Parameters', async (t) => { // 't
     });
 
     // CRTC10: Double Generation: No Exclusion (Narrow Range)
-    t.test('CRTC10: Double Generation: No Exclusion (Narrow Range)', () => {
+    await t.test('CRTC10: Double Generation: No Exclusion (Narrow Range)', () => {
         const testID = 'CRTC10';
         const lower = 0.11;
         const upper = 0.13;
         const fracDigits = 2;
+        // FIX: Pass maxFracDigits to cryptoRandom
         const result = cryptoRandom({ lowerBound: lower, upperBound: upper, typeOfNum: 'double', maxFracDigits: fracDigits, exclusion: 'none' });
         assert(
             result >= lower && result <= upper && typeof result === 'number',
