@@ -9,15 +9,14 @@
     "skipLibCheck": true,
     "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
-    "lib": ["ES2022"],
+    "lib": ["ES2022"], // This provides standard JS global types (Array, Object, etc.)
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
     "inlineSources": true,
     "noEmitOnError": true,
     "isolatedModules": true,
-    "typeRoots": ["./node_modules/@types"], /* Explicitly tell TS where to find @types packages */
-    "types": ["node"]                      /* Explicitly include only the 'node' types */
+    "types": ["node"] // Re-adding this explicitly to ensure Node.js types are picked up
   },
   "include": [
     "index.ts",

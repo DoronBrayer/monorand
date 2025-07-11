@@ -23,7 +23,7 @@ import { Constants } from './src.constants.js'
  *
  * @param {RandomParams} [rawParams={}] - The raw parameters for random number generation.
  * @param {number} [rawParams.lowerBound=0] - The lower bound (inclusive) of the random number.
- * @param {number} [rawParams.upperBound=1] - The upper bound (exclusive for doubles, inclusive for integers) of the random number.
+ * @param {number} [rawParams.upperBound=2] - The upper bound (exclusive for doubles, inclusive for integers) of the random number.
  * @param {'integer'|'double'} [rawParams.typeOfNum='integer'] - The type of number to generate ('integer' (default) or 'double').
  * @param {'none'|'lower bound'|'upper bound'|'both'} [rawParams.exclusion='none'] - Specifies which bounds to exclude.
  * @param {number} [rawParams.maxFracDigits=3] - The maximum number of fractional digits for 'double' type numbers.
@@ -46,7 +46,7 @@ export function cryptoRandom(rawParams: RandomParams = {}): number {
     // the "possibly undefined" errors at compile time.
     const validatedParams: Required<RandomParams> = {
         lowerBound: rawParams.lowerBound ?? 0,
-        upperBound: rawParams.upperBound ?? 1,
+        upperBound: rawParams.upperBound ?? 2, // Corrected default upperBound to 2 as per test plan
         typeOfNum: rawParams.typeOfNum ?? 'integer',
         exclusion: rawParams.exclusion ?? 'none',
         maxFracDigits: rawParams.maxFracDigits ?? 3,
@@ -73,7 +73,7 @@ export function cryptoRandom(rawParams: RandomParams = {}): number {
 
     let result: number
     let attempts = 0
-    const maxAttempts = Constants.MAX_ATTEMPTS_TO_GENERATE_NUM // CORRECTED: Constant name
+    const maxAttempts = Constants.MAX_ATTEMPTS_TO_GENERATE_NUM
 
     do {
         let currentLowerBound = min
@@ -89,29 +89,9 @@ export function cryptoRandom(rawParams: RandomParams = {}): number {
                 currentUpperBound--
             }
 
-            // Robust pre-check for integer exclusion (from OLD-but-good)
-            const minInt = Math.ceil(currentLowerBound)
-            const maxInt = Math.floor(currentUpperBound)
-            const totalIntegers = maxInt - minInt + 1
-
-            const thresholds: { [key in Exclude<typeof exclusion, 'none'>]: number } = {
-                // Explicitly type thresholds
-                both: 2,
-                'lower bound': 1,
-                'upper bound': 1,
-            }
-
-            // CORRECTED: Only check threshold if exclusion is not 'none'
-            if (exclusion !== 'none') {
-                const threshold = thresholds[exclusion]
-                if (totalIntegers <= threshold) {
-                    throw new TypeError(
-                        `No valid integers exist within the range ${min}–${max} under the {exclusion:'${exclusion}'} constraint.`
-                    )
-                }
-            }
-
-            // If currentLowerBound somehow exceeds currentUpperBound after adjustments, it's an empty range
+            // If currentLowerBound exceeds currentUpperBound after adjustments, it's an empty range.
+            // This check replaces the problematic 'thresholds' logic from the old function,
+            // as it correctly identifies truly impossible integer ranges after exclusions.
             if (currentLowerBound > currentUpperBound) {
                 throw new TypeError(
                     `Invalid integer range after exclusions: lowerBound (${lowerBound}) to upperBound (${upperBound}) with exclusion '${exclusion}' results in an empty range.`
