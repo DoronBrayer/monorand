@@ -1,6 +1,6 @@
 {
     "name": "shuffrand",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "type": "module",
     "description": "Cryptographically secure randomness and shuffling — with soul.",
     "main": "dist/index.js",
@@ -17,7 +17,7 @@
         "test:coverage": "vitest run --coverage",
         "clean": "rmdir /s /q dist",
         "lint": "eslint . --ext .ts",
-        "format": "prettier --write \"**/*.{ts,js,json,md,yml}\""
+        "format": "prettier --write \"**/*.{ts,js,json,yml}\""
     },
     "keywords": [
         "access",
@@ -38,7 +38,6 @@
         "destructive",
         "developer",
         "dice",
-        "Donald",
         "dungeon-master",
         "encryption",
         "entropy",
@@ -47,6 +46,7 @@
         "Fisher–Yates",
         "game",
         "generator",
+        "maker",
         "hashing",
         "hearthstone",
         "identifier",
@@ -91,6 +91,10 @@
         "uuid",
         "web-crypto",
         "wildcard",
+        "roulette",
+        "lottery",
+        "cutting-edge",
+        "draw",
         "Yates"
     ],
     "author": "Doron Brayer <doronbrayer@outlook.com>",

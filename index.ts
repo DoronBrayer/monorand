@@ -1,3 +1,5 @@
+// index.ts
+
 /**
  * shuffrand - Main Entry Point
  *
