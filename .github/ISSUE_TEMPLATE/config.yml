@@ -3,11 +3,7 @@ blank_issues_enabled: false
 contact_links:
     - name: Ask
       url: https://github.com/doronbrayer/shuffrand/discussions
-      about: Ask questions and get help from the community
-
-    - name: Security Vulnerability Report
-      url: https://github.com/doronbrayer/shuffrand/security/policy
-      about: Please report security vulnerabilities responsibly.
+      about: Get help for the community
 
 issue_templates:
     - name: Report
