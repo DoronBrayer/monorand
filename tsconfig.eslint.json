@@ -1,0 +1,22 @@
+// tsconfig.eslint.json
+{
+    // Extend your base tsconfig.json to inherit all compiler options
+    "extends": "./tsconfig.json",
+    "include": [
+        // Include the ESLint config file itself
+        "eslint.config.cjs",
+        // Include the Vitest config file
+        "vitest.config.ts"
+        // Add any other TypeScript-based config files here that ESLint needs to lint
+        // For example: "another.config.ts"
+    ],
+    "exclude": [
+        // Exclude your main source and test files from this specific config,
+        // as they are already covered by your primary tsconfig.json.
+        // This prevents redundant processing by ESLint's TypeScript parser.
+        "src/",
+        "test/",
+        "dist/",
+        "node_modules/"
+    ]
+}

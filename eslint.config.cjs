@@ -83,7 +83,8 @@ module.exports = [
             parserOptions: {
                 ecmaVersion: 2021, // Specifies the ECMAScript version syntax to support (ES2021 features)
                 sourceType: 'module', // Allows for the use of ES modules (import/export)
-                project: './tsconfig.json', // Essential for type-aware linting rules
+                // UPDATED: Provide an array of tsconfig files for ESLint to consider
+                project: ['./tsconfig.json', './tsconfig.eslint.json'],
             },
         },
         // No 'plugins' or 'extends' needed here for the basic recommended setup,
