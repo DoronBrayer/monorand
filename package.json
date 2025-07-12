@@ -1,6 +1,6 @@
 {
     "name": "shuffrand",
-    "version": "1.2.5",
+    "version": "1.2.6",
     "type": "module",
     "description": "Cryptographically secure randomness and shuffling — with soul.",
     "main": "dist/index.js",

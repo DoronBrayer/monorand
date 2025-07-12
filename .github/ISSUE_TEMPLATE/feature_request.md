@@ -1,4 +1,3 @@
-<!-- .github/ISSUE_TEMPLATE/feature_request.md -->
 ---
 name: Request
 about: Suggest a new idea or enhancement
@@ -24,5 +23,5 @@ Explain why you believe this feature aligns with `shuffrand`’s core philosophy
 
 ## Additional context (optional)
 Add any other context or screenshots about the feature request here. For example, links to related discussions, papers, or existing implementations.
-#
+# Thanks
 Thank you for contributing to `shuffrand`’s growth! Your thoughtful proposals help us build a more robust and capable utility. Please also remember to adhere to our [Code of Conduct](https://github.com/DoronBrayer/shuffrand/blob/main/CODE_OF_CONDUCT.md) in all discussions.

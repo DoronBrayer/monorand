@@ -1,4 +1,3 @@
-<!-- .github/ISSUE_TEMPLATE/bug_report.md -->
 ---
 name: Report
 about: Report a problem or unexpected behavior
@@ -38,5 +37,5 @@ If applicable, add screenshots or console logs to help explain your problem.
 
 ## Additional context
 Add any other context about the problem here. For example, have you tried any workarounds? Does it only happen in certain scenarios?
-#
+# Thanks
 Your commitment to helping us improve `shuffrand` is truly appreciated. We’re dedicated to building a dependable utility, and your reports are a vital part of that process. Please also remember to adhere to our Code of Conduct in all interactions.
