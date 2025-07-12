@@ -1,4 +1,12 @@
 <!-- .github/ISSUE_TEMPLATE/feature_request.md -->
+---
+name: Request
+about: Suggest a new idea or enhancement
+title: "[FEATURE]"
+labels: enhancement
+assignees: doronbrayer
+---
+
 # Feature request for `shuffrand`
 Got a solid idea that could make `shuffrand` even more indispensable? We’d love to hear it! `shuffrand` is built with a "soul" and a commitment to future-forward design, and your innovative suggestions are key to its evolution. Please use this template to propose new features or enhancements that align with the library’s core mission of providing uncompromisingly secure randomness and shuffling.
 

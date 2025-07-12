@@ -1,4 +1,12 @@
 <!-- .github/ISSUE_TEMPLATE/bug_report.md -->
+---
+name: Report
+about: Report a problem or unexpected behavior
+title: "[BUG]"
+labels: bug
+assignees: doronbrayer
+---
+
 # Bug report for `shuffrand`
 If you’ve stumbled upon a bug in `shuffrand`, thank you for taking the time to report it. We’re all about meticulous quality here, and your detailed report is absolutely crucial for maintaining the robustness and reliability of this library. Please fill out the following template as thoroughly as possible – the more information you provide, the faster we can diagnose and fix the issue.
 
