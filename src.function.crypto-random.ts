@@ -33,10 +33,30 @@ import { Constants } from './src.constants.js'
  * @throws {TypeError} - If input parameters do not conform to the schema or if an invalid range is provided.
  */
 export function cryptoRandom(rawParams: RandomParams = {}): number {
-    // src.function.crypto-random.ts - Cleaned Block
+    // --- NEW CUSTOM VALIDATION FOR MAXFRACDIGITS (DX-focused) ---
+    // This check provides a highly tailored and user-friendly error message for maxFracDigits,
+    // explaining the reason for the limits (reliable precision).
+    // It's placed before ArkType to ensure this custom message takes precedence.
+
+    const effectiveMaxFracDigits = rawParams.maxFracDigits ?? 3 // Apply default for initial check
+
+    if (
+        typeof effectiveMaxFracDigits !== 'number' ||
+        !Number.isInteger(effectiveMaxFracDigits) ||
+        effectiveMaxFracDigits < Constants.MIN_FRACTIONAL_DIGITS ||
+        effectiveMaxFracDigits > Constants.MAX_FRACTIONAL_DIGITS
+    ) {
+        throw new TypeError(
+            `maxFracDigits (currently ${effectiveMaxFracDigits}) must be an integer between ${Constants.MIN_FRACTIONAL_DIGITS} and ${Constants.MAX_FRACTIONAL_DIGITS} (inclusive) to ensure reliable precision.`
+        )
+    }
+    // --- END NEW CUSTOM VALIDATION ---
 
     // Step 1: Assert rawParams against the schema for runtime validation.
     // This ensures the input structure is valid, but properties are still optional.
+    // NOTE: ArkType will now handle type/range validation for lowerBound/upperBound
+    // (via src.types.ts schema) and other parameters, as the custom maxFracDigits
+    // check is handled above.
     randomParamsSchema.assert(rawParams)
 
     // Step 2: Create the validatedParams object with default values using ?? operator.
@@ -81,6 +101,11 @@ export function cryptoRandom(rawParams: RandomParams = {}): number {
 
         // --- Integer Specific Logic & Exclusion Pre-checks ---
         if (typeOfNum === 'integer') {
+            // FIX: For integer type, ensure bounds are rounded to integers first,
+            // as random number generation for integers operates on integer ranges.
+            currentLowerBound = Math.ceil(min) // Round up lower bound
+            currentUpperBound = Math.floor(max) // Round down upper bound
+
             // Apply exclusion for integers by adjusting bounds
             if (exclusion === 'lower bound' || exclusion === 'both') {
                 currentLowerBound++
@@ -93,8 +118,9 @@ export function cryptoRandom(rawParams: RandomParams = {}): number {
             // This check replaces the problematic 'thresholds' logic from the old function,
             // as it correctly identifies truly impossible integer ranges after exclusions.
             if (currentLowerBound > currentUpperBound) {
+                // Optimized message using en dash for range
                 throw new TypeError(
-                    `Invalid integer range after exclusions: lowerBound (${lowerBound}) to upperBound (${upperBound}) with exclusion '${exclusion}' results in an empty range.`
+                    `Invalid integer range after exclusions: the original range of [${lowerBound}\u2013${upperBound}] with exclusion '${exclusion}' results in an empty integer range.`
                 )
             }
 
@@ -182,8 +208,9 @@ export function cryptoRandom(rawParams: RandomParams = {}): number {
 
     // Throw if max attempts reached without finding a valid number
     if (attempts >= maxAttempts) {
+        // Optimized message using en dash for range and single quotes for exclusion
         throw new Error(
-            `Unable to generate a random number within the range [${min}, ${max}] that satisfies the exclusion constraint: ${exclusion}. Max attempts (${maxAttempts}) reached.`
+            `Unable to generate a random number within the range [${min}\u2013${max}] that satisfies the exclusion constraint: '${exclusion}'. Max attempts (${maxAttempts}) reached.`
         )
     }
 

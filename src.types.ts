@@ -1,7 +1,7 @@
 // src.types.ts
 
 import { type } from 'arktype'
-import { Constants } from './src.constants.js'
+import { Constants } from './src.constants.js' // IMPORTANT: This import is crucial for schemas
 
 /**
  * Parameters for the cryptoRandom function.
@@ -16,7 +16,7 @@ export interface RandomParams {
      * If specified, the generated double will be rounded to this many decimal places.
      * Must be a non-negative integer. Defaults to `3`.
      */
-    maxFracDigits?: number // <-- CORRECTED: This MUST be 'number', not a string literal
+    maxFracDigits?: number
 }
 
 /**
@@ -27,8 +27,7 @@ export const randomParamsSchema = type({
     upperBound: `number <= ${Constants.MAX_SAFE_INT}?`,
     typeOfNum: "'integer'|'double'?",
     exclusion: "'none'|'lower bound'|'upper bound'|'both'?",
-    // This schema string is correct for validation, it implies a number type.
-    maxFracDigits: `${Constants.MIN_FRACTIONAL_DIGITS} <= number.integer <= ${Constants.MAX_FRACTIONAL_DIGITS}?`,
+    maxFracDigits: 'number?',
 })
 
 /**
@@ -46,7 +45,6 @@ export interface ShuffleParams<T> {
      * Defaults to `false`.
      */
     preventIdentical?: boolean
-    // maxRetries is intentionally NOT re-added here as it will be an internal constant
 }
 
 /**
@@ -56,5 +54,30 @@ export const shuffleParamsSchema = type({
     arr: 'unknown[]?',
     isDestructive: 'boolean?',
     preventIdentical: 'boolean?',
-    // maxRetries is intentionally NOT re-added here as it will be an internal constant
+})
+
+/**
+ * Parameters for the cryptoString function.
+ */
+export interface CryptoStringParams {
+    /**
+     * The desired length of the random string. Must be a non-negative integer.
+     * Defaults to `16`.
+     */
+    length?: number
+    /**
+     * The character set from which to generate the random string.
+     * Can be a predefined string ('alphanumeric', 'numeric', 'alpha', 'hex', 'uppercase', 'lowercase')
+     * or a custom string of characters (e.g., 'abc!@#$').
+     * Defaults to 'alphanumeric'.
+     */
+    characterSet?: 'alphanumeric' | 'numeric' | 'alpha' | 'hex' | 'uppercase' | 'lowercase' | string
+}
+
+/**
+ * ArkType schema for validating CryptoStringParams.
+ */
+export const cryptoStringParamsSchema = type({
+    length: `number.integer>=0?`, // Length must be a non-negative integer
+    characterSet: `string | 'alphanumeric' | 'numeric' | 'alpha' | 'hex' | 'uppercase' | 'lowercase' ?`,
 })

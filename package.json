@@ -1,6 +1,6 @@
 {
     "name": "shuffrand",
-    "version": "1.1.4",
+    "version": "1.2.0",
     "type": "module",
     "description": "Cryptographically secure randomness and shuffling — with soul.",
     "main": "dist/index.js",
@@ -13,7 +13,8 @@
     ],
     "scripts": {
         "build": "tsc",
-        "test": "pnpm run build && node --experimental-specifier-resolution=node dist/run-tests.js",
+        "test": "pnpm run build && vitest",
+        "test:coverage": "vitest run --coverage",
         "clean": "rmdir /s /q dist",
         "lint": "eslint . --ext .ts",
         "format": "prettier --write \"**/*.{ts,js,json,md,yml}\""
@@ -114,7 +115,8 @@
         "eslint-plugin-prettier": "^5.5.1",
         "prettier": "^3.6.2",
         "typescript": "^5.0.0",
-        "typescript-eslint": "^8.36.0"
+        "typescript-eslint": "^8.36.0",
+        "vitest": "^4.0.0-beta.2"
     },
     "dependencies": {
         "arktype": "^2.1.20"

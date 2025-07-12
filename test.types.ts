@@ -19,29 +19,26 @@ export const arrayOfTwoOrThreeElements = type('unknown[]').atLeastLength(2).atMo
 const dateSchema = type('Date') // Corrected: Use simple string literal "Date"
 // const functionSchema = type({ domain: "function" }) // Keep this commented out
 
-// By Content Type (General) - All with default length constraints (4-100 elements)
-export const arrayOfArrays = type('unknown[]').array().atLeastLength(4).atMostLength(100) // An array where each element is itself an array (of unknown content)
-export const arrayOfBigInts = type('bigint').array().atLeastLength(4).atMostLength(100) // An array containing only BigInt values
-export const arrayOfBooleans = type('boolean').array().atLeastLength(4).atMostLength(100) // An array containing only boolean values
-export const arrayOfDates = dateSchema.array().atLeastLength(4).atMostLength(100) // Corrected: Use defined dateSchema (now type("Date"))
-// export const arrayOfFunctions = functionSchema.array().atLeastLength(4).atMostLength(100) // Keep this commented out
-export const arrayOfNumbers = type('number').array().atLeastLength(4).atMostLength(100) // An array containing only numbers
-export const arrayOfPlainObjects = type('object').array().atLeastLength(4).atMostLength(100) // An array containing only plain JavaScript objects
-export const arrayOfStrings = type('string').array().atLeastLength(4).atMostLength(100) // An array containing only string values
-export const arrayOfSymbols = type('symbol').array().atLeastLength(4).atMostLength(100) // An array containing only symbol values
+// By Content Type (General) - Removed default length constraints to make them more general purpose
+export const arrayOfArrays = type('unknown[]').array() // An array where each element is itself an array (of unknown content)
+export const arrayOfBigInts = type('bigint').array() // An array containing only BigInt values
+export const arrayOfBooleans = type('boolean').array() // An array containing only boolean values
+export const arrayOfDates = dateSchema.array() // Corrected: Use defined dateSchema (now type("Date"))
+// export const arrayOfFunctions = functionSchema.array() // Keep this commented out
+export const arrayOfNumbers = type('number').array() // An array containing only numbers
+export const arrayOfPlainObjects = type({ id: 'number' }).array() // An array containing only plain JavaScript objects
+export const arrayOfStrings = type('string').array() // An array containing only string values
+export const arrayOfSymbols = type('symbol').array() // An array containing only symbol values
 
-// By Content Type (Special Values)
+// By Content Type (Special Values) - Removed default length constraints
 // arrayOfFalsyValues is temporarily skipped due to ArkType BigInt literal parsing issues.
-export const arrayOfNullishValues = type('null | undefined').array().atLeastLength(4).atMostLength(100) // An array that can contain either null or undefined values
+export const arrayOfNullishValues = type('null | undefined').array() // An array that can contain either null or undefined values
 export const arrayOfNulls = type('null').array() // An array that can contain only null values
 export const arrayOfUndefineds = type('undefined').array() // An array that can contain only undefined values
 
-// By Content Type (Mixed)
-export const arrayOfMixedPrimitives = type('string | number | boolean | bigint | symbol')
-    .array()
-    .atLeastLength(4)
-    .atMostLength(100) // An array containing a mix of primitive types
-// export const arrayOfMixedComplex = type('object | unknown[]').or(dateSchema).or(functionSchema).array().atLeastLength(4).atMostLength(100) // Keep this commented out
+// By Content Type (Mixed) - Removed default length constraints
+export const arrayOfMixedPrimitives = type('string | number | boolean | bigint | symbol').array()
+// export const arrayOfMixedComplex = type('object | unknown[]').or(dateSchema).or(functionSchema).array() // Keep this commented out
 
 // --- Number Schemas ---
 
