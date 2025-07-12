@@ -49,10 +49,14 @@ describe('cryptoRandom: Error Handling', () => {
     // CRTC37: Invalid Bounds Type (String) - Now caught by ArkType
     it('CRTC37: Should throw TypeError for invalid lowerBound type (string) (ArkType message)', () => {
         const testID = 'CRTC37'
-        // @ts-ignore - Intentionally passing invalid type for testing
         let thrownError: any
         try {
-            cryptoRandom({ lowerBound: 'a' as any, upperBound: 5, typeOfNum: 'integer', exclusion: 'none' })
+            cryptoRandom({
+                lowerBound: 'a' as any, // Retaining 'as any' here as it's a direct type mismatch test
+                upperBound: 5,
+                typeOfNum: 'integer',
+                exclusion: 'none',
+            })
         } catch (e) {
             thrownError = e
         }
@@ -94,10 +98,11 @@ describe('cryptoRandom: Error Handling', () => {
     // CRTC40: Invalid exclusion String (Silly Arg)
     it('CRTC40: Should throw TraversalError for invalid exclusion string', () => {
         const testID = 'CRTC40'
-        // @ts-ignore - Intentionally passing invalid type for testing
         let thrownError: any
         try {
-            cryptoRandom({ exclusion: '_____________' as any })
+            cryptoRandom({
+                exclusion: '_____________' as any, // Retaining 'as any' here for direct type mismatch
+            })
         } catch (e) {
             thrownError = e
         }
@@ -111,10 +116,11 @@ describe('cryptoRandom: Error Handling', () => {
     // CRTC41: Invalid typeOfNum String (Silly Arg)
     it('CRTC41: Should throw TraversalError for invalid typeOfNum string', () => {
         const testID = 'CRTC41'
-        // @ts-ignore - Intentionally passing invalid type for testing
         let thrownError: any
         try {
-            cryptoRandom({ typeOfNum: '_____________' as any })
+            cryptoRandom({
+                typeOfNum: '_____________' as any, // Retaining 'as any' here for direct type mismatch
+            })
         } catch (e) {
             thrownError = e
         }
@@ -182,10 +188,9 @@ describe('cryptoRandom: Error Handling', () => {
     // CRTC46: lowerBound undefined (falsey) - ArkType should catch this
     it('CRTC46: Should throw TraversalError when lowerBound is undefined (via ArkType)', () => {
         const testID = 'CRTC46'
-        // @ts-ignore - Intentionally passing undefined for testing schema validation
         let thrownError: any
         try {
-            cryptoRandom({ lowerBound: undefined, upperBound: 5, typeOfNum: 'integer' })
+            cryptoRandom({ lowerBound: undefined as any, upperBound: 5, typeOfNum: 'integer' }) // Retaining 'as any' for direct type mismatch
         } catch (e) {
             thrownError = e
         }
@@ -197,10 +202,9 @@ describe('cryptoRandom: Error Handling', () => {
     // CRTC47: upperBound undefined (falsey) - ArkType should catch this
     it('CRTC47: Should throw TraversalError when upperBound is undefined (via ArkType)', () => {
         const testID = 'CRTC47'
-        // @ts-ignore - Intentionally passing undefined for testing schema validation
         let thrownError: any
         try {
-            cryptoRandom({ lowerBound: 0, upperBound: undefined, typeOfNum: 'integer' })
+            cryptoRandom({ lowerBound: 0, upperBound: undefined as any, typeOfNum: 'integer' }) // Retaining 'as any' for direct type mismatch
         } catch (e) {
             thrownError = e
         }
@@ -212,7 +216,12 @@ describe('cryptoRandom: Error Handling', () => {
     // CRTC48: maxFracDigits negative
     it('CRTC48: Should throw TypeError for negative maxFracDigits (custom message)', () => {
         const testID = 'CRTC48'
-        // @ts-ignore - Intentionally passing invalid type for testing
+        let thrownError: any
+        try {
+            cryptoRandom({ typeOfNum: 'double', maxFracDigits: -1 as any }) // Retaining 'as any' for direct type mismatch
+        } catch (e) {
+            thrownError = e
+        }
         expect(() => cryptoRandom({ typeOfNum: 'double', maxFracDigits: -1 })).toThrow(TypeError)
         expect(() => cryptoRandom({ typeOfNum: 'double', maxFracDigits: -1 })).toThrow(
             `maxFracDigits (currently -1) must be an integer between ${Constants.MIN_FRACTIONAL_DIGITS} and ${Constants.MAX_FRACTIONAL_DIGITS} (inclusive) to ensure reliable precision.`
