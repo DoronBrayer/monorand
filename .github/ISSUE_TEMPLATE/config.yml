@@ -1,9 +1,18 @@
-# .github/ISSUE_TEMPLATE/config.yml
 blank_issues_enabled: false
 contact_links:
-    - name: Ask a question
-      url: https://github.com/doronbrayer/shuffrand/discussions
-      about: Ask questions and get help from the community.
-    - name: Security Vulnerability Report
-      url: https://github.com/doronbrayer/shuffrand/security/policy
-      about: Please report security vulnerabilities responsibly.
+  - name: Ask
+    url: https://github.com/doronbrayer/shuffrand/discussions
+    about: Ask questions and get help from the community
+  - name: Security Vulnerability Report
+    url: https://github.com/doronbrayer/shuffrand/security/policy
+    about: Please report security vulnerabilities responsibly.
+# --- Add the following lines to make your templates visible ---
+repository_name: shuffrand
+repository_owner: doronbrayer
+issue_template_config:
+  - name: Report
+    description: Report a problem or unexpected behavior
+    template: bug_report.md
+  - name: Request
+    description: Suggest a new idea or enhancement
+    template: feature_request.md
