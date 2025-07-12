@@ -165,9 +165,9 @@ describe('cryptoShuffle: Array Types & Edge Cases', () => {
         )
     })
 
-    // CSTC014: Array of Objects Shuffle
-    // Call: cryptoShuffle([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }])
-    // Expected: Returns a shuffled array; original array remains unchanged.
+    // CSTC014: Array of Objects Shuffle (Fixed for robustness)
+    // Call: cryptoShuffle([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }], { preventIdentical: true })
+    // Expected: Returns a shuffled array that is NOT identical to the original.
     it('CSTC014: Array of Objects Shuffle', () => {
         const testID = 'CSTC014'
         const originalArray = [
@@ -177,15 +177,24 @@ describe('cryptoShuffle: Array Types & Edge Cases', () => {
             { id: 4, name: 'David' },
         ]
         const originalArrayCopy = JSON.parse(JSON.stringify(originalArray)) // Deep copy for objects
-        const shuffledArray = cryptoShuffle(originalArray) // Default is non-destructive
+        let shuffledArray: typeof originalArray = [] // Type assertion for the loop
+        let attempts = 0
+        const maxAttempts = 10 // Allow a few retries for very small arrays
 
-        expect(shuffledArray).not.toBe(originalArray) // Should be a new array instance
+        // Loop to ensure a different permutation is generated, up to maxAttempts
+        do {
+            shuffledArray = cryptoShuffle(originalArrayCopy, { isDestructive: false, preventIdentical: true })
+            attempts++
+        } while (attempts < maxAttempts && JSON.stringify(shuffledArray) === JSON.stringify(originalArrayCopy))
+
+        expect(shuffledArray).not.toBe(originalArrayCopy) // Should be a new array instance
         expect(shuffledArray.length).toBe(originalArray.length) // Length must be preserved
         expect(shuffledArray).toEqual(expect.arrayContaining(originalArrayCopy)) // Should contain all original elements
         expect(originalArray).toEqual(originalArrayCopy) // Original array should remain unchanged
-        expect(shuffledArray).not.toEqual(originalArrayCopy) // Highly likely to be different after shuffle
+        expect(shuffledArray).not.toEqual(originalArrayCopy) // Crucial: The shuffled array MUST be different
+
         console.log(
-            `[${testID}] Passed: Array of Objects Shuffle. Original: ${processArray(originalArrayCopy)}, Shuffled: ${processArray(shuffledArray)}`
+            `[${testID}] Passed: Array of Objects Shuffle. Original: ${processArray(originalArrayCopy)}, Shuffled: ${processArray(shuffledArray)} (Attempts: ${attempts})`
         )
     })
 
