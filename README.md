@@ -1,5 +1,5 @@
 <!-- README.md -->
-# `shuffrand`
+# `shuffrand` by Doron B.
 **shuff**le + **rand**om = shuffrand. This perfectly encapsulates the library’s initial core functionalities:
 
 🎲 Cryptographically secure randomness and shuffling — with **soul**.
@@ -17,7 +17,7 @@
 ✔️ **Robust runtime validation**: utilizes ArkType for rigorous runtime input validation, enhancing reliability and preventing unexpected behavior.<br>
 ✔️ **ESM-first & Node.js v20+**: built with a future-forward architecture for optimal tree-shaking and modern environment compatibility.
 ## Installation
-• <small>[<small>RECOMMENDED</small>]</small> **pnpm**: `pnpm install shuffrand`<br>• **pnpm**: `npm install shuffrand`<br>• **Yarn**: `yarn add shuffrand`
+• **pnpm**: `pnpm install shuffrand`<br>• **npm**: `npm install shuffrand`<br>• **Deno**: `import { cryptoRandom, cryptoShuffle, cryptoString } from "npm:shuffrand@1.2.3"` — <small>no dedicated `install`/`add` command</small><br>• **Yarn**: `yarn add shuffrand`<br>• **Bun**: `bun add shuffrand`
 ## Usage
 Using `shuffrand` is straightforward, designed to be intuitive while providing powerful cryptographic capabilities.
 ### The trio

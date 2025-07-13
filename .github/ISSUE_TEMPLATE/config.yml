@@ -1,15 +1,14 @@
 blank_issues_enabled: false
 
 contact_links:
-    - name: Ask
+    - name: Discuss
       url: https://github.com/doronbrayer/shuffrand/discussions
-      about: Get help for the community
-
+      about: Use 'Discussions' to connect with our community
 issue_templates:
     - name: Report
-      description: Report a problem or unexpected behavior
+      description: Report a defect or unexpected behavior
       template: bug_report.md
 
     - name: Request
-      description: Suggest a new idea or enhancement
+      description: Request an enhancement or feature
       template: feature_request.md
