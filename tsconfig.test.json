@@ -1,0 +1,24 @@
+// tsconfig.test.json
+{
+    // Inherit common compiler options from your main tsconfig.json.
+    // This ensures consistency for target, strictness, lib, etc., across your project.
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./dist", // Ensure compiled test files also go into the 'dist' directory
+        "rootDir": ".", // Set rootDir to the project root for consistent path resolution
+        "module": "NodeNext", // Must be NodeNext when moduleResolution is NodeNext, aligning with ESM-first and Node.js v20+ principles.
+        // This overrides the 'module' from tsconfig.json if it were different.
+        "declaration": false, // Do not generate .d.ts files for test files (as they are not part of the public API)
+        "sourceMap": false, // No need for source maps for compiled test files in dist for npm
+        "inlineSources": false,
+        "noEmitOnError": false // Allow compilation even if there are type errors in tests (useful for quick iteration)
+    },
+    "include": [
+        "test.*.ts", // Explicitly include all files named 'test.*.ts' directly in the root
+        "run-tests.ts" // Include your specific test runner file (also in root)
+    ],
+    "exclude": [
+        "node_modules", // Standard exclusion for all TypeScript compilations
+        "dist" // Exclude the output directory itself to prevent circular compilation
+    ]
+}

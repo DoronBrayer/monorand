@@ -10,10 +10,6 @@
  * @license MIT
  */
 
-// Import Node.js built-in modules for cryptographic randomness and assertions
-import { webcrypto } from 'node:crypto'
-import { strict as assert } from 'node:assert'
-
 // Import types, constants, and ArkType schema from their respective dot-categorized files
 import { RandomParams, randomParamsSchema } from './src.types.js'
 import { Constants } from './src.constants.js'
@@ -72,6 +68,14 @@ export function cryptoRandom(rawParams: RandomParams = {}): number {
         maxFracDigits: rawParams.maxFracDigits ?? 3,
     }
 
+    // Ensure globalThis.crypto is available. This check is crucial for environments
+    // where WebCrypto API might not be present (though highly unlikely in modern targets).
+    if (typeof globalThis.crypto === 'undefined' || !globalThis.crypto.getRandomValues) {
+        throw new Error(
+            'Cryptographically secure random number generator (WebCrypto API) is not available in this environment.'
+        )
+    }
+
     // Destructure directly from the explicitly typed validatedParams constant.
     // TypeScript should now correctly infer all these as non-nullable.
     const { lowerBound, upperBound, typeOfNum, exclusion, maxFracDigits } = validatedParams
@@ -125,7 +129,6 @@ export function cryptoRandom(rawParams: RandomParams = {}): number {
             }
 
             const range = currentUpperBound - currentLowerBound + 1
-            assert(range > 0, 'Integer range must be positive after exclusions.')
 
             const bytesNeeded = Math.ceil(Math.log2(range) / 8)
             const maxValidValue = Math.pow(256, bytesNeeded) - (Math.pow(256, bytesNeeded) % range)
@@ -134,7 +137,7 @@ export function cryptoRandom(rawParams: RandomParams = {}): number {
             const byteArray = new Uint8Array(bytesNeeded)
 
             do {
-                webcrypto.getRandomValues(byteArray)
+                globalThis.crypto.getRandomValues(byteArray)
                 randomNumber = 0
                 for (let i = 0; i < bytesNeeded; i++) {
                     randomNumber = randomNumber * 256 + byteArray[i]
@@ -152,7 +155,7 @@ export function cryptoRandom(rawParams: RandomParams = {}): number {
 
             // Generate a random double between 0 (inclusive) and 1 (exclusive)
             do {
-                webcrypto.getRandomValues(byteArray)
+                globalThis.crypto.getRandomValues(byteArray)
                 let randomNumber = 0
                 for (let i = 0; i < BYTES_FOR_DOUBLE; i++) {
                     randomNumber = randomNumber * 256 + byteArray[i]
