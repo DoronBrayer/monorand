@@ -1,24 +1,36 @@
 // tsconfig.test.json
 {
     // Inherit common compiler options from your main tsconfig.json.
-    // This ensures consistency for target, strictness, lib, etc., across your project.
     "extends": "./tsconfig.json",
     "compilerOptions": {
-        "outDir": "./dist", // Ensure compiled test files also go into the 'dist' directory
-        "rootDir": ".", // Set rootDir to the project root for consistent path resolution
-        "module": "NodeNext", // Must be NodeNext when moduleResolution is NodeNext, aligning with ESM-first and Node.js v20+ principles.
-        // This overrides the 'module' from tsconfig.json if it were different.
-        "declaration": false, // Do not generate .d.ts files for test files (as they are not part of the public API)
-        "sourceMap": false, // No need for source maps for compiled test files in dist for npm
+        "outDir": "./dist",
+        "rootDir": ".",
+        "module": "NodeNext",
+        "declaration": false, // Keep false, as we don't need .d.ts for test files themselves
+        "sourceMap": false,
         "inlineSources": false,
-        "noEmitOnError": false // Allow compilation even if there are type errors in tests (useful for quick iteration)
+        "noEmitOnError": false,
+        "baseUrl": ".",
+        // Crucial for TS7016: Map paths to .d.ts files for type resolution
+        "paths": {
+            "shuffrand": ["./dist/index.d.ts"],
+            "shuffrand/random": ["./dist/random.d.ts"],
+            "shuffrand/shuffle": ["./dist/shuffle.d.ts"],
+            "shuffrand/string": ["./dist/string.d.ts"],
+            "shuffrand/constants": ["./dist/constants.d.ts"],
+            "shuffrand/types": ["./dist/types.d.ts"]
+        },
+        // Crucial for TS2307: Allow importing JS files directly without requiring .d.ts for them
+        "allowJs": true,
+        "skipLibCheck": true // Suppress type checking errors from declaration files (often helpful in test setups)
     },
     "include": [
-        "test.*.ts", // Explicitly include all files named 'test.*.ts' directly in the root
-        "run-tests.ts" // Include your specific test runner file (also in root)
+        "test.crypto-random.*.ts",
+        "test.crypto-shuffle.*.ts",
+        "test.crypto-string.*.ts",
+        // Explicitly include test utility files so they are compiled by tsc
+        "test.util.deep-copy-array.ts",
+        "test.types.ts"
     ],
-    "exclude": [
-        "node_modules", // Standard exclusion for all TypeScript compilations
-        "dist" // Exclude the output directory itself to prevent circular compilation
-    ]
+    "exclude": ["node_modules", "dist"]
 }

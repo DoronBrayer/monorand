@@ -25,7 +25,7 @@ Using `shuffrand` is straightforward, designed to be intuitive while providing p
 
 ### Generating true random numbers via `cryptoRandom`
 ```js
-import { cryptoRandom } from  'shuffrand';
+import { cryptoRandom } from  ’shuffrand';
 
 // Generate a random integer between 1 and 10 (inclusive)
 const randomInt = cryptoRandom({ lowerBound: 1, upperBound: 10, typeOfNum: 'integer' });
@@ -41,7 +41,7 @@ console.log(`Random Integer (excluding lower): ${randomIntExcludingLower}`); // 
 ```
 ### Shuffling arrays via `cryptoShuffle`
 ```js
-import { cryptoShuffle } from  'shuffrand';
+import { cryptoShuffle } from  ’shuffrand';
 
 // Non-destructive shuffle (default behavior)
 const originalArray = [1, 2, 3, 4, 5];
@@ -61,7 +61,7 @@ console.log(`Guaranteed Different Shuffle: ${guaranteedDifferentShuffle}`); // W
 ```
 ### Generating random strings via `cryptoString`
 ```js
-import { cryptoString, calculateStringEntropy } from  'shuffrand';
+import { cryptoString, calculateStringEntropy } from  ’shuffrand';
 
 // Generate a 16-character alphanumeric string (default)
 const token = cryptoString();
@@ -80,7 +80,92 @@ const customCharset = 'abcdefghijklmnopqrstuvwxyz0123456789'; // 36 unique chara
 const entropy = calculateStringEntropy({ length: 20, characterSet: customCharset });
 console.log(`Entropy of a 20-char string from this set: ${entropy.toFixed(2)} bits`); // e.g., 103.58 bits
 ```
-If you’re building applications where **true** unpredictability, fairness, and security are non-negotiable, you've found your essential utility. We believe that in today’s digital landscape, the integrity of your random data is paramount, and `shuffrand` is built to meet that challenge without compromise.
+### In the Browser (without a bundler)
+You might be wondering "Why can’t I just use a simple `<script src="shuffrand.js"></script>` like I used to?" That’s a great question, and it gets to the heart of modern JavaScript.
+`shuffrand` is built using **ES Modules** the modern standard for structuring JavaScript code. This gives you powerful benefits like:
+
+• **No global clutter**: Your code stays clean, without variables accidentally interfering with other scripts.<br>
+• **Efficiency**: Tools can "tree-shake" (remove unused code), making your final application smaller.<br>
+• **Clear dependencies**: It’s obvious what each part of the code needs from another.
+
+Because `shuffrand` uses ES Modules (and internally relies on `arktype`, which also uses ES Modules), when you want to use it directly in a browser without a "bundler" (like Vite, Webpack, or Rollup, which are common in larger projects), the browser needs a little help.
+This "help" comes in the form of an **Import Map**. Think of an Import Map as a simple lookup table in your HTML that tells the browser: "When you see an `import` statement for `shuffrand` (or `arktype`, or its internal parts), here’s the exact URL where you can find it on a CDN."
+#### Why `arktype` isn’t embedded and the extra mappings are needed
+`shuffrand` externalizes `arktype` to keep its own bundle size small (~50 kB) and prevent duplicate code in your final application if you use `arktype` elsewhere. Because `arktype` itself is a complex monorepo with internal ES Module imports (like `@ark/schema` and `@ark/util`), the browser’s `importmap` needs explicit entries for these sub-dependencies to resolve them correctly from `esm.sh`.
+Important note on local files (CORS): If you open your HTML file directly from your computer’s file system (e.g., by double-clicking it, resulting in a `file:///…` address in your browser), browsers will block external resources from CDNs due to security rules (CORS). To avoid this, you need to serve your HTML file using a simple local web server.
+#### The easiest way to serve locally (no Node.js project needed)
+Open your terminal (command line interface).
+Navigate to the directory containing your HTML file.
+Run this command: `python -m http.server 8000` (If `python` doesn’t work, try `py -m http.server 8000` or search for "simple http server python" for alternatives).
+Open your browser and go to `http://localhost:8000/your-file.html`.
+#### HTML example for direct browser use
+Here’s a full `index.html` example you can use. Copy and paste this entire code into your HTML file, serve it with the simple Python server, and check your browser’s console (usually F12) for the output.
+(Note: The JavaScript code in the `<script type="module">` block below can, and often should, be placed in a separate `.js` file (e.g., `main.js`) and imported via `<script type="module" src="./main.js"></script>` for better code organization. This example keeps it inline for simplicity.)
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shuffrand in Browser</title>
+
+    <!-- Import Map: This is crucial for resolving bare module specifiers. -->
+    <!-- It maps ’shuffrand' to unpkg.com and 'arktype' and its internal dependencies to esm.sh. -->
+    <script type="importmap">
+    {
+      "imports": {
+        "shuffrand": "https://unpkg.com/shuffrand@1.3.0/dist/index.es.js",
+        "arktype": "https://esm.sh/arktype@2.1.20",
+        "@ark/schema": "https://esm.sh/@ark/schema@0.46.0",
+        "@ark/util": "https://esm.sh/@ark/util@0.46.0"
+      }
+    }
+    </script>
+</head>
+<body>
+    <h1><code>shuffrand</code> in the Browser!</h1>
+    <p>Open your browser’s developer console (F12) to see the output.</p>
+
+    <script type="module">
+        // Now you can import shuffrand using the bare specifier defined in the import map!
+        import { cryptoRandom, cryptoShuffle, cryptoString, calculateStringEntropy } from ’shuffrand';
+
+        // --- Usage Examples ---
+
+        // 1. Generating true random numbers via cryptoRandom
+        const randomInt = cryptoRandom({ lowerBound: 1, upperBound: 10, typeOfNum: 'integer' });
+        console.log(`Random Integer: ${randomInt}`);
+
+        const randomDouble = cryptoRandom({ lowerBound: 0, upperBound: 1, typeOfNum: 'double', maxFracDigits: 5 });
+        console.log(`Random Double: ${randomDouble}`);
+
+        // 2. Shuffling arrays via cryptoShuffle
+        const originalArray = [1, 2, 3, 4, 5];
+        const shuffledArray = cryptoShuffle(originalArray);
+        console.log(`Original Array: ${originalArray}`);
+        console.log(`Shuffled Array: ${shuffledArray}`);
+
+        // 3. Generating random strings via cryptoString
+        const token = cryptoString({ length: 20 });
+        console.log(`Secure Token: ${token}`);
+
+        const emojiSequence = cryptoString({ length: 5, characterSet: '😀😂😇😈✨' });
+        console.log(`Emoji Sequence: ${emojiSequence}`);
+
+        // 4. Calculate entropy
+        const customCharset = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        const entropy = calculateStringEntropy({ length: 20, characterSet: customCharset });
+        console.log(`Entropy of a 20-char string from this set: ${entropy.toFixed(2)} bits`);
+    </script>
+</body>
+</html>
+```
+
+#### Further clarifications (FYI)
+• **Why not just a simple `<script src="…"></script>`**? Modern JavaScript libraries like `shuffrand` use ES Modules for better organization, efficiency (e.g., "tree-shaking" to remove unused code), and to avoid polluting the global scope. This module system requires a specific loading mechanism, which the `importmap` provides for direct browser use.<br>
+• **Is this “the way to go”?** Yes, using ES Modules with an `importmap` is a modern and proper W3C standard for direct browser loading. For larger applications, developers commonly use bundlers (like Vite or Webpack) which automate this dependency resolution, but the underlying principles are the same.
+
+Moving on…<br>If you’re building applications where **true** unpredictability, fairness, and security are non-negotiable, you've found your essential utility. We believe that in today’s digital landscape, the integrity of your random data is paramount, and `shuffrand` is built to meet that challenge without compromise.
 
 At its core, `shuffrand` offers a lean yet powerful API. Our `cryptoRandom` function generates secure numbers (integers or doubles) with precise control over ranges and exclusions, while `cryptoShuffle` provides cryptographically strong array permutations, either destructively or non-destructively. Need secure identifiers? `cryptoString` crafts random strings from various character sets, including Unicode, and even helps you calculate their cryptographic entropy.
 

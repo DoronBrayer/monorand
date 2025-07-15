@@ -194,6 +194,15 @@ export function calculateStringEntropy(params: CryptoStringParams = {}): number 
     const effectiveLength = params.length ?? 16
     const effectiveCharacterSet = params.characterSet ?? 'alphanumeric'
 
+    // --- START: Minimal addition to throw error for failing test in 004-error-handling.js ---
+    // CSTCEH08: calculateStringEntropy with invalid length
+    if (typeof effectiveLength !== 'number' || !Number.isInteger(effectiveLength) || effectiveLength < 0) {
+        throw new TypeError(
+            `Invalid calculateStringEntropy parameters: 'length' (currently ${effectiveLength}) must be a non-negative integer.`
+        )
+    }
+    // --- END: Minimal addition ---
+
     let charsetSize: number
     if (
         typeof effectiveCharacterSet === 'string' &&

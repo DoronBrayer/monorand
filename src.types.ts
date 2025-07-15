@@ -4,6 +4,14 @@ import { type } from 'arktype'
 import { Constants } from './src.constants.js' // IMPORTANT: This import is crucial for schemas
 
 /**
+ * Defines a reusable ArkType schema for a number that must be within the
+ * JavaScript safe integer range (MIN_SAFE_INTEGER to MAX_SAFE_INTEGER).
+ * This ensures that numbers used for bounds are always safe for arithmetic
+ * operations without precision loss.
+ */
+const safeRangeNumberType = type('number').atLeast(Constants.MIN_SAFE_INT).atMost(Constants.MAX_SAFE_INT)
+
+/**
  * Parameters for the cryptoRandom function.
  */
 export interface RandomParams {
@@ -23,11 +31,14 @@ export interface RandomParams {
  * ArkType schema for validating RandomParams.
  */
 export const randomParamsSchema = type({
-    lowerBound: `number >= ${Constants.MIN_SAFE_INT}?`,
-    upperBound: `number <= ${Constants.MAX_SAFE_INT}?`,
+    // Using the reusable safeRangeNumberType for lowerBound and upperBound.
+    lowerBound: safeRangeNumberType.optional(),
+    upperBound: safeRangeNumberType.optional(),
     typeOfNum: "'integer'|'double'?",
     exclusion: "'none'|'lower bound'|'upper bound'|'both'?",
-    maxFracDigits: 'number?',
+    // Added schema validation for maxFracDigits as per the ArkType Conclusions Recap.
+    // This ensures it's an optional integer between 0 and 15.
+    maxFracDigits: `0 <= number.integer <= 15?`,
 })
 
 /**
