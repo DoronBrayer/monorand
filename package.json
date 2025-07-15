@@ -1,6 +1,6 @@
 {
     "name": "shuffrand",
-    "version": "1.3.2",
+    "version": "1.3.3",
     "type": "module",
     "description": "Cryptographically secure randomness and shuffling — with soul.",
     "sideEffects": false,
@@ -47,8 +47,7 @@
         "clean": "rm -rf dist",
         "lint": "eslint . --ext .ts",
         "format": "prettier --write \"**/*.{ts,js,json,yml}\"",
-        "prepublishOnly": "pnpm build",
-        "postpublish": "git push --follow-tags"
+        "prepublishOnly": "pnpm build"
     },
     "keywords": [
         "access",
