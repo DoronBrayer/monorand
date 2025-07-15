@@ -85,6 +85,7 @@ module.exports = [
                 sourceType: 'module', // Allows for the use of ES modules (import/export)
                 // UPDATED: Provide an array of tsconfig files for ESLint to consider
                 project: ['./tsconfig.json', './tsconfig.eslint.json'],
+                tsconfigRootDir: __dirname, // Set the root directory for tsconfig files
             },
         },
         // No 'plugins' or 'extends' needed here for the basic recommended setup,

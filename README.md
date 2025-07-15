@@ -108,9 +108,8 @@ Here’s a full `index.html` example you can use. Copy and paste this entire cod
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>shuffrand in Browser</title>
-
     <!-- Import Map: This is crucial for resolving bare module specifiers. -->
-    <!-- It maps ’shuffrand' to unpkg.com and 'arktype' and its internal dependencies to esm.sh. -->
+    <!-- It maps 'shuffrand' to unpkg.com and 'arktype' and its internal dependencies to esm.sh. -->
     <script type="importmap">
     {
       "imports": {
@@ -128,7 +127,7 @@ Here’s a full `index.html` example you can use. Copy and paste this entire cod
 
     <script type="module">
         // Now you can import shuffrand using the bare specifier defined in the import map!
-        import { cryptoRandom, cryptoShuffle, cryptoString, calculateStringEntropy } from ’shuffrand';
+        import { cryptoRandom, cryptoShuffle, cryptoString, calculateStringEntropy } from 'shuffrand';
 
         // --- Usage Examples ---
 
