@@ -1,6 +1,6 @@
 {
     "name": "shuffrand",
-    "version": "1.3.1",
+    "version": "1.3.2",
     "type": "module",
     "description": "Cryptographically secure randomness and shuffling — with soul.",
     "sideEffects": false,
@@ -44,7 +44,7 @@
         "build": "vite build",
         "test": "pnpm run clean && pnpm run build && tsc --project tsconfig.test.json && vitest",
         "test:coverage": "vitest run --coverage",
-        "clean": "rmdir /s /q dist",
+        "clean": "rm -rf dist",
         "lint": "eslint . --ext .ts",
         "format": "prettier --write \"**/*.{ts,js,json,yml}\"",
         "prepublishOnly": "pnpm build",
