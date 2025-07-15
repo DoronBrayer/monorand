@@ -25,7 +25,7 @@ Using `shuffrand` is straightforward, designed to be intuitive while providing p
 
 ### Generating true random numbers via `cryptoRandom`
 ```js
-import { cryptoRandom } from  ’shuffrand';
+import { cryptoRandom } from  'shuffrand';
 
 // Generate a random integer between 1 and 10 (inclusive)
 const randomInt = cryptoRandom({ lowerBound: 1, upperBound: 10, typeOfNum: 'integer' });
@@ -41,7 +41,7 @@ console.log(`Random Integer (excluding lower): ${randomIntExcludingLower}`); // 
 ```
 ### Shuffling arrays via `cryptoShuffle`
 ```js
-import { cryptoShuffle } from  ’shuffrand';
+import { cryptoShuffle } from  'shuffrand';
 
 // Non-destructive shuffle (default behavior)
 const originalArray = [1, 2, 3, 4, 5];
@@ -61,7 +61,7 @@ console.log(`Guaranteed Different Shuffle: ${guaranteedDifferentShuffle}`); // W
 ```
 ### Generating random strings via `cryptoString`
 ```js
-import { cryptoString, calculateStringEntropy } from  ’shuffrand';
+import { cryptoString, calculateStringEntropy } from  'shuffrand';
 
 // Generate a 16-character alphanumeric string (default)
 const token = cryptoString();

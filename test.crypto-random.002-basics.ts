@@ -14,6 +14,7 @@
 import { describe, it, expect } from 'vitest'
 // Import from the published package path, resolved by tsconfig.test.json paths
 import { cryptoRandom } from 'shuffrand' // Updated import
+// Removed: import { TypeError } from 'arktype/dist/errors.js'; // This import is not needed as cryptoRandom throws a global TypeError
 
 // Define a top-level group for these tests
 describe('cryptoRandom: Basic Parameters', () => {
@@ -91,14 +92,15 @@ describe('cryptoRandom: Basic Parameters', () => {
         expect(Number.isInteger(result)).toBe(true)
     })
 
-    // NEW: Double Generation with maxFracDigits: 0 (should be integer-like)
-    // Call: cryptoRandom({ lowerBound: 1.0, upperBound: 5.0, typeOfNum: 'double', maxFracDigits: 0 })
-    // Expected: Returns a double between 1.0 (inclusive) and 5.0 (exclusive), effectively an integer.
-    it('Double Generation with maxFracDigits: 0 (should be integer-like)', () => {
-        const result = cryptoRandom({ lowerBound: 1.0, upperBound: 5.0, typeOfNum: 'double', maxFracDigits: 0 })
-        expect(result).toBeGreaterThanOrEqual(1.0)
-        expect(result).toBeLessThan(5.0)
-        expect(result % 1).toBe(0) // Should have no fractional part
+    // TRULY needed: Updated test to expect TypeError for maxFracDigits: 0 with typeOfNum: 'double'
+    // This now expects the message from the *custom validation* block, as that runs first.
+    it('Double Generation with maxFracDigits: 0 should throw a TypeError', () => {
+        expect(() => cryptoRandom({ lowerBound: 1.0, upperBound: 5.0, typeOfNum: 'double', maxFracDigits: 0 })).toThrow(
+            TypeError
+        ) // Refers to global TypeError
+        expect(() => cryptoRandom({ lowerBound: 1.0, upperBound: 5.0, typeOfNum: 'double', maxFracDigits: 0 })).toThrow(
+            'maxFracDigits (currently 0) must be an integer between 1 and 15 (inclusive) to ensure reliable precision.'
+        )
     })
 
     // NEW: Double Generation with maxFracDigits: 15 (max precision)

@@ -15,6 +15,7 @@
 import { describe, it, expect } from 'vitest'
 // Import from the published package path, resolved by tsconfig.test.json paths
 import { cryptoRandom } from 'shuffrand' // Updated import
+// Removed: import { TypeError } from 'arktype/dist/errors.js'; // This import is not needed as cryptoRandom throws a global TypeError
 
 // Define a top-level group for these tests
 describe('cryptoRandom: Edge Cases', () => {
@@ -128,17 +129,15 @@ describe('cryptoRandom: Edge Cases', () => {
         }
     })
 
-    // Max Fractional Digits: 0
-    // Call: cryptoRandom({ lowerBound: 0.1, upperBound: 0.9, typeOfNum: 'double', maxFracDigits: 0 })
-    // Expected: Returns 0 or 1 (essentially an integer).
-    it('Max Fractional Digits: 0', () => {
-        const result = cryptoRandom({ lowerBound: 0.1, upperBound: 0.9, typeOfNum: 'double', maxFracDigits: 0 })
-        // With maxFracDigits: 0, it should behave like an integer.
-        // It will effectively round the random number to the nearest integer.
-        // For 0.1 to 0.9, this should result in 0 or 1.
-        expect(Number.isInteger(result)).toBe(true)
-        expect(result).toBeGreaterThanOrEqual(0)
-        expect(result).toBeLessThanOrEqual(1)
+    // TRULY needed: Updated test to expect TypeError for maxFracDigits: 0 with typeOfNum: 'double'
+    // This now expects the message from the *custom validation* block, as that runs first.
+    it('Max Fractional Digits: 0 should throw a TypeError for double typeOfNum', () => {
+        expect(() => cryptoRandom({ lowerBound: 0.1, upperBound: 0.9, typeOfNum: 'double', maxFracDigits: 0 })).toThrow(
+            TypeError
+        ) // Refers to global TypeError
+        expect(() => cryptoRandom({ lowerBound: 0.1, upperBound: 0.9, typeOfNum: 'double', maxFracDigits: 0 })).toThrow(
+            'maxFracDigits (currently 0) must be an integer between 1 and 15 (inclusive) to ensure reliable precision.'
+        )
     })
 
     // Extreme Bounds: Number.MAX_SAFE_INTEGER Range

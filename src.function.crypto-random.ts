@@ -68,6 +68,13 @@ export function cryptoRandom(rawParams: RandomParams = {}): number {
         maxFracDigits: rawParams.maxFracDigits ?? 3,
     }
 
+    // TRULY needed: Implement the new API rule: disallow maxFracDigits: 0 for double typeOfNum
+    if (validatedParams.typeOfNum === 'double' && validatedParams.maxFracDigits === 0) {
+        throw new TypeError(
+            `Invalid cryptoRandom parameters: 'maxFracDigits' cannot be 0 when 'typeOfNum' is 'double'. Use 'typeOfNum: "integer"' for whole numbers.`
+        )
+    }
+
     // Ensure globalThis.crypto is available. This check is crucial for environments
     // where WebCrypto API might not be present (though highly unlikely in modern targets).
     if (typeof globalThis.crypto === 'undefined' || !globalThis.crypto.getRandomValues) {
@@ -146,7 +153,7 @@ export function cryptoRandom(rawParams: RandomParams = {}): number {
 
             result = currentLowerBound + (randomNumber % range)
         } else {
-            // typeOfNum === 'double'
+            // typeOfNum === 'double' (and maxFracDigits is NOT 0, due to early validation)
             const BYTES_FOR_DOUBLE = 8
             const MAX_UINT64 = 2 ** (BYTES_FOR_DOUBLE * 8) // Max value for a 64-bit unsigned integer
 
@@ -167,7 +174,11 @@ export function cryptoRandom(rawParams: RandomParams = {}): number {
             result = currentLowerBound + rawDouble * (currentUpperBound - currentLowerBound)
 
             // Apply maxFracDigits rounding if specified
+            // maxFracDigits is now guaranteed to be > 0 by the new validation
             const actualMaxFracDigits = Number(maxFracDigits) // Robust conversion
+            // The condition `actualMaxFracDigits >= 0` is now implicitly `actualMaxFracDigits > 0`
+            // due to the validation above, so we can simplify or keep as is.
+            // Keeping as `actualMaxFracDigits >= 0` is fine, as it's still true.
             if (!isNaN(actualMaxFracDigits) && actualMaxFracDigits >= 0) {
                 const factor = Math.pow(10, actualMaxFracDigits)
                 result = Math.round(result * factor) / factor
