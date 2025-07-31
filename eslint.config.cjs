@@ -51,6 +51,8 @@ module.exports = [
             // This aligns with the expert's implicit suggestion to let Prettier manage formatting.
             // Do not enforce semicolons at the end of statements (your preference)
             semi: 'off',
+            // Enable warnings for extraneous semicolons
+            'no-extra-semi': 'error',
             // Enforce the use of single quotes for string literals (your preference)
             quotes: ['error', 'single'],
 

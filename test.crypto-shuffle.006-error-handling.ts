@@ -1,4 +1,4 @@
-// test.crypto-shuffle.005-error-handling.ts
+// test.crypto-shuffle.006-error-handling.ts
 
 /**
  * Shuffrand Test Suite - cryptoShuffle: Error Handling

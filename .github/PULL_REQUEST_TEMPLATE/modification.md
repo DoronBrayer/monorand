@@ -1,15 +1,15 @@
-# Augmentation
-This applies to **any** kind of enhancement — bugfix, refactoring, tweak, and more — not only features. Hence, _Augmentation_.
+# Modification
+This applies to **any** kind of alteration in the codebase that is **NOT** related to reported defects and/or known bad behaviors — refactoring, adding, tweaking, and more — not only features. Hence, _Modification_.
 
 ## Abstract
-Summarize the augmentation in one or two midsize paragraph(s).
+Summarize the modification in one or two midsize paragraph(s).
 
 ## Motivation
 - What does this solve?
 - Why does it matter now?
 - Who benefits from this?
 
-## Proposed Augmentation
+## Proposed Modification
 Details about your design:
 - APIs or functions you’ll introduce
 - Data models or schemas you’ll extend

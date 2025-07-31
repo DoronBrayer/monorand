@@ -1,4 +1,4 @@
-// test.crypto-string.004-error-handling.ts
+// test.crypto-string.005-error-handling.ts
 
 /**
  * Shuffrand Test Suite - cryptoString: Error Handling

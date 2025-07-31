@@ -1,4 +1,4 @@
-// test.crypto-shuffle.003-edge-cases.ts
+// test.crypto-shuffle.005-edge-cases.ts
 
 /**
  * Shuffrand Test Suite - cryptoShuffle: Edge Cases

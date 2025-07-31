@@ -1,4 +1,4 @@
-// test.crypto-string.003-edge-cases.ts
+// test.crypto-string.004-edge-cases.ts
 
 /**
  * Shuffrand Test Suite - cryptoString: Edge Cases

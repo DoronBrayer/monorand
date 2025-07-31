@@ -1,4 +1,4 @@
-// test.crypto-shuffle.004-prevent-identical.ts
+// test.crypto-shuffle.003-prevent-identical.ts
 
 /**
  * Shuffrand Test Suite - cryptoShuffle: Prevent Identical Flag
