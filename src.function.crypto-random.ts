@@ -217,14 +217,25 @@ export function cryptoRandom(rawParams: RandomParams = {}): number {
             continue // Re-roll
         }
 
+        // Per design doctrine, a 'double' type must not be a whole number.
+        // If we've generated one by chance, treat it as an invalid result and re-roll.
+        if (typeOfNum === 'double' && Number.isInteger(result)) {
+            attempts++
+            continue // Re-roll
+        }
+
         break // Exit loop if a valid number is found
     } while (attempts < maxAttempts)
 
     // Throw if max attempts reached without finding a valid number
     if (attempts >= maxAttempts) {
-        // Optimized message using en dash for range and single quotes for exclusion
+        // A more resilient and accurate error message.
+        let reason = `the exclusion constraint: '${exclusion}'`
+        if (typeOfNum === 'double') {
+            reason += ` or the non-integer requirement`
+        }
         throw new Error(
-            `Unable to generate a random number within the range [${min}\u2013${max}] that satisfies the exclusion constraint: '${exclusion}'. Max attempts (${maxAttempts}) reached.`
+            `Unable to generate a random number within the range [${min}\u2013${max}] that satisfies ${reason}. Max attempts (${maxAttempts}) reached.`
         )
     }
 

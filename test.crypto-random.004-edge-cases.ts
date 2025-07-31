@@ -87,15 +87,12 @@ describe('cryptoRandom: Edge Cases', () => {
     it('Narrow Double Range, Exclude Both (Expect Error)', () => {
         const lower = 0.1
         const upper = 0.100001
-        // Expect the function to throw an Error with the specific message
+        // Expect the function to throw an Error with the new, more resilient message
+        const expectedMessage = `Unable to generate a random number within the range [${lower}\u2013${upper}] that satisfies the exclusion constraint: 'both' or the non-integer requirement. Max attempts (30) reached.`
+
         expect(() =>
             cryptoRandom({ lowerBound: lower, upperBound: upper, typeOfNum: 'double', exclusion: 'both' })
-        ).toThrow(Error)
-        expect(() =>
-            cryptoRandom({ lowerBound: lower, upperBound: upper, typeOfNum: 'double', exclusion: 'both' })
-        ).toThrow(
-            `Unable to generate a random number within the range [${lower}\u2013${upper}] that satisfies the exclusion constraint: 'both'. Max attempts (30) reached.`
-        )
+        ).toThrow(expectedMessage)
     })
 
     // Mixed Positive/Negative Range, Exclude Both (Double)
