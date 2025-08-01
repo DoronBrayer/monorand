@@ -4,7 +4,7 @@
 **Doc ver:** 2.3<br>
 **Ver adherence**: 1.4.0<br>
 **Status:** Canon<br>
-**Author:** Doron B. and Gemini<br>
+**Author:** [Doron B.](https://github.com/DoronBrayer) and Gemini<br>
 
 ### Document Purpose & Audience
 This Project Doctrine serves as the canonical, single source of truth for the `shuffrand` library and its ecosystem. It is an internal, professional-grade mandate for project maintainers and expert contributors.
@@ -274,6 +274,9 @@ Yes. The library is fully browser-compatible out of the box because it uses `glo
 **Why does `preventIdentical` swap the first and last elements specifically?**  
 This is a simple, deterministic, and computationally cheap way to guarantee a different permutation. While other methods exist (like re-shuffling until a different result is found), they are non-deterministic and could theoretically lead to long loops. The first/last swap is a pragmatic solution that is predictable and efficient.
 
+**Why is the max length (`cryptoString`) set to 16 characters only?**
+The default of `16` (`const effectiveLength = params.length ?? 16`) is a professional, "sensible default" that provides a strong baseline of security for common use cases.
+
 #### Testing & Quality
 **How is the randomness actually tested?**  
 We test for correctness, not for randomness itself, as you cannot truly "test" a CSPRNG’s output for entropy. Instead, we validate that our functions correctly *use* the CSPRNG to produce values that fall within the requested bounds (e.g., a number between 1 and 10), are of the correct type (integer/double), and respect all exclusion rules. Our confidence in the randomness itself comes from delegating to the host environment’s `crypto` implementation.
@@ -305,7 +308,7 @@ Through disciplined adherence to the principles laid out in this doctrine. Our a
 The best way is to start by reviewing our `CONTRIBUTING.md` file and our `Architectural Principles`. Then, look for open issues on GitHub, particularly those tagged with "help wanted" or "good first issue." Submitting a well-tested Pull Request for one of these is the ideal way to contribute.
 
 ### 15. 🧍🏻About the Creator
-`shuffrand` was forged from the practical, real-world experience of its creator, Doron B. Its journey began with a simple wrapper script, `filler.ts`, built to tame and enhance synthetic data makers like `chance.js` for a team of automation developers. This pragmatic origin story is central to the library’s soul.
+`shuffrand` was forged from the practical, real-world experience of its creator [Doron B.](https://github.com/DoronBrayer) . Its journey began with a simple wrapper script, `filler.ts`, built to tame and enhance synthetic data makers like `chance.js` for a team of automation developers. This pragmatic origin story is central to the library’s soul.
 
 Doron’s career is a unique blend of formal front-end development and a deep, pre-existing passion for UX design, which he later formalized with professional certifications. This dual-focus was put to the test when he was tapped to build his former company’s entire QA automation infrastructure from the ground up, a role that demanded both engineering rigor and a profound empathy for the developer experience.
 

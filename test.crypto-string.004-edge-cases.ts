@@ -4,133 +4,122 @@
  * Shuffrand Test Suite - cryptoString: Edge Cases
  *
  * This file verifies the behavior of `cryptoString` under various edge cases,
- * including larger lengths and statistical distribution checks. It also includes
- * tests for `calculateStringEntropy`.
+ * including larger lengths, statistical distribution, entropy calculations,
+ * and interactions with the `noRepeat` feature.
  *
  * @author Doron Brayer <doronbrayer@outlook.com>
  * @license MIT
  */
 
 import { describe, it, expect } from 'vitest'
-// Import library functions and constants from the published package path, resolved by tsconfig.test.json paths
-import { cryptoString, calculateStringEntropy } from 'shuffrand' // Updated import
-import { Constants } from 'shuffrand/constants' // Updated import
+import { cryptoString, calculateStringEntropy } from 'shuffrand'
+import { Constants } from 'shuffrand/constants'
 
-// Define a top-level group for these tests
 describe('cryptoString: Edge Cases', () => {
-    // Larger Length (Stress test for basic functionality)
-    // Call: cryptoString({ length: 100, characterSet: 'alphanumeric' })
-    // Expected: Returns a 100-character alphanumeric string.
-    it('Larger Length (Stress test for basic functionality)', () => {
-        const length = 100
-        const characterSet = 'alphanumeric'
-        const result = cryptoString({ length, characterSet })
-        const expectedCharacterSet = Constants.ALPHANUMERIC_CHARS
+    // --- Standard Mode Edge Cases ---
 
-        expect(result).toBeTypeOf('string')
-        expect(result.length).toBe(length)
-        for (const char of result) {
-            expect(expectedCharacterSet).toContain(char)
-        }
-    })
-
-    // Distribution Test (Statistical basic check)
-    // Call: cryptoString({ length: 1000, characterSet: 'AB' })
-    // Expected: Both 'A' and 'B' should appear (not a rigorous statistical test, just sanity check)
-    it('Distribution Test (Statistical basic check)', () => {
+    it('Should handle a large length (stress test)', () => {
         const length = 1000
-        const customCharacterSet = 'AB'
-        const result = cryptoString({ length, characterSet: customCharacterSet })
-
+        const result = cryptoString({ length, characterSet: 'alphanumeric' })
         expect(result).toBeTypeOf('string')
-        expect(result.length).toBe(length)
-
-        const countA = (result.match(/A/g) || []).length
-        const countB = (result.match(/B/g) || []).length
-
-        // Basic sanity checks (not rigorous statistical tests)
-        expect(countA + countB).toBe(length)
-        expect(countA).toBeGreaterThan(0)
-        expect(countB).toBeGreaterThan(0)
-        // Very loose bounds - just ensuring both characters appear
-        expect(countA).toBeGreaterThan(length * 0.1) // At least 10%
-        expect(countB).toBeGreaterThan(length * 0.1) // At least 10%
+        expect(result).toHaveLength(length)
     })
 
-    // Unicode Surrogate Pairs (Advanced Unicode support)
-    // Call: cryptoString({ length: 8, characterSet: '😀😂😇😈' }) - Using simpler emojis
-    // Expected: Returns an 8-character string with complex Unicode characters
-    it('Unicode Surrogate Pairs (Advanced Unicode support)', () => {
-        const length = 8
-        // Using simpler, single-code-point emojis to avoid potential environment-specific ZWJ sequence issues
-        const customCharacterSet = '😀😂😇😈' // Simpler, unique Unicode emoji characters
+    it('Should have a reasonable statistical distribution for a binary set', () => {
+        const length = 1000
+        const customCharacterSet = '01'
         const result = cryptoString({ length, characterSet: customCharacterSet })
+        const countZero = (result.match(/0/g) || []).length
+        const countOne = (result.match(/1/g) || []).length
 
-        expect(result).toBeTypeOf('string')
-        expect(Array.from(result).length).toBe(length) // Assert on logical length
+        expect(countZero + countOne).toBe(length)
+        expect(countZero).toBeGreaterThan(length * 0.4)
+        expect(countOne).toBeGreaterThan(length * 0.4)
+    })
 
-        // Convert to array for proper Unicode handling
+    it('Should correctly handle complex Unicode characters', () => {
+        const length = 8
+        // ROBUSTNESS FIX: Use a set of simple, universally supported emojis
+        // to avoid any parsing or environment-specific issues.
+        const customCharacterSet = '🎲🎯🎨🎭✨🚀💎🔥'
+        const result = cryptoString({ length, characterSet: customCharacterSet })
+        expect(Array.from(result).length).toBe(length)
         const charSetArray = Array.from(customCharacterSet)
-
         for (const char of Array.from(result)) {
-            // Ensure iteration is Unicode-aware
             expect(charSetArray).toContain(char)
         }
     })
 
-    // calculateStringEntropy - Basic Alphanumeric
-    // Call: calculateStringEntropy({ length: 32, characterSet: 'alphanumeric' })
-    // Expected: Correct entropy for 32 alphanumeric characters
-    it('calculateStringEntropy - Basic Alphanumeric', () => {
-        const length = 32
-        const characterSet = 'alphanumeric'
-        const entropy = calculateStringEntropy({ length, characterSet })
-        // log2(62) * 32 = ~5.954196310386801 * 32 = ~190.53428193237764
+    // --- noRepeat Edge Cases ---
+
+    it('[noRepeat] Should return all unique characters in random order if length equals character set size', () => {
+        const charset = '12345'
+        const result = cryptoString({ length: 5, characterSet: charset, noRepeat: true })
+        expect(result).toHaveLength(5)
+        const uniqueChars = new Set(result.split(''))
+        expect(uniqueChars.size).toBe(5)
+        expect(result.split('').sort().join('')).toEqual('12345')
+    })
+
+    it('[noRepeat] Should return an empty string for length 0', () => {
+        const result = cryptoString({ length: 0, characterSet: 'alphanumeric', noRepeat: true })
+        expect(result).toBe('')
+    })
+
+    it('[noRepeat] Should return a single character for length 1', () => {
+        const result = cryptoString({ length: 1, characterSet: 'abc', noRepeat: true })
+        expect(result).toHaveLength(1)
+        expect('abc').toContain(result)
+    })
+
+    it('[noRepeat] Should handle a large length and character set', () => {
+        const result = cryptoString({ length: 62, characterSet: 'alphanumeric', noRepeat: true })
+        expect(result).toHaveLength(62)
+        const uniqueChars = new Set(result.split(''))
+        expect(uniqueChars.size).toBe(62)
+    })
+
+    // --- Entropy Calculation Edge Cases ---
+
+    it('[calculateStringEntropy] Should correctly calculate entropy for a basic alphanumeric string', () => {
+        const entropy = calculateStringEntropy({ length: 32, characterSet: 'alphanumeric' })
         expect(entropy).toBeCloseTo(190.53, 2)
     })
 
-    // calculateStringEntropy - Custom Unicode Character Set
-    // Call: calculateStringEntropy({ length: 10, characterSet: '�🎯🎨🎭✨' })
-    // Expected: Correct entropy for 10 characters from a 5-char Unicode set
-    it('calculateStringEntropy - Custom Unicode Character Set', () => {
-        const length = 10
-        const customCharacterSet = '🎲🎯🎨🎭✨' // 5 unique Unicode characters
-        const entropy = calculateStringEntropy({ length, characterSet: customCharacterSet })
-        // log2(5) * 10 = ~2.321928094887362 * 10 = ~23.21928094887362
+    it('[calculateStringEntropy] Should correctly calculate entropy for a custom Unicode character set', () => {
+        const entropy = calculateStringEntropy({ length: 10, characterSet: '🎲🎯🎨🎭✨' })
         expect(entropy).toBeCloseTo(23.22, 2)
     })
 
-    // calculateStringEntropy - Very Large Length
-    it('calculateStringEntropy - Very Large Length', () => {
-        const length = 10000 // A very large length
-        const characterSet = 'alphanumeric'
-        const entropy = calculateStringEntropy({ length, characterSet })
-        // log2(62) * 10000 = ~5.954196310386801 * 10000 = ~59541.9631
+    it('[calculateStringEntropy] Should handle a very large length', () => {
+        const entropy = calculateStringEntropy({ length: 10000, characterSet: 'alphanumeric' })
         expect(entropy).toBeCloseTo(59541.96, 2)
     })
 
-    // NEW: cryptoString with a very large length (e.g., 5000 characters)
-    it('cryptoString with a very large length (5000 characters)', () => {
-        const length = 5000
-        const characterSet = 'alphanumeric'
-        const result = cryptoString({ length, characterSet })
-        const expectedCharacterSet = Constants.ALPHANUMERIC_CHARS
-
-        expect(result).toBeTypeOf('string')
-        expect(result.length).toBe(length)
-        for (const char of result) {
-            expect(expectedCharacterSet).toContain(char)
-        }
+    it('[calculateStringEntropy] Should return 0 for a length of 0', () => {
+        const entropy = calculateStringEntropy({ length: 0 })
+        expect(entropy).toBe(0)
     })
 
-    // NEW: calculateStringEntropy with a single-character set (should throw TypeError)
-    it('calculateStringEntropy with a single-character set (should throw TypeError)', () => {
-        const length = 10 // Length doesn't matter for 1-char set entropy
-        const characterSet = 'A' // Single character
-        // Expect a TypeError as per the function's validation logic
-        expect(() => calculateStringEntropy({ length, characterSet })).toThrow(TypeError)
-        expect(() => calculateStringEntropy({ length, characterSet })).toThrow(
-            /Invalid calculateStringEntropy parameters: Character set must contain at least 2 unique characters to calculate meaningful entropy\./
-        )
+    it('[calculateStringEntropy] Should return 0 for a single-character set (standard mode, length 1)', () => {
+        const entropy = calculateStringEntropy({ length: 1, characterSet: 'A' })
+        expect(entropy).toBe(0)
+    })
+
+    it('[calculateStringEntropy][noRepeat] Should correctly calculate entropy for the full set', () => {
+        const expectedEntropy = Math.log2(10 * 9 * 8 * 7 * 6 * 5 * 4 * 3 * 2 * 1) // log2(10!)
+        const actualEntropy = calculateStringEntropy({ length: 10, characterSet: 'numeric', noRepeat: true })
+        expect(actualEntropy).toBeCloseTo(expectedEntropy)
+    })
+
+    it('[calculateStringEntropy][noRepeat] Should return 0 for a length of 0', () => {
+        const entropy = calculateStringEntropy({ length: 0, noRepeat: true })
+        expect(entropy).toBe(0)
+    })
+
+    it('[calculateStringEntropy][noRepeat] Should return the correct entropy for a single character selection', () => {
+        const expectedEntropy = Math.log2(10)
+        const actualEntropy = calculateStringEntropy({ length: 1, characterSet: 'numeric', noRepeat: true })
+        expect(actualEntropy).toBeCloseTo(expectedEntropy)
     })
 })

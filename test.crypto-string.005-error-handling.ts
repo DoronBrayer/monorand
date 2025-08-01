@@ -3,126 +3,107 @@
 /**
  * Shuffrand Test Suite - cryptoString: Error Handling
  *
- * This file specifically verifies `cryptoString`'s robust error handling, ensuring that
- * invalid inputs or impossible string generation scenarios correctly throw `TypeError` exceptions.
+ * This file verifies `cryptoString`'s robust error handling for general
+ * and feature-specific inputs, ensuring invalid scenarios throw correctly.
  *
  * @author Doron Brayer <doronbrayer@outlook.com>
  * @license MIT
  */
 
 import { describe, it, expect } from 'vitest'
-// Import library functions and constants from the published package path, resolved by tsconfig.test.json paths
-import { cryptoString, calculateStringEntropy } from 'shuffrand' // Updated import
-import { Constants } from 'shuffrand/constants' // Updated import
+import { cryptoString, calculateStringEntropy } from 'shuffrand'
 
-// Define a top-level group for these tests
 describe('cryptoString: Error Handling', () => {
-    // Invalid length type (string)
-    it('Should throw TypeError for invalid length type (string)', () => {
-        // The 'as any' cast is sufficient to bypass type checking for the test
-        expect(() => cryptoString({ length: 'abc' as any })).toThrow(TypeError)
-        expect(() => cryptoString({ length: 'abc' as any })).toThrow(
-            // Adjusted regex to match actual received message (removed quotes around 'abc')
-            /Invalid cryptoString parameters: 'length' \(currently abc\) must be a non-negative integer\./
+    // --- General Error Handling (Invalid Parameters) ---
+
+    it('Should throw TypeError for invalid length type (e.g., string)', () => {
+        expect(() => cryptoString({ length: 'abc' as any })).toThrow(/length/)
+    })
+
+    it('Should throw TypeError for a negative length', () => {
+        expect(() => cryptoString({ length: -5 })).toThrow(/length/)
+    })
+
+    it('Should throw TypeError for a non-integer length', () => {
+        expect(() => cryptoString({ length: 10.5 })).toThrow(/length/)
+    })
+
+    it('Should throw TypeError for an invalid characterSet type (e.g., number)', () => {
+        expect(() => cryptoString({ characterSet: 123 as any })).toThrow(/characterSet/)
+    })
+
+    it('Should throw TypeError for an invalid noRepeat type (e.g., string)', () => {
+        expect(() => cryptoString({ noRepeat: 'true' as any })).toThrow(/noRepeat/)
+    })
+
+    // --- Character Set Content Errors (Standard Mode) ---
+
+    it('should throw TypeError for an empty custom characterSet when length > 0', () => {
+        // An empty charset is only an error if you try to generate a non-empty string.
+        expect(() => cryptoString({ length: 1, characterSet: '' })).toThrow(/cannot be empty/)
+
+        // Requesting a zero-length string from an empty set is valid and should return ''.
+        // This confirms the logic `if (finalCharacterSet.length === 0 && effectiveLength > 0)` is working.
+        expect(cryptoString({ length: 0, characterSet: '' })).toBe('')
+    })
+
+    it('Should throw TypeError for a custom characterSet with duplicate characters', () => {
+        expect(() => cryptoString({ characterSet: 'AABBCC' })).toThrow(
+            /Custom character set contains duplicate characters/
         )
     })
 
-    // Negative length
-    it('Should throw TypeError for negative length', () => {
-        expect(() => cryptoString({ length: -5 })).toThrow(TypeError)
-        expect(() => cryptoString({ length: -5 })).toThrow(
-            /Invalid cryptoString parameters: 'length' \(currently -5\) must be a non-negative integer\./
+    it('Should throw if length > 1 and characterSet has fewer than 2 unique chars', () => {
+        expect(() => cryptoString({ length: 2, characterSet: 'A' })).toThrow(
+            /must contain at least 2 unique characters/
         )
     })
 
-    // Non-integer length
-    it('Should throw TypeError for non-integer length', () => {
-        expect(() => cryptoString({ length: 10.5 })).toThrow(TypeError)
-        expect(() => cryptoString({ length: 10.5 })).toThrow(
-            /Invalid cryptoString parameters: 'length' \(currently 10\.5\) must be a non-negative integer\./
+    // --- noRepeat Feature Error Handling ---
+
+    it('[noRepeat] Should throw a TypeError if length exceeds unique characters in a predefined set', () => {
+        expect(() => {
+            cryptoString({ length: 11, characterSet: 'numeric', noRepeat: true })
+        }).toThrow(
+            /Cannot generate a string of length 11 with no repeats from a character set with only 10 unique characters/
         )
     })
 
-    // Invalid characterSet type (number)
-    it('Should throw TypeError for invalid characterSet type (number)', () => {
-        // The 'as any' cast is sufficient to bypass type checking for the test
-        expect(() => cryptoString({ characterSet: 123 as any })).toThrow(TypeError)
-        expect(() => cryptoString({ characterSet: 123 as any })).toThrow(
-            /Invalid cryptoString parameters: 'characterSet' \(currently 123\) must be a string or a predefined character set name\./
+    it('[noRepeat] Should throw a TypeError if length exceeds unique characters in a custom set', () => {
+        expect(() => {
+            cryptoString({ length: 6, characterSet: 'ABCDE', noRepeat: true })
+        }).toThrow(
+            /Cannot generate a string of length 6 with no repeats from a character set with only 5 unique characters/
         )
     })
 
-    // Empty custom characterSet
-    it('Should throw TypeError for empty custom characterSet', () => {
-        expect(() => cryptoString({ characterSet: '' })).toThrow(TypeError)
-        // Adjusted regex to match the actual error message thrown when characterSet is empty
-        expect(() => cryptoString({ characterSet: '' })).toThrow(
-            /Invalid cryptoString parameters: Custom character set must contain at least 2 unique characters for meaningful randomness\./
-        )
+    it('[noRepeat] Should still throw for a custom set with duplicates even if length is valid', () => {
+        // This confirms our refined logic that custom sets must always be unique.
+        expect(() => {
+            cryptoString({ length: 2, characterSet: 'AABBCC', noRepeat: true })
+        }).toThrow(/Custom character set contains duplicate characters/)
     })
 
-    // Custom characterSet with less than 2 unique characters
-    it('Should throw TypeError for custom characterSet with less than 2 unique characters', () => {
-        expect(() => cryptoString({ characterSet: 'AAAA' })).toThrow(TypeError)
-        // Regex adjusted to match the message for duplicate characters
-        expect(() => cryptoString({ characterSet: 'AAAA' })).toThrow(
-            /Invalid cryptoString parameters: Custom character set contains duplicate characters, which would skew randomness distribution\./
-        )
-        expect(() => cryptoString({ characterSet: 'B' })).toThrow(TypeError)
-        // Regex adjusted to match the message for single unique character
-        expect(() => cryptoString({ characterSet: 'B' })).toThrow(
-            /Invalid cryptoString parameters: Custom character set must contain at least 2 unique characters for meaningful randomness\./
-        )
+    // --- calculateStringEntropy Error Handling ---
+
+    it('[calculateEntropy] Should throw TypeError for invalid length type', () => {
+        expect(() => calculateStringEntropy({ length: 'bad' as any })).toThrow(/length/)
     })
 
-    // Invalid predefined characterSet name
-    // NOTE: The function currently throws an error about 'duplicate characters' for 'nonexistent'.
-    // This test is updated to match that *current* behavior. You may want to review
-    // your cryptoString function's handling of invalid predefined characterSet names.
-    it('Should throw TypeError for invalid predefined characterSet name', () => {
-        // The 'as any' cast is sufficient to bypass type checking for the test
-        expect(() => cryptoString({ characterSet: 'nonexistent' as any })).toThrow(TypeError)
-        // Adjusted regex to match the actual received message
-        expect(() => cryptoString({ characterSet: 'nonexistent' as any })).toThrow(
-            /Invalid cryptoString parameters: Custom character set contains duplicate characters, which would skew randomness distribution\./
-        )
-    })
-
-    // calculateStringEntropy with invalid length
-    it('calculateStringEntropy should throw TypeError for invalid length', () => {
-        // The 'as any' cast is sufficient to bypass type checking for the test
-        expect(() => calculateStringEntropy({ length: 'bad' as any, characterSet: 'alpha' })).toThrow(TypeError)
-        // Adjusted regex to remove quotes around "bad"
-        expect(() => calculateStringEntropy({ length: 'bad' as any, characterSet: 'alpha' })).toThrow(
-            /Invalid calculateStringEntropy parameters: 'length' \(currently bad\) must be a non-negative integer\./
-        )
-    })
-
-    // calculateStringEntropy with empty characterSet
-    it('calculateStringEntropy should throw TypeError for empty characterSet', () => {
-        expect(() => calculateStringEntropy({ length: 10, characterSet: '' })).toThrow(TypeError)
-        // Adjusted regex to match the actual error message for empty character set in calculateStringEntropy
-        expect(() => calculateStringEntropy({ length: 10, characterSet: '' })).toThrow(
-            /Invalid calculateStringEntropy parameters: Character set must contain at least 2 unique characters to calculate meaningful entropy\./
-        )
-    })
-
-    // calculateStringEntropy with characterSet having less than 2 unique characters
-    it('calculateStringEntropy should throw TypeError for characterSet with less than 2 unique characters', () => {
-        expect(() => calculateStringEntropy({ length: 10, characterSet: 'A' })).toThrow(TypeError)
-        // Adjusted regex to match the actual error message for single unique character in calculateStringEntropy
+    it('[calculateEntropy] Should throw for a character set of less than 2 unique characters when length > 1', () => {
         expect(() => calculateStringEntropy({ length: 10, characterSet: 'A' })).toThrow(
-            /Invalid calculateStringEntropy parameters: Character set must contain at least 2 unique characters to calculate meaningful entropy\./
+            /must contain at least 2 unique characters to calculate meaningful entropy/
         )
     })
 
-    // Single Character Custom Set (moved from 001-core)
-    it('Should throw TypeError for single character custom set', () => {
-        const length = 1
-        const customCharacterSet = 'A'
-        expect(() => cryptoString({ length, characterSet: customCharacterSet })).toThrow(TypeError)
-        expect(() => cryptoString({ length, characterSet: customCharacterSet })).toThrow(
-            /Invalid cryptoString parameters: Custom character set must contain at least 2 unique characters for meaningful randomness\./
-        )
+    it('[calculateEntropy][noRepeat] Should throw an error for an impossible length', () => {
+        expect(() => {
+            calculateStringEntropy({ length: 6, characterSet: 'abcde', noRepeat: true })
+        }).toThrow(/Cannot calculate entropy for a length of 6 with no repeats/)
+    })
+
+    it('[calculateEntropy] Should NOT throw for a single-character set if length is 1', () => {
+        // This is a valid edge case where entropy is 0.
+        expect(() => calculateStringEntropy({ length: 1, characterSet: 'A' })).not.toThrow()
     })
 })

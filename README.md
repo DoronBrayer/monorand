@@ -1,5 +1,5 @@
 <!-- README.md -->
-# `shuffrand` by Doron B.
+# `shuffrand` by [Doron B.](https://github.com/DoronBrayer)
 **shuff**le + **rand**om = shuffrand.
 
 🎲 Cryptographically secure randomness and shuffling — with **soul**.
@@ -28,7 +28,7 @@ The modern JavaScript ecosystem suffers from a dangerous legacy: the pervasive u
 **Your Features:**
 - **Numbers:** Generate integers or doubles with precise bounds and advanced exclusion logic.
 - **Strings:** Create random strings from predefined (`alphanumeric`, `hex`, etc.) or custom Unicode-aware character sets, with a powerful `noRepeat` option.
-- **Arrays:** Perform secure Fisher-Yates shuffles, with support for both in-place (destructive) and non-destructive modes, as well as shuffling a specific **subarray**.
+- **Arrays:** Perform secure Fisher–Yates shuffles, with support for both in-place (destructive) and non-destructive modes, as well as shuffling a specific **subarray**.
 
 ## `shuffrand` vs. The World
 Why choose `shuffrand` over common alternatives? The difference is **security**.
