@@ -150,8 +150,7 @@ The framework is built upon seven primary categories of quality, prioritized by 
 This system ensures that every issue is not only categorized but also sub-categorized with a high degree of specificity, using a formal `Category : Subcategory` label (e.g., `Security : Confidentiality`). This structured lexicon is a core part of our commitment to engineering excellence.
 
 ### 8. 🧰 Dev Env
-#### Creator’s setup at the **beginning** of the journey
-The project is built and maintained in a modern, stable development environment.
+#### Creator’s setup at the **beginning** of the journey (v1.4.0)
 -   **Runtime**: Node.js v24.x
 -   **Compiler**: TypeScript v5.x
 -   **Package Manager**: pnpm v10.x
@@ -161,7 +160,6 @@ The project is built and maintained in a modern, stable development environment.
 -   **Hardware**: ThinkPad X1 Yoga Gen 8 (Intel® Core™ i7)
 
 #### Enhancers
-The following tools are used to maintain code quality and automate workflows.
 | Tool | In Use | Solid Alternatives (2025) |
 | :--- | :--- | :--- |
 | **Linter** | ESLint (to be replaced) | `Biome`, `oxc` (Oxlint) |
@@ -169,7 +167,7 @@ The following tools are used to maintain code quality and automate workflows.
 | **Test Runner**| Vitest | `Jest`, `Playwright` |
 | **Bundler** | Vite | `Rollup`, `esbuild` |
 | **Cleaner** | `clean.mjs` (file) | `rimraf`, Native commands (`rm -rf`) |
-| **AI Assistant**| Gemini | `ChatGPT`, `GitHub Copilot` |
+| **AI Assistant**| Gemini | `Qwen`, `Kimi` |
 
 ### 9. 🗂️ File Structure & Naming Conventions
 The project employs a unique and deliberate **root-based file structure** for the core `shuffrand` library. All source (`src.*.ts`) and test (`test.*.ts`) files reside directly in the project root. This minimalist, folderless approach is an intentional design choice to maximize development velocity by eliminating the need to traverse deep directory trees for core logic.
