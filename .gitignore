@@ -1,3 +1,5 @@
+# .GITIGNORE — skipping files, dirs, and patterns
+
 # Dependencies
 /node_modules
 /dist

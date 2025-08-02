@@ -1,6 +1,6 @@
-# .npmignore
-# This file is now very simple because 'package.json's "files" array
-# explicitly lists what to include. This file handles additional exclusions.
+# .NPMIGNORE — skipping files, dirs, and patterns
+# This file is now very simple because 'package.json’s "files" array
+# explicitly lists what to include, while this one lists what to EXCLUDE.
 
 # --- Common temporary/system files (not controlled by "files" array) ---
 *.log

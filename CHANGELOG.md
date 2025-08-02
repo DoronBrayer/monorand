@@ -11,13 +11,19 @@
 
 [PRESENT](#PRESENT)&nbsp;&nbsp;_The 3 most recent releases_<br>
 [PAST](#PAST)&nbsp;&nbsp;_All releases preceding the 3 most recent_<br>
-[FUTURE](#FUTURE)&nbsp;&nbsp;_All releases succeeding the most recent one_<br>
-[Template](#Template)&nbsp;&nbsp;_Not to be removed_<br>
+[FUTURE](#FUTURE)&nbsp;&nbsp;_All releases succeeding the most recent one_<br><br>
+[Template](#Template)&nbsp;&nbsp;_For you to copypaste and edit — not remove_<br>
 
 ---
 
 ## <a name="PRESENT"></a>PRESENT
 The 3 most recent releases — essentially a **news section**:
+
+### [[1.6.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.6.0)] 2025-08-03: Even more flexibility
+This version introduces another powerful feature to the core `shuffrand` API, giving developers more granular control and enabling new use cases.
+#### Added
+-   `startIndex: number` & `endIndex: number` together as a "subarray shuffle" feature to `cryptoShuffle`, allowing for the randomization of a specific slice of an array.
+-   A dedicated testsuite (`test.crypto-shuffle.004-subarray-shuffle.ts`) to inspect the recently-added flag/option.
 
 ### [[1.5.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.5.0)] 2025-08-02: Flexibility
 This version introduces a powerful feature to the core `shuffrand` API, giving developers more granular control and enabling new use cases.
@@ -29,11 +35,11 @@ This version introduces a powerful feature to the core `shuffrand` API, giving d
 ### [[1.4.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.4.0)] 2025-08-01: **THE FOUNDATION**
 The first stable, fully-documented, and professionally architected version of the library. This release establishes the **core trio** of functions (`cryptoRandom`, `cryptoShuffle`, `cryptoString`) and the foundational principles of security, quality, and craftsmanship.
 
-### [[1.3.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.3.0)] 2025-07-14
-[no info]
-
 ## <a name="PAST"></a>PAST
 Old versions — all releases preceding the 3 most recent — essentially an **archive outline**:
+
+### [[1.3.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.3.0)] 2025-07-14
+[no info]
 
 ### [[1.2.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.2.0)] 2025-07-11
 [no info]
@@ -72,15 +78,11 @@ This version is dedicated to providing undeniable, quantitative proof of the lib
 -   A browser-based **End-to-End test suite**, formally guaranteeing browser compatibility.
 -   Formal **browser support declarations** in `package.json`.
 
-### [[1.6.0](https://github.com/DoronBrayer/shuffrand/tags)] ~2025-08-##: Even more flexibility
-This version introduces another powerful feature to the core `shuffrand` API, giving developers more granular control and enabling new use cases.
-#### Added
--   `startIndex: number` & `endIndex: number` together as a "subarray shuffle" feature to `cryptoShuffle`, allowing for the randomization of a specific slice of an array.
--   A dedicated testsuite (`test.crypto-shuffle.00#-subarray-shuffle.ts`) to inspect the recently-added flag/option.
-
 ---
 
-## <a name="Template"></a>Template&nbsp;&nbsp;_not to be removed_
+## <a name="Template"></a>Template
+For you to **copypaste and edit** — not remove:
+
 ### [[855.0.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v855.0.0)] 2098-12-03: Optional Title
 #### Added
 -   `[Project’s upcoming Feature/File here]`
