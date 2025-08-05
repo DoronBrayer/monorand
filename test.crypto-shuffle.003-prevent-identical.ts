@@ -48,26 +48,22 @@ describe('cryptoShuffle: Prevent Identical Flag', () => {
 
     // preventIdentical: true with an empty array
     // Call: cryptoShuffle([], { preventIdentical: true })
-    // Expected: Returns [].
-    it('preventIdentical: true with an empty array', () => {
-        const originalArray: any[] = []
-        const originalArrayCopy = deepCopyArray(originalArray) // Use deepCopyArray for robust comparison setup
-        const shuffledArray = cryptoShuffle(originalArray, { preventIdentical: true })
-
-        expect(shuffledArray).toEqual([]) // Should return an empty array
-        expect(shuffledArray).not.toBe(originalArray) // Should be a new array instance (even if empty)
+    // Expected: Throws TypeError due to minimum length requirement.
+    it('preventIdentical: true with an empty array should throw TypeError', () => {
+        expect(() => cryptoShuffle([], { preventIdentical: true })).toThrow(TypeError)
+        expect(() => cryptoShuffle([], { preventIdentical: true })).toThrow(
+            "Invalid cryptoShuffle parameters: 'preventIdentical' requires an array with at least 2 elements to guarantee a different result."
+        )
     })
 
     // preventIdentical: true with a single-item array
     // Call: cryptoShuffle([1], { preventIdentical: true })
-    // Expected: Returns [1].
-    it('preventIdentical: true with a single-item array', () => {
-        const originalArray = [1]
-        const originalArrayCopy = deepCopyArray(originalArray) // Use deepCopyArray for robust comparison setup
-        const shuffledArray = cryptoShuffle(originalArray, { preventIdentical: true })
-
-        expect(shuffledArray).toEqual([1]) // Should return the same single element
-        expect(shuffledArray).not.toBe(originalArray) // Should be a new array instance
+    // Expected: Throws TypeError due to minimum length requirement.
+    it('preventIdentical: true with a single-item array should throw TypeError', () => {
+        expect(() => cryptoShuffle([1], { preventIdentical: true })).toThrow(TypeError)
+        expect(() => cryptoShuffle([1], { preventIdentical: true })).toThrow(
+            "Invalid cryptoShuffle parameters: 'preventIdentical' requires an array with at least 2 elements to guarantee a different result."
+        )
     })
 
     // NEW: preventIdentical: true with a larger array (e.g., 10 elements)
@@ -92,4 +88,36 @@ describe('cryptoShuffle: Prevent Identical Flag', () => {
         expect(shuffledArray.length).toBe(originalArrayCopy.length)
         expect(shuffledArray).toEqual(expect.arrayContaining(originalArrayCopy)) // Must contain same elements
     })
+
+    // --- NEW TEST CASE FOR SUBARRAY SHUFFLE INTERACTION ---
+    // NEW: preventIdentical compares the FULL output array against the FULL input array, even when shuffling a subarray.
+    // This test ensures that if shuffling a subarray results in the full output array being identical to the full input,
+    // the preventIdentical logic (swapping first/last of the FULL array) is correctly triggered.
+    it('preventIdentical compares full arrays even when shuffling a subarray', () => {
+        // Create an array where shuffling the middle subarray [1, 3) (elements 'B', 'C')
+        // could theoretically leave the full array unchanged if not for preventIdentical.
+        // e.g., Original: ['A', 'B', 'C', 'D'] -> Shuffle subarray [1,3] -> ['A', 'C', 'B', 'D'] (different)
+        // OR -> ['A', 'B', 'C', 'D'] (identical full array).
+        // If the result is identical to the full input, preventIdentical must swap first/last.
+        const originalArray = ['A', 'B', 'C', 'D']
+        const originalArrayCopy = deepCopyArray(originalArray)
+        const startIndex = 1
+        const endIndex = 3 // Shuffle elements at indices 1 and 2 ('B' and 'C')
+
+        // Perform the shuffle with preventIdentical
+        const shuffledArray = cryptoShuffle(originalArray, { startIndex, endIndex, preventIdentical: true })
+
+        // Basic checks
+        expect(shuffledArray.length).toBe(originalArrayCopy.length)
+        expect(shuffledArray).toEqual(expect.arrayContaining(originalArrayCopy)) // Must be a permutation
+
+        // The core assertion: The final output array must NOT be identical to the full original input array.
+        // This validates that preventIdentical operates on the entire output, not just the shuffled subarray.
+        expect(shuffledArray).not.toEqual(originalArrayCopy)
+
+        // Additional check: The elements outside the shuffle range ([0] and [3]) might or might not have been swapped
+        // due to preventIdentical's action on the full array. We cannot assert their specific state here,
+        // only that the overall array is different.
+    })
+    // --- END NEW TEST CASE ---
 })

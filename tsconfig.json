@@ -19,13 +19,6 @@
         "isolatedModules": true,
         "types": ["node"]
     },
-    "include": [
-        "index.ts",
-        "src.constants.ts",
-        "src.function.crypto-random.ts",
-        "src.function.crypto-shuffle.ts",
-        "src.function.crypto-string.ts",
-        "src.types.ts"
-    ],
+    "include": ["index.ts", "src.constants.ts", "src.function.*.ts", "src.types.ts"],
     "exclude": ["node_modules", "./dist"]
 }

@@ -11,11 +11,13 @@
     "include": [
         "index.ts", // Include your main entry file
         "src.*.ts", // Include all your source files (e.g., src.constants.ts, src.function.*.ts)
-        "test.*.ts", // Include all your test files (e.g., test.crypto-random.*.ts)
-        "run-tests.ts", // Include your test runner file
+        "test.*.ts", // Include all your test files
+        "inspection.*.ts", // Include all your inspection files
+        "run-tests.ts", // Include your test-runner file
         "eslint.config.cjs", // Include the ESLint config file itself
         "vite.config.ts", // Include the Vite config file
-        "vitest.config.ts" // Include the Vitest config file
+        "vitest.config.ts", // Include the Vitest config file
+        "playwright.config.ts"
         // Add any other TypeScript-based config files here that ESLint needs to lint
     ],
     "exclude": [

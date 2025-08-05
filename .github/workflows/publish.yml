@@ -1,6 +1,6 @@
 # .github/workflows/publish.yml
 
-name: Publish to npm
+name: Continuous Deployment (CD) — publishing the package
 
 on:
     push:
@@ -46,17 +46,8 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-pnpm-
 
-            - name: Lint code
-              run: pnpm run lint
-
-            - name: Clean build artifacts
-              run: pnpm run clean || echo "no clean script"
-
-            - name: Build project
-              run: pnpm run build
-
-            - name: Run tests
-              run: pnpm run test
+            - name: format → lint → [clean → build → compile (tsc) → test]
+              run: pnpm run preflight
 
             - name: Check if version exists
               id: check_npm_version

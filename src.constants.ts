@@ -27,7 +27,7 @@ export const Constants = {
     UINT32_MAX_VALUE: 0xffffffff, // Maximum value for a 32-bit unsigned integer (2^32 - 1)
     UINT32_RANGE: 0x100000000, // Range of a 32-bit unsigned integer (2^32)
     MAX_FRACTIONAL_DIGITS: 15, // Max precision for doubles (standard JS float precision)
-    MIN_FRACTIONAL_DIGITS: 1, // Allow 0 fractional digits for doubles (i.e., integer-like doubles)
+    MIN_FRACTIONAL_DIGITS: 1, // Avoid integer-like doubles by demanding at least one fractional digit
     MAX_ATTEMPTS_TO_GENERATE_NUM: 30, // Max retries for exclusion constraints
 
     // --- Character Set Constants (for cryptoString) ---

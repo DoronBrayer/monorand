@@ -1,0 +1,48 @@
+<!-- test.crypto-shuffle.007b-webpage.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>cryptoShuffle on a webpage — purely for testing</title>
+    <script type="importmap">
+    {
+      "imports": {
+        "shuffrand": "https://unpkg.com/shuffrand@1.6.0/dist/index.es.js",
+        "arktype": "https://esm.sh/arktype@2.1.20"
+      }
+    }
+    </script>
+</head>
+<body>
+    <div id="output01">The <strong>first output</strong> of <code>cryptoShuffle</code> — incoming…</div>
+    <div id="output02">The <strong>second output</strong> of <code>cryptoShuffle</code> — incoming…</div>
+    <div id="output03">The <strong>third output</strong> of <code>cryptoShuffle</code> — incoming…</div>
+    <div id="output04">The <strong>third output</strong> of <code>cryptoShuffle</code> — incoming…</div>
+    <script type="module">
+        import { cryptoShuffle } from 'shuffrand'
+        try {
+            let output01 = cryptoShuffle()
+            output01 = JSON.stringify(output01)
+            document.querySelector("#output01").textContent = output01
+            
+            const arrayA = Array.from('xyz')
+            let output02 = cryptoShuffle( arrayA, { isDestructive: true } )
+            output02 = JSON.stringify(output02)
+            document.querySelector("#output02").textContent = output02
+
+            const arrayB = Array.from('xy')
+            let output03 = cryptoShuffle( arrayB, { preventIdentical: true } )
+            output03 = JSON.stringify(output03)
+            document.querySelector("#output03").textContent = output03
+
+            const arrayC = Array.from('abcdefghijklmnopqrstuvwxyz')
+            let output04 = cryptoShuffle(  arrayC, { startIndex: 2, endIndex: 24 } )
+            output04 = JSON.stringify(output04)
+            document.querySelector("#output04").textContent = output04
+
+        } catch (e) {
+            document.body.innerHTML = `<h1>ERROR: <code>${e.message}</code></h1>`
+        }
+    </script>
+</body>
+</html>

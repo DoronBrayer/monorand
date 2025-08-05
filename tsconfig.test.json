@@ -11,7 +11,6 @@
         "inlineSources": false,
         "noEmitOnError": false,
         "baseUrl": ".",
-        // Crucial for TS7016: Map paths to .d.ts files for type resolution
         "paths": {
             "shuffrand": ["./dist/index.d.ts"],
             "shuffrand/random": ["./dist/random.d.ts"],
@@ -20,17 +19,9 @@
             "shuffrand/constants": ["./dist/constants.d.ts"],
             "shuffrand/types": ["./dist/types.d.ts"]
         },
-        // Crucial for TS2307: Allow importing JS files directly without requiring .d.ts for them
         "allowJs": true,
         "skipLibCheck": true // Suppress type checking errors from declaration files (often helpful in test setups)
     },
-    "include": [
-        "test.crypto-random.*.ts",
-        "test.crypto-shuffle.*.ts",
-        "test.crypto-string.*.ts",
-        // Explicitly include test utility files so they are compiled by tsc
-        "test.util.deep-copy-array.ts",
-        "test.types.ts"
-    ],
+    "include": ["test.*.ts", "**/*-realworld-regression.ts", "inspection.*.ts", "**/*benchmark.ts", "**/benchmark*.ts"],
     "exclude": ["node_modules", "dist"]
 }

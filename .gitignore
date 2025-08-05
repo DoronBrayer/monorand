@@ -13,6 +13,17 @@ yarn-error.log*
 # OS
 .DS_Store
 Thumbs.db
+*.lnk
 
 # VS Code
 .vscode/
+
+# Generated Reports
+# Ignore the directory containing benchmark results, coverage reports, etc.
+/reports/
+/test-result*/
+/test-report*/
+
+# Playwright
+/playwright-*/
+/playwright/

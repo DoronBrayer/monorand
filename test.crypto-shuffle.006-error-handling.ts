@@ -92,4 +92,60 @@ describe('cryptoShuffle: Error Handling', () => {
             /Invalid cryptoShuffle parameters: Array elements cannot be serialized for 'preventIdentical' comparison\. Ensure all elements are JSON-serializable\. Original error: Do not know how to serialize a BigInt/
         )
     })
+
+    // --- NEW TEST CASES FOR FEATURE MINIMUM LENGTH ENFORCEMENTS ---
+
+    // Should throw TypeError if preventIdentical is true but array has fewer than 2 elements
+    it('Should throw TypeError if preventIdentical is true but array has fewer than 2 elements', () => {
+        // Test with empty array []
+        expect(() => cryptoShuffle([], { preventIdentical: true })).toThrow(TypeError)
+        expect(() => cryptoShuffle([], { preventIdentical: true })).toThrow(
+            "Invalid cryptoShuffle parameters: 'preventIdentical' requires an array with at least 2 elements to guarantee a different result."
+        )
+
+        // Test with single-element array [1]
+        expect(() => cryptoShuffle([1], { preventIdentical: true })).toThrow(TypeError)
+        expect(() => cryptoShuffle([1], { preventIdentical: true })).toThrow(
+            "Invalid cryptoShuffle parameters: 'preventIdentical' requires an array with at least 2 elements to guarantee a different result."
+        )
+    })
+
+    // Should throw TypeError if isDestructive is true but the effective shuffle range has fewer than 2 elements
+    it('Should throw TypeError if isDestructive is true but the effective shuffle range has fewer than 2 elements', () => {
+        // Test with empty array and isDestructive: true (range is [0, 0) - 0 elements)
+        expect(() => cryptoShuffle([], { isDestructive: true })).toThrow(TypeError)
+        expect(() => cryptoShuffle([], { isDestructive: true })).toThrow(
+            "Invalid cryptoShuffle parameters: 'isDestructive' requires a shuffle range (defined by startIndex/endIndex) with at least 2 elements to potentially modify the original array."
+        )
+
+        // Test with single-element array and isDestructive: true (range is [0, 1) - 1 element)
+        expect(() => cryptoShuffle([1], { isDestructive: true })).toThrow(TypeError)
+        expect(() => cryptoShuffle([1], { isDestructive: true })).toThrow(
+            "Invalid cryptoShuffle parameters: 'isDestructive' requires a shuffle range (defined by startIndex/endIndex) with at least 2 elements to potentially modify the original array."
+        )
+
+        // Test with valid array but subarray range [1, 2) - 1 element (range has fewer than 2 elements)
+        expect(() => cryptoShuffle([1, 2, 3], { isDestructive: true, startIndex: 1, endIndex: 2 })).toThrow(TypeError)
+        expect(() => cryptoShuffle([1, 2, 3], { isDestructive: true, startIndex: 1, endIndex: 2 })).toThrow(
+            "Invalid cryptoShuffle parameters: 'isDestructive' requires a shuffle range (defined by startIndex/endIndex) with at least 2 elements to potentially modify the original array."
+        )
+
+        // Test with valid array but subarray range [0, 1) - 1 element (range has fewer than 2 elements)
+        expect(() => cryptoShuffle([1, 2, 3], { isDestructive: true, startIndex: 0, endIndex: 1 })).toThrow(TypeError)
+        expect(() => cryptoShuffle([1, 2, 3], { isDestructive: true, startIndex: 0, endIndex: 1 })).toThrow(
+            "Invalid cryptoShuffle parameters: 'isDestructive' requires a shuffle range (defined by startIndex/endIndex) with at least 2 elements to potentially modify the original array."
+        )
+
+        // Test with valid array but startIndex >= endIndex (e.g., [2, 2) or [3, 1)) - 0 elements (range has fewer than 2 elements)
+        expect(() => cryptoShuffle([1, 2, 3], { isDestructive: true, startIndex: 2, endIndex: 2 })).toThrow(TypeError)
+        expect(() => cryptoShuffle([1, 2, 3], { isDestructive: true, startIndex: 2, endIndex: 2 })).toThrow(
+            "Invalid cryptoShuffle parameters: 'isDestructive' requires a shuffle range (defined by startIndex/endIndex) with at least 2 elements to potentially modify the original array."
+        )
+        expect(() => cryptoShuffle([1, 2, 3], { isDestructive: true, startIndex: 3, endIndex: 1 })).toThrow(TypeError)
+        expect(() => cryptoShuffle([1, 2, 3], { isDestructive: true, startIndex: 3, endIndex: 1 })).toThrow(
+            "Invalid cryptoShuffle parameters: 'isDestructive' requires a shuffle range (defined by startIndex/endIndex) with at least 2 elements to potentially modify the original array."
+        )
+    })
+
+    // --- END NEW TEST CASES ---
 })

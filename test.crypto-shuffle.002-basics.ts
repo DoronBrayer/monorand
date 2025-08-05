@@ -10,7 +10,6 @@
  * @author Doron Brayer <doronbrayer@outlook.com>
  * @license MIT
  */
-
 import { describe, it, expect } from 'vitest'
 // Import from the published package path, resolved by tsconfig.test.json paths
 import { cryptoShuffle } from 'shuffrand' // Updated import
@@ -26,7 +25,6 @@ describe('cryptoShuffle: Basic Parameters & Array Types', () => {
         const originalArray = [1, 2, 1, 3, 2, 1]
         const originalArrayCopy = [...originalArray]
         const shuffledArray = cryptoShuffle(originalArray) // Default is non-destructive
-
         expect(shuffledArray).not.toBe(originalArray) // Should be a new array instance
         expect(shuffledArray.length).toBe(originalArray.length) // Length must be preserved
         expect(shuffledArray).toEqual(expect.arrayContaining(originalArrayCopy)) // Should contain all original elements
@@ -41,7 +39,6 @@ describe('cryptoShuffle: Basic Parameters & Array Types', () => {
         const originalArray = ['a', 'b', 'c', 'd', 'e', 'f']
         const originalArrayCopy = [...originalArray]
         const shuffledArray = cryptoShuffle(originalArray) // Default is non-destructive
-
         expect(shuffledArray).not.toBe(originalArray) // Should be a new array instance
         expect(shuffledArray.length).toBe(originalArray.length) // Length must be preserved
         expect(shuffledArray).toEqual(expect.arrayContaining(originalArrayCopy)) // Should contain all original elements
@@ -62,7 +59,6 @@ describe('cryptoShuffle: Basic Parameters & Array Types', () => {
         // Use deepCopyArray for robust copying of objects
         const originalArrayCopy = deepCopyArray(originalArray)
         const shuffledArray = cryptoShuffle(originalArray) // Default is non-destructive
-
         expect(shuffledArray).not.toBe(originalArray) // Should be a new array instance
         expect(shuffledArray.length).toBe(originalArray.length) // Length must be preserved
         expect(shuffledArray).toEqual(expect.arrayContaining(originalArrayCopy)) // Should contain all original elements
@@ -78,7 +74,6 @@ describe('cryptoShuffle: Basic Parameters & Array Types', () => {
         // Use deepCopyArray for robust copying of Date objects
         const originalArrayCopy = deepCopyArray(originalArray)
         const shuffledArray = cryptoShuffle(originalArray) // Default is non-destructive
-
         expect(shuffledArray).not.toBe(originalArray) // Should be a new array instance
         expect(shuffledArray.length).toBe(originalArray.length) // Length must be preserved
         // Explicitly type 'd' as Date to resolve TS7006
@@ -96,7 +91,6 @@ describe('cryptoShuffle: Basic Parameters & Array Types', () => {
         const originalArray = [true, false, true, false]
         const originalArrayCopy = [...originalArray]
         const shuffledArray = cryptoShuffle(originalArray) // Default is non-destructive
-
         expect(shuffledArray).not.toBe(originalArray) // Should be a new array instance
         expect(shuffledArray.length).toBe(originalArray.length) // Length must be preserved
         expect(shuffledArray).toEqual(expect.arrayContaining(originalArrayCopy)) // Should contain all original elements
@@ -116,7 +110,6 @@ describe('cryptoShuffle: Basic Parameters & Array Types', () => {
         // Use deepCopyArray for robust copying of nested arrays
         const originalArrayCopy = deepCopyArray(originalArray)
         const shuffledArray = cryptoShuffle(originalArray) // Default is non-destructive
-
         expect(shuffledArray).not.toBe(originalArray) // Should be a new array instance
         expect(shuffledArray.length).toBe(originalArray.length) // Length must be preserved
         expect(shuffledArray).toEqual(expect.arrayContaining(originalArrayCopy)) // Should contain all original elements
@@ -131,9 +124,7 @@ describe('cryptoShuffle: Basic Parameters & Array Types', () => {
         const originalArray = [1, 'hello', true, { a: 1 }, null, undefined, [7, 8], new Date()]
         // Use the custom deep copy helper for mixed types
         const originalArrayCopy = deepCopyArray(originalArray)
-
         const shuffledArray = cryptoShuffle(originalArray) // Default is non-destructive
-
         expect(shuffledArray).not.toBe(originalArray) // Should be a new array instance
         expect(shuffledArray.length).toBe(originalArray.length) // Length must be preserved
         expect(shuffledArray).toEqual(expect.arrayContaining(originalArrayCopy)) // Should contain all original elements
@@ -146,7 +137,6 @@ describe('cryptoShuffle: Basic Parameters & Array Types', () => {
         const originalArray = [1, null, 3, null, 5]
         const originalArrayCopy = deepCopyArray(originalArray) // Use deepCopyArray
         const shuffledArray = cryptoShuffle(originalArray)
-
         expect(shuffledArray).not.toBe(originalArray)
         expect(shuffledArray.length).toBe(originalArray.length)
         expect(shuffledArray).toEqual(expect.arrayContaining(originalArrayCopy))
@@ -159,7 +149,6 @@ describe('cryptoShuffle: Basic Parameters & Array Types', () => {
         const originalArray = [undefined, 2, undefined, 4, undefined]
         const originalArrayCopy = deepCopyArray(originalArray) // Use deepCopyArray
         const shuffledArray = cryptoShuffle(originalArray)
-
         expect(shuffledArray).not.toBe(originalArray)
         expect(shuffledArray.length).toBe(originalArray.length)
         expect(shuffledArray).toEqual(expect.arrayContaining(originalArrayCopy))
@@ -172,7 +161,6 @@ describe('cryptoShuffle: Basic Parameters & Array Types', () => {
         const originalArray = [1, null, undefined, 4, null, 6, undefined]
         const originalArrayCopy = deepCopyArray(originalArray) // Use deepCopyArray
         const shuffledArray = cryptoShuffle(originalArray)
-
         expect(shuffledArray).not.toBe(originalArray)
         expect(shuffledArray.length).toBe(originalArray.length)
         expect(shuffledArray).toEqual(expect.arrayContaining(originalArrayCopy))
@@ -185,9 +173,31 @@ describe('cryptoShuffle: Basic Parameters & Array Types', () => {
         const originalArray = [42]
         const originalArrayCopy = [...originalArray]
         const shuffledArray = cryptoShuffle(originalArray)
-
         expect(shuffledArray).not.toBe(originalArray) // Still a new instance for non-destructive
         expect(shuffledArray.length).toBe(originalArray.length)
         expect(shuffledArray).toEqual(originalArrayCopy) // Should remain the same content
     })
+
+    // --- NEW TEST CASE FOR EXPLICIT isDestructive: false ---
+    // NEW: Array of Objects Shuffle with isDestructive explicitly set to false
+    // This test mirrors the "Array of Objects Shuffle" test but explicitly uses the isDestructive: false option.
+    // It ensures that explicitly setting isDestructive to false behaves identically to the default non-destructive behavior.
+    it('Array of Objects Shuffle with isDestructive explicitly set to false', () => {
+        const originalArray = [
+            { id: 'X', value: 100 },
+            { id: 'Y', value: 200 },
+            { id: 'Z', value: 300 },
+        ]
+        // Use deepCopyArray for robust copying of objects
+        const originalArrayCopy = deepCopyArray(originalArray)
+        // Explicitly set isDestructive: false
+        const shuffledArray = cryptoShuffle(originalArray, { isDestructive: false })
+
+        expect(shuffledArray).not.toBe(originalArray) // Should be a new array instance (non-destructive)
+        expect(shuffledArray.length).toBe(originalArray.length) // Length must be preserved
+        expect(shuffledArray).toEqual(expect.arrayContaining(originalArrayCopy)) // Should contain all original elements
+        expect(originalArray).toEqual(originalArrayCopy) // Original array should remain unchanged
+        // Note: We don't check if shuffledArray !== originalArrayCopy content-wise as it's probabilistic.
+    })
+    // --- END NEW TEST CASE ---
 })

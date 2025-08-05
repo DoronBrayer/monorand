@@ -10,6 +10,7 @@ npm-debug.log*
 yarn-error.log*
 .DS_Store
 Thumbs.db
+*.lnk
 
 # --- Editor-specific configurations (often ignored regardless of "files") ---
 .vscode/
@@ -24,3 +25,13 @@ Thumbs.db
 
 # --- pnpm specific files (not needed in published package) ---
 pnpm-lock.yaml
+
+# --- Development-only directories ---
+reports/
+test-result*/
+test-report*/
+playwright-*/
+playwright/
+
+# --- Internal Inspection & Tooling (not to be confused with testing!) ---
+inspection.*.ts

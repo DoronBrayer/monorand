@@ -98,4 +98,22 @@ describe('cryptoShuffle: Core Functionality', () => {
         // Ensure the original array (now shuffled) contains the same elements as the copy
         expect(originalArray).toEqual(expect.arrayContaining(originalArrayCopy))
     })
+
+    // --- NEW TEST CASE FOR CORE DEFAULT BEHAVIOR ---
+    // NEW: Default Non-destructive Behavior with Non-empty Array
+    // This test explicitly verifies that calling cryptoShuffle without the isDestructive option
+    // defaults to non-destructive behavior, creating a new array instance, for a non-empty input.
+    it('Default Non-destructive Behavior with Non-empty Array', () => {
+        const originalArray = [100, 200, 300] // Non-empty array
+        const originalArrayCopy = [...originalArray] // Copy for comparison
+        // Call cryptoShuffle WITHOUT the isDestructive option
+        const shuffledArray = cryptoShuffle(originalArray)
+
+        expect(shuffledArray).not.toBe(originalArray) // Should be a NEW array instance (non-destructive default)
+        expect(shuffledArray.length).toBe(originalArray.length) // Length preserved
+        expect(shuffledArray).toEqual(expect.arrayContaining(originalArrayCopy)) // Contains original elements
+        expect(originalArray).toEqual(originalArrayCopy) // Original array unchanged
+        // Note: We don't check if shuffledArray !== originalArrayCopy content-wise as it's probabilistic.
+    })
+    // --- END NEW TEST CASE ---
 })

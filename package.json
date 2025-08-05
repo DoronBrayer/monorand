@@ -1,6 +1,6 @@
 {
     "name": "shuffrand",
-    "version": "1.6.0",
+    "version": "1.7.0",
     "type": "module",
     "description": "Cryptographically secure randomness and shuffling — with soul.",
     "sideEffects": false,
@@ -43,12 +43,14 @@
     "scripts": {
         "prebuild": "pnpm run clean",
         "build": "vite build",
-        "test": "pnpm run clean && pnpm run build && tsc --project tsconfig.test.json && vitest",
+        "test": "pnpm run clean && pnpm run build && tsc --project tsconfig.test.json && vitest --environment=node --browser.enabled=false",
         "test:coverage": "vitest run --coverage",
+        "test:browser": "vitest run --browser",
+        "benchmark": "vitest bench --run --browser.enabled=false",
         "clean": "node clean.mjs",
         "lint": "eslint . --ext .ts",
         "format": "prettier --write \"**/*.{ts,js,json,yml}\"",
-        "preflight": "pnpm test && pnpm run format && pnpm run lint",
+        "preflight": "pnpm run format && pnpm run lint && pnpm test",
         "prepublishOnly": "pnpm build"
     },
     "keywords": [
@@ -63,6 +65,14 @@
         "critical-hit",
         "crypto",
         "cryptographic",
+        "cryptographically-secure",
+        "AES",
+        "128-bit",
+        "AES-128",
+        "RSA-2048",
+        "NIST",
+        "Rijndael",
+        "Block-cipher",
         "D&D",
         "d20",
         "d6",
@@ -75,6 +85,7 @@
         "fair",
         "Fisher",
         "Fisher–Yates",
+        "Durstenfeld",
         "game",
         "PvE",
         "generator",
@@ -90,6 +101,8 @@
         "Knuth",
         "lib",
         "lodash",
+        "arktype",
+        "vite",
         "lottery",
         "masking",
         "mock-data",
@@ -157,9 +170,11 @@
         "access": "public"
     },
     "devDependencies": {
+        "@playwright/test": "^1.54.2",
         "@types/node": "^24.0.0",
         "@typescript-eslint/eslint-plugin": "^8.36.0",
         "@typescript-eslint/parser": "^8.36.0",
+        "@vitest/browser": "4.0.0-beta.6",
         "eslint": "^9.30.1",
         "eslint-config-prettier": "^10.1.5",
         "eslint-plugin-prettier": "^5.5.1",
@@ -168,7 +183,7 @@
         "typescript-eslint": "^8.36.0",
         "vite": "^7.0.4",
         "vite-plugin-dts": "^3.9.1",
-        "vitest": "4.0.0-beta.5"
+        "vitest": "4.0.0-beta.6"
     },
     "dependencies": {
         "arktype": "^2.1.20"

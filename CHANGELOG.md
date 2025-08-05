@@ -19,6 +19,23 @@
 ## <a name="PRESENT"></a>PRESENT
 The 3 most recent releases — essentially a **news section**:
 
+### [[1.7.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.7.0)] 2025-08-06: Proof of quality
+#### Added
+-   Performance-benchmark suite (`inspection.*.ts` files and `pnpm run benchmark` script) to provide quantitative performance metrics.
+-   Dedicated browser-based "real-world regression" tests using Playwright (`test.*-regression.ts` and `*.html` files) to formally guarantee browser compatibility and real-world functionality.
+-   [WORKFLOWS.md](WORKFLOWS.md): A new documentation file detailing the project's local development, testing (unit, browser, benchmark), and release workflows.
+-   [PERFORMANCE.md](PERFORMANCE.md): A new documentation file serving as the canonical source for public-facing performance analysis and benchmark results.
+
+#### Changed
+-   [DOCTRINE.md](DOCTRINE.md): Updated to reflect the maturation of quality assurance processes, task management workflows, and documentation strategy related to the new E2E and benchmarking capabilities.
+-   **Core Automation Scripts:** The order of operations within the `preflight` script (`package.json`) was changed from `pnpm test && pnpm run format && pnpm run lint` to `pnpm run format && pnpm run lint && pnpm test`. This ensures code formatting and linting occur *before* the build and test cycle, aligning the process with the "Test the Final Product" principle by testing the formatted and linted code.
+-   **GitHub Actions Workflows:**
+    *   The `main.yml` CI workflow now executes `pnpm run preflight` instead of `pnpm test`.
+    *   The `publish.yml` CD workflow now executes `pnpm run preflight` instead of `pnpm test`.
+    *   This change ensures that the comprehensive `preflight` check (format, lint, build, test) is the core validation gate for both continuous integration and publishing, providing a consistent and robust quality check.
+-   Internal project configuration and scripts (e.g., `package.json`, `playwright.config.ts`, `vitest.config.ts`) are refined to support the new E2E and benchmarking workflows.
+-   The `cryptoShuffle` function now enforces minimum array length requirements for the `preventIdentical` and `isDestructive` options, improving error handling and developer experience by providing clear feedback when these features cannot be applied.
+
 ### [[1.6.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.6.0)] 2025-08-03: Even more flexibility
 This version introduces another powerful feature to the core `shuffrand` API, giving developers more granular control and enabling new use cases.
 #### Added
@@ -32,11 +49,11 @@ This version introduces a powerful feature to the core `shuffrand` API, giving d
 -   A dedicated testsuite (`test.crypto-string.003-no-repeat.ts`) to inspect the recently-added flag/option.
 -   More edge-cases and error-handling testcases.
 
-### [[1.4.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.4.0)] 2025-08-01: **THE FOUNDATION**
-The first stable, fully-documented, and professionally architected version of the library. This release establishes the **core trio** of functions (`cryptoRandom`, `cryptoShuffle`, `cryptoString`) and the foundational principles of security, quality, and craftsmanship.
-
 ## <a name="PAST"></a>PAST
 Old versions — all releases preceding the 3 most recent — essentially an **archive outline**:
+
+### [[1.4.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.4.0)] 2025-08-01: **THE FOUNDATION**
+The first stable, fully-documented, and professionally architected version of the library. This release establishes the **core trio** of functions (`cryptoRandom`, `cryptoShuffle`, `cryptoString`) and the foundational principles of security, quality, and craftsmanship.
 
 ### [[1.3.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.3.0)] 2025-07-14
 [no info]
@@ -70,13 +87,6 @@ This version focuses on radically improving the developer experience for both us
 #### Changed
 -   The project’s linting and formatting toolchain is migrated from **ESLint + Prettier to Biome**, simplifying configuration and improving performance.
 -   The project’s configuration source of truth is migrated from `package.json` to **`package.jsonc`**, allowing for inline comments and improved maintainability.
-
-### [[1.7.0](https://github.com/DoronBrayer/shuffrand/tags)] ~2025-08-##: Proof of quality
-This version is dedicated to providing undeniable, quantitative proof of the library's quality, performance, and reliability for its core features.
-#### Added
--   A comprehensive **performance benchmark suite**. The `README.md` is populated with concrete ops/sec metrics, comparing `shuffrand` to its rivals.
--   A browser-based **End-to-End test suite**, formally guaranteeing browser compatibility.
--   Formal **browser support declarations** in `package.json`.
 
 ---
 

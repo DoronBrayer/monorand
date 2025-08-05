@@ -1,6 +1,6 @@
 # .github/workflows/main.yml
 
-name: CI/CD Pipeline
+name: Continuous Integration (CI) — validating the repository
 
 on:
     push:
@@ -29,5 +29,5 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
-            - name: Run tests
-              run: pnpm test
+            - name: format → lint → [clean → build → compile (tsc) → test]
+              run: pnpm run preflight
