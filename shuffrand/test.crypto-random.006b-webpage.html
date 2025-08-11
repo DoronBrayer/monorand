@@ -1,0 +1,40 @@
+<!-- /shuffrand/test.crypto-random.006b-webpage.html -->
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>cryptoRandom on a webpage — purely for testing</title>
+        <script type="importmap">
+            {
+                "imports": {
+                    "shuffrand": "https://unpkg.com/shuffrand@1.6.0/dist/index.es.js",
+                    "arktype": "https://esm.sh/arktype@2.1.20"
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div id="output01">The <strong>first output</strong> of <code>cryptoRandom</code> — incoming…</div>
+        <div id="output02">The <strong>second output</strong> of <code>cryptoRandom</code> — incoming…</div>
+        <div id="output03">The <strong>third output</strong> of <code>cryptoRandom</code> — incoming…</div>
+        <div id="output04">The <strong>third output</strong> of <code>cryptoRandom</code> — incoming…</div>
+        <script type="module">
+            import { cryptoRandom } from 'shuffrand'
+            try {
+                const output01 = cryptoRandom()
+                document.querySelector('#output01').textContent = output01
+
+                const output02 = cryptoRandom({ typeOfNum: 'double' })
+                document.querySelector('#output02').textContent = output02
+
+                const output03 = cryptoRandom({ lowerBound: 4000, upperBound: 4999 })
+                document.querySelector('#output03').textContent = output03
+
+                const output04 = cryptoRandom({ exclusion: 'lower bound' })
+                document.querySelector('#output04').textContent = output04
+            } catch (e) {
+                document.body.innerHTML = `<h1>ERROR: <code>${e.message}</code></h1>`
+            }
+        </script>
+    </body>
+</html>

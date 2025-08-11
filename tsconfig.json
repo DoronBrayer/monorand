@@ -1,24 +1,23 @@
-// tsconfig.json
+// ./tsconfig.json
+
 {
+    "files": [],
+    "references": [{ "path": "./shuffrand" }, { "path": "./datrand" }],
     "compilerOptions": {
+        "composite": true,
         "target": "ES2022",
-        "module": "NodeNext",
-        "declaration": true,
-        "outDir": "./dist",
-        "esModuleInterop": true,
+        "module": "ES2022",
+        "moduleResolution": "bundler",
         "strict": true,
+        "esModuleInterop": true,
         "skipLibCheck": true,
-        "moduleResolution": "NodeNext",
-        "resolveJsonModule": true,
-        "lib": ["ES2022", "DOM"],
-        "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
-        "sourceMap": false,
-        "inlineSources": false,
-        "noEmitOnError": true,
-        "isolatedModules": true,
-        "types": ["node"]
+        "resolveJsonModule": true,
+        "baseUrl": ".",
+        "paths": {
+            "shuffrand": ["./shuffrand"],
+            "datrand": ["./datrand"]
+        }
     },
-    "include": ["index.ts", "src.constants.ts", "src.function.*.ts", "src.types.ts"],
-    "exclude": ["node_modules", "./dist"]
+    "include": ["shuffrand/src", "datrand/src"]
 }

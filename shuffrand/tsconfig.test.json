@@ -1,0 +1,18 @@
+// ./shuffrand/tsconfig.test.json | Library test configuration
+
+{
+    "$schema": "https://json.schemastore.org/tsconfig.json",
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "composite": true,
+        "declaration": true,
+        "outDir": "./dist",
+        "lib": ["ES2022", "DOM"],
+        "types": ["node"],
+        "noEmit": false,
+        "moduleResolution": "bundler",
+        "rootDir": "./"
+    },
+    "include": ["**/*.ts", "**/*.cjs", "**/*.mjs"],
+    "exclude": ["node_modules", "dist"]
+}

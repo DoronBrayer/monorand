@@ -1,5 +1,7 @@
-<!-- CODE_OF_CONDUCT.md -->
+<!-- ./CODE_OF_CONDUCT.md -->
+
 # Code of Conduct for `shuffrand`
+
 Just as `shuffrand` itself is built with a deep personal commitment and an unwavering pursuit of quality, our community thrives on a similar foundation of respect, meticulousness, and shared passion for crafting excellent software. This Code of Conduct isn’t just a formality; it’s a living document reflecting the ’soul’ of this project. We’re here to foster an inclusive, supportive, and productive environment where every contribution, every idea, and every interaction helps uphold the high standards `shuffrand` represents. Whether you’re a seasoned contributor or just getting started, your presence enriches our collective pursuit of uncompromising quality.
 
 To keep our collaborative space vibrant and effective, we expect all participants to act professionally and respectfully. This means being considerate, constructive, and open to diverse perspectives. We encourage thoughtful discussions, helpful feedback, and a shared commitment to solving problems with precision and clarity. Conversely, we have zero tolerance for harassment, discrimination, personal attacks, or any disruptive behavior. This includes, but isn’t limited to, offensive comments, intimidation, unwelcome attention, or any conduct that creates an uncomfortable or hostile environment. Remember, our shared respect for the craft extends to how we treat each other.

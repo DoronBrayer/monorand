@@ -1,0 +1,5 @@
+// ./shuffrand/tsconfig.json | Package configuration
+{
+    "extends": "../tsconfig.json",
+    "include": ["./**/*.ts"]
+}

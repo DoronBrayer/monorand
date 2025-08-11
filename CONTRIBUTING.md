@@ -1,4 +1,5 @@
-<!-- CONTRIBUTING.md -->
+<!-- ./CONTRIBUTING.md -->
+
 # Contributing to `shuffrand`
 Hey there, future `shuffrand` contributor! We're thrilled you're considering lending your expertise to this project. `shuffrand` isn't just a library; it's a testament to meticulous craftsmanship and an unwavering pursuit of quality in the realm of secure randomness. Our "soul-infused" approach means we deeply value thoughtful, high-quality contributions that align with our core philosophies: ESM-first, TypeScript-native, and a relentless focus on robustness. If you share this passion for building truly dependable utilities, you're in the right place!
 

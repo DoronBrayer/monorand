@@ -1,0 +1,54 @@
+{
+    "//": "./datrand/package.json | Library primary configuration",
+    "name": "datrand",
+    "version": "0.1.0",
+    "description": "A package for generating data with cryptographically secure randomness.",
+    "type": "module",
+    "private": false,
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "scripts": {
+        "clean": "node ../../clean.mjs",
+        "build": "vite build",
+        "test": "npx vitest run --config ../vitest.config.ts",
+        "benchmark": "npx vitest bench --run --config ../vitest.config.ts"
+    },
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
+    "keywords": [
+        "data",
+        "generation",
+        "random",
+        "monorepo"
+    ],
+    "author": "doron",
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {},
+    "peerDependencies": {
+        "arktype": "^2.1.20"
+    },
+    "peerDependenciesMeta": {
+        "arktype": {
+            "optional": true
+        }
+    },
+    "devDependencies": {
+        "arktype": "^2.1.20",
+        "typescript": "^5.9.2",
+        "vite": "^7.1.0",
+        "vite-plugin-dts": "^3.9.1",
+        "vitest": "4.0.0-beta.7"
+    }
+}

@@ -1,0 +1,14 @@
+// ./datrand/tsconfig.json | Libary/Package configuration
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "outDir": "./dist",
+        "rootDir": "./"
+    },
+    "include": ["src.*.ts", "index.ts"],
+    "exclude": ["node_modules", "dist"],
+    "references": [{ "path": "../shuffrand" }]
+}

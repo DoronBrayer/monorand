@@ -1,4 +1,5 @@
-// .prettierrc.cjs
+// ./.prettierrc.cjs
+
 module.exports = {
     // Use single quotes instead of double quotes:
     singleQuote: true,
@@ -9,7 +10,7 @@ module.exports = {
     // Use spaces instead of tabs for indentation:
     useTabs: false,
     // Print trailing commas wherever valid in ES5 (objects, arrays, etc.):
-    trailingComma: 'es5',
+    trailingComma: 'none',
     // Print spaces between brackets in object literals ({ foo: bar }):
     bracketSpacing: true,
     // Put the > of a multi-line HTML (or JSX) element on the same line as the last attribute:
@@ -19,5 +20,5 @@ module.exports = {
     // Ensure consistent line endings (LF for Unix/Git):
     endOfLine: 'lf',
     // Arrow function parentheses behavior (always include for consistency):
-    arrowParens: 'always',
+    arrowParens: 'always'
 }

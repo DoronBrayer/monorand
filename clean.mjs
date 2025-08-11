@@ -1,14 +1,30 @@
-// clean.mjs
-// This script removes the 'dist' directory, which is typically used for build outputs.
-// It uses Node.js’s 'fs' module to perform the deletion synchronously.
-// The 'recursive' option allows for deleting directories and their contents, and 'force' ensures
-// that the operation does not fail if the directory does not exist.
+// ./clean.mjs
 
-import { rmSync } from 'fs'
+import { rmSync, readdirSync } from 'fs'
+import { join } from 'path'
+
+const dirsToRemove = ['dist', 'reports']
 
 try {
-    rmSync('./dist', { recursive: true, force: true })
-    console.log(`✓\u200AThe cleanup has been SUCCESSfully completed.`)
+    // Get all top-level directories (i.e., packages)
+    const packages = readdirSync('.', { withFileTypes: true })
+        .filter((dirent) => dirent.isDirectory() && dirent.name !== 'node_modules')
+        .map((dirent) => dirent.name)
+
+    // Clean directories in the monorepo root
+    for (const dir of dirsToRemove) {
+        rmSync(dir, { recursive: true, force: true })
+    }
+
+    // Clean directories within each package
+    for (const pkg of packages) {
+        for (const dir of dirsToRemove) {
+            const packagePath = join(pkg, dir)
+            rmSync(packagePath, { recursive: true, force: true })
+        }
+    }
+
+    console.log(`✓ The cleanup has been SUCCESSfully completed.`)
 } catch {
-    console.log(`The cleanup has been skipped\u200A—\u200Anothing to remove.`)
+    console.log(`The cleanup has been skipped—nothing to remove.`)
 }

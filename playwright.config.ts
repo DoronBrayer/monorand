@@ -1,32 +1,40 @@
-// playwright.config.ts
-import { defineConfig } from '@playwright/test'
+// ./playwright.config.ts | Monorepo browser test configuration
 
-// Define the common base directory for all outputs
-const REPORTS_BASE_DIR = 'reports/playwright'
+import { defineConfig } from '@playwright/test'
+import path from 'path'
+
+// Get the package name from the environment variable set by the pnpm script.
+const PACKAGE_NAME = process.env.PACKAGE_NAME || 'shuffrand'
+
+// Define the base directory for all Playwright outputs.
+const REPORTS_BASE_DIR = path.resolve(__dirname, `reports/${PACKAGE_NAME}/playwright`)
 
 export default defineConfig({
-    // Find our single, specific E2E test file
-    testMatch: 'test.*regression.ts',
+    // Point Playwright to the correct package directory to find tests.
+    testDir: path.resolve(__dirname, PACKAGE_NAME),
 
-    // Use the 'json' reporter to output a single file
+    // Match all regression-style test files with a single, clean pattern.
+    testMatch: /test\..*regression\.ts/,
+
+    // Use the 'json' reporter to output a single, timestamped file.
     reporter: [
         [
             'json',
             {
-                // Prepend the REPORTS_BASE_DIR to the outputFile path
-                outputFile: `${REPORTS_BASE_DIR}/${new Date().toJSON().replace(/[:.Z]/g, '')}.json`,
-            },
-        ],
+                outputFile: `${REPORTS_BASE_DIR}/${new Date().toJSON().replace(/[:.Z]/g, '')}.json`
+            }
+        ]
     ],
 
-    // Set the outputDir to the same base directory
+    // Set the outputDir to the same base directory.
     outputDir: REPORTS_BASE_DIR,
 
     fullyParallel: true,
     use: {
         trace: 'off',
         screenshot: 'off',
-        video: 'off',
+        video: 'off'
     },
-    projects: [{ name: 'chromium', use: { browserName: 'chromium' } }],
+    // Use a clean, non-redundant project definition for the browser.
+    projects: [{ name: 'chromium', use: { browserName: 'chromium' } }]
 })

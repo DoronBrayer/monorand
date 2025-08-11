@@ -1,0 +1,8 @@
+// ./datrand/tsconfig.test.json | Package test configuration
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "dist"
+    },
+    "include": ["test.*.ts"]
+}

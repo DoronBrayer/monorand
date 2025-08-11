@@ -1,27 +1,5 @@
-// tsconfig.eslint.json
+// ./tsconfig.eslint.json | Monorepo root ESLint configuration
 {
-    // Extend your base tsconfig.json to inherit all compiler options.
-    // This ensures consistency for target, strictness, lib, etc.
     "extends": "./tsconfig.json",
-    "compilerOptions": {
-        // These options are inherited from tsconfig.json, but can be overridden if needed for ESLint.
-        // For now, no specific overrides are needed here beyond what's in tsconfig.json.
-        // Ensure 'module' and 'moduleResolution' are consistent with NodeNext as per your main tsconfig.json.
-    },
-    "include": [
-        "index.ts", // Include your main entry file
-        "src.*.ts", // Include all your source files (e.g., src.constants.ts, src.function.*.ts)
-        "test.*.ts", // Include all your test files
-        "inspection.*.ts", // Include all your inspection files
-        "run-tests.ts", // Include your test-runner file
-        "eslint.config.cjs", // Include the ESLint config file itself
-        "vite.config.ts", // Include the Vite config file
-        "vitest.config.ts", // Include the Vitest config file
-        "playwright.config.ts"
-        // Add any other TypeScript-based config files here that ESLint needs to lint
-    ],
-    "exclude": [
-        "node_modules", // Standard exclusion for all TypeScript compilations
-        "dist" // Exclude the output directory itself
-    ]
+    "include": ["eslint.config.cjs", "shuffrand/**/*.ts", "datrand/**/*.ts", "*.ts", ".github/**/*.yml"]
 }

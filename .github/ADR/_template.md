@@ -1,3 +1,4 @@
+<!-- .github/ADR/_template.md -->
 Text text text
 
 ---
@@ -6,7 +7,10 @@ Text text text
 ## 🤖 Gemini
 zzzz
 
-## 🤖 Claude or Grok
+## 🤖 Claude
+zzzz
+
+## 🤖 Grok
 zzzz
 
 ## 🤖 Qwen
@@ -15,7 +19,10 @@ zzzz
 ## 🤖 DeepSeek
 zzzz
 
-## 🤖 Copilot
+## 🤖 Kimi (kimi.com/chat)
+zzzz
+
+## 🤖 Copilot "Smart"&nbsp;&nbsp;_Uses GPT-5 to think deeply or quickly_
 zzzz
 
 ## 🧔🏻‍♂ Doron B. (the author)
@@ -27,7 +34,10 @@ zzzz
 ## 🤖 Gemini
 zzzz
 
-## 🤖 Claude or Grok
+## 🤖 Claude
+zzzz
+
+## 🤖 Grok
 zzzz
 
 ## 🤖 Qwen
@@ -36,7 +46,10 @@ zzzz
 ## 🤖 DeepSeek
 zzzz
 
-## 🤖 Copilot
+## 🤖 Kimi (kimi.com/chat)
+zzzz
+
+## 🤖 Copilot "Smart"&nbsp;&nbsp;_Uses GPT-5 to think deeply or quickly_
 zzzz
 
 ## 🧔🏻‍♂ Doron B. (the author)
