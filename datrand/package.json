@@ -1,7 +1,7 @@
 {
     "//": "./datrand/package.json | Library primary configuration",
     "name": "datrand",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "A package for generating data with cryptographically secure randomness.",
     "type": "module",
     "private": false,

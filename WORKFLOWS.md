@@ -169,6 +169,6 @@ Running the so-calld "real-world regression inspection" (Playwright) and the per
 • Upload (`push`) the tag (triggers "publish" workflow): `git push origin v1.2.0` or `git push origin v1.2.1`<br>
 
 ### 05. Verify Release
-• On [GitHub Actions](github.com/DoronBrayer/shuffrand/actions), confirm 'main' and 'publish' workflows are green.<br>
+• On [GitHub Actions](github.com/DoronBrayer/monorand/actions), confirm 'main' and 'publish' workflows are green.<br>
 • Confirm a new/unread email message with the heading "Successfully published shuffrand@1.2.0" (or your new version) is in your inbox.<br>
 • Breathe, slowly.

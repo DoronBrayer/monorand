@@ -18,7 +18,7 @@
 ## <a name="PRESENT"></a>PRESENT
 The 3 most recent releases — essentially a **news section**:
 
-### [[1.8.0](https://github.com/DoronBrayer/shuffrand/tags)] 2025-08-12: Monorepo
+### [[1.8.0](https://github.com/DoronBrayer/monorand/tags)] 2025-08-12: Monorepo
 This version represents a **FUNDAMENTAL ARCHITECTURAL SHIFT**, preparing `shuffrand` for its future as the core of a larger ecosystem. It is a major, **breaking change** that solidifies the project’s long-term vision.
 
 #### Added
@@ -30,7 +30,7 @@ This version represents a **FUNDAMENTAL ARCHITECTURAL SHIFT**, preparing `shuffr
 #### Notes
 - For the time being—and **strictly as a safety measure**—the monorepository retains its original naming convention (`shuffrand`), yielding peculiar paths such as `./shuffrand/shuffrand` and `./shuffrand/datrand`.
 
-### [[1.7.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.7.0)] 2025-08-06: Proof of quality
+### [[1.7.0](https://github.com/DoronBrayer/monorand/releases/tag/v1.7.0)] 2025-08-06: Proof of quality
 #### Added
 - Performance-benchmark suite (`inspection.*.ts` files and `pnpm run benchmark` script) to provide quantitative performance metrics.
 - Dedicated browser-based "real-world regression" tests using Playwright (`test.*-regression.ts` and `*.html` files) to formally guarantee browser compatibility and real-world functionality.
@@ -47,7 +47,7 @@ This version represents a **FUNDAMENTAL ARCHITECTURAL SHIFT**, preparing `shuffr
 - Internal project configuration and scripts (e.g., `package.json`, `playwright.config.ts`, `vitest.config.ts`) are refined to support the new E2E and benchmarking workflows.
 - The `cryptoShuffle` function now enforces minimum array length requirements for the `preventIdentical` and `isDestructive` options, improving error handling and developer experience by providing clear feedback when these features cannot be applied.
 
-### [[1.6.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.6.0)] 2025-08-03: Even more flexibility
+### [[1.6.0](https://github.com/DoronBrayer/monorand/releases/tag/v1.6.0)] 2025-08-03: Even more flexibility
 This version introduces another powerful feature to the core `shuffrand` API, giving developers more granular control and enabling new use cases.
 
 #### Added
@@ -58,7 +58,7 @@ This version introduces another powerful feature to the core `shuffrand` API, gi
 ## <a name="PAST"></a>PAST
 Old versions — all releases preceding the 3 most recent — essentially an **archive outline**:
 
-### [[1.5.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.5.0)] 2025-08-02: Flexibility
+### [[1.5.0](https://github.com/DoronBrayer/monorand/releases/tag/v1.5.0)] 2025-08-02: Flexibility
 This version introduces a powerful feature to the core `shuffrand` API, giving developers more granular control and enabling new use cases.
 
 #### Added
@@ -66,25 +66,25 @@ This version introduces a powerful feature to the core `shuffrand` API, giving d
 - A dedicated testsuite (`test.crypto-string.003-no-repeat.ts`) to inspect the recently-added flag/option.
 - More edge-cases and error-handling testcases.
 
-### [[1.4.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.4.0)] 2025-08-01: **THE FOUNDATION**
+### [[1.4.0](https://github.com/DoronBrayer/monorand/releases/tag/v1.4.0)] 2025-08-01: **THE FOUNDATION**
 The first stable, fully-documented, and professionally architected version of the library. This release establishes the **core trio** of functions (`cryptoRandom`, `cryptoShuffle`, `cryptoString`) and the foundational principles of security, quality, and craftsmanship.
 
-### [[1.3.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.3.0)] 2025-07-14
+### [[1.3.0](https://github.com/DoronBrayer/monorand/releases/tag/v1.3.0)] 2025-07-14
 [no info]
 
-### [[1.2.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.2.0)] 2025-07-11
+### [[1.2.0](https://github.com/DoronBrayer/monorand/releases/tag/v1.2.0)] 2025-07-11
 [no info]
 
-### [[1.1.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.1.0)] 2025-07-10
+### [[1.1.0](https://github.com/DoronBrayer/monorand/releases/tag/v1.1.0)] 2025-07-10
 [no info]
 
-### [[1.0.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v1.0.0)] 2025-07-09
+### [[1.0.0](https://github.com/DoronBrayer/monorand/releases/tag/v1.0.0)] 2025-07-09
 The inception.
 
 ## <a name="FUTURE"></a>FUTURE
 Upcoming versions — all releases **succeeding** the most recent one — essentially a **roadmap**:
 
-### [[1.9.0](https://github.com/DoronBrayer/shuffrand/tags)] ~2025-10-##: DX & infrastructure
+### [[1.9.0](https://github.com/DoronBrayer/monorand/tags)] ~2025-10-##: DX & infrastructure
 This version focuses on radically improving the developer experience for both users and contributors by providing a world-class documentation site and modernizing the project’s internal toolchain.
 
 #### Added
@@ -99,7 +99,7 @@ This version focuses on radically improving the developer experience for both us
 ## <a name="Template"></a>Template
 For you to **copypaste and edit** — not remove:
 
-### [[855.0.0](https://github.com/DoronBrayer/shuffrand/releases/tag/v855.0.0)] 2098-12-03: Optional Title
+### [[855.0.0](https://github.com/DoronBrayer/monorand/releases/tag/v855.0.0)] 2098-12-03: Optional Title
 #### Added
 - `[Project’s upcoming Feature/File here]`
 - `[Project’s upcoming Feature/File here]`

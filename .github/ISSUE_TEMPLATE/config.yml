@@ -2,7 +2,7 @@ blank_issues_enabled: false
 
 contact_links:
     - name: Discuss
-      url: https://github.com/doronbrayer/shuffrand/discussions
+      url: https://github.com/DoronBrayer/monorand/discussions
       about: Use 'Discussions' to connect with our community
 issue_templates:
     - name: Report

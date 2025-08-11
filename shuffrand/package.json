@@ -1,7 +1,7 @@
 {
     "//": "./shuffrand/package.json",
     "name": "shuffrand",
-    "version": "1.8.1",
+    "version": "1.8.2",
     "description": "Cryptographically secure randomness and shuffling — with soul.",
     "type": "module",
     "types": "dist/index.d.ts",

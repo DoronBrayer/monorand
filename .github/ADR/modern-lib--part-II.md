@@ -11,7 +11,7 @@
 - Smallest file: index.es.js
 - Num of top-level dirs: 1
 - Home: npmjs.com/package/shuffrand
-- Second home: github.com/DoronBrayer/shuffrand
+- Second home: github.com/DoronBrayer/monorand
 
 
 ## Content
@@ -443,7 +443,7 @@ Your library is designed with security and a meticulous developer experience in 
 #### Implementation
 ```markdown
 ### Changelog
-View [release notes and changelog](https://github.com/DoronBrayer/shuffrand/releases) for version history.
+View [release notes and changelog](https://github.com/DoronBrayer/monorand/releases) for version history.
 ```
 
 Add to your `package.json`:
@@ -470,7 +470,7 @@ Thank you for pushing for a definitive stance on whether to include a `CHANGELOG
    - `shuffrand`’s unpacked size is 58.2 kB, with the `CHANGELOG.md` contributing 7.71 kB (~13%). Excluding it directly reduces the tarball size, addressing your goal of avoiding bloat and aligning with 2025’s demand for lean utility libraries (<30 kB ideal, per DeepSeek and Grok).  
    - Compared to ultra-light libraries like `nanoid` (~1 kB), trimming non-essential files is critical to stay competitive (DeepSeek, Copilot).
 2. **Modern Best Practices:**  
-   - Linking to a repo-hosted changelog (e.g., `[Changelog](https://github.com/DoronBrayer/shuffrand/blob/main/CHANGELOG.md)` or GitHub Releases) is standard for lean libraries in 2025 (e.g., `nanoid`, `zod`) (Qwen, Copilot).  
+   - Linking to a repo-hosted changelog (e.g., `[Changelog](https://github.com/DoronBrayer/monorand/blob/main/CHANGELOG.md)` or GitHub Releases) is standard for lean libraries in 2025 (e.g., `nanoid`, `zod`) (Qwen, Copilot).  
    - The npm website (`npmjs.com`) prominently displays `README.md`, making a changelog link easily discoverable (Claude, Kimi). Including a brief version summary in the `README.md` (e.g., “Latest: v1.7.0 – Added entropy calculation”) minimizes user friction (Claude).
 3. **Monorepo Scalability:**  
    - As `shuffrand` transitions to a monorepo (potentially with `datrand`), a single `CHANGELOG.md` at the monorepo root or GitHub Releases avoids duplication and simplifies maintenance (Gemini, Qwen, DeepSeek). Package-specific `README.md` files can link to relevant sections, ensuring scalability (Copilot).
@@ -488,7 +488,7 @@ Thank you for pushing for a definitive stance on whether to include a `CHANGELOG
 - In `shuffrand`’s `README.md`, include a changelog link and a brief summary, e.g.:  
   ```markdown
   ## Changelog
-  Latest: v1.7.0 – Added entropy calculation to `cryptoString`. See [full changelog](https://github.com/DoronBrayer/shuffrand/blob/main/CHANGELOG.md) for details.
+  Latest: v1.7.0 – Added entropy calculation to `cryptoString`. See [full changelog](https://github.com/DoronBrayer/monorand/blob/main/CHANGELOG.md) for details.
   ```
 - Update `package.json`’s `files` array to exclude `CHANGELOG.md`, e.g., `["dist", "README.md", "LICENSE"]`.  
 - Use a monorepo tool like Changesets to automate changelog generation and versioning (Gemini, DeepSeek).  
@@ -515,7 +515,7 @@ Based on the information provided in the knowledge-base files and standard pract
 
 **Implementation:**
 1.  **Keep `CHANGELOG.md` in Repository:** Continue maintaining `CHANGELOG.md` in the repository root (`C:\Users\doron\OneDrive\dev\shuffrand\CHANGELOG.md`). This is your project's historical record and roadmap.
-2.  **Update `shuffrand/README.md`:** Add a link to the `CHANGELOG.md` file in the repository (or to GitHub Releases) within the `shuffrand/README.md`. For example, you could add a line like: `For a detailed history of changes, see [CHANGELOG.md](https://github.com/DoronBrayer/shuffrand/blob/main/CHANGELOG.md).`
+2.  **Update `shuffrand/README.md`:** Add a link to the `CHANGELOG.md` file in the repository (or to GitHub Releases) within the `shuffrand/README.md`. For example, you could add a line like: `For a detailed history of changes, see [CHANGELOG.md](https://github.com/DoronBrayer/monorand/blob/main/CHANGELOG.md).`
 3.  **Exclude from Package Distribution:** Ensure `CHANGELOG.md` is *not* included in the published package tarball. This is already handled correctly by your `shuffrand/package.jsonc` `files` array, which specifies `["dist/"]`. Since `CHANGELOG.md` is at the package root and not in `dist/`, it won't be included.
     *   *Note: The previous discussion about adding `"CHANGELOG.md"` to the `exclude` array in `shuffrand/tsconfig.test.json` was related to TypeScript compilation/type-checking, not npm package distribution. The `files` array in `package.jsonc` controls what goes into the npm tarball.*
 
@@ -536,7 +536,7 @@ Yes, based on the analysis of the provided documents and modern best practices f
 3. **No Compromise on Transparency:**  
    ```markdown
    ### Changelog  
-   View the full version history on [GitHub](https://github.com/DoronBrayer/shuffrand/blob/main/CHANGELOG.md).  
+   View the full version history on [GitHub](https://github.com/DoronBrayer/monorand/blob/main/CHANGELOG.md).  
    ```  
    (Add this to `README.md` → zero overhead, full access.)  
 

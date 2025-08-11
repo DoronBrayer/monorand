@@ -136,5 +136,5 @@ This repository is intentionally structured to serve not only as a high-quality 
 
 ## Community & Contribution
 
-- **Found a defect? Have a good idea?** Please open an issue on our **[GitHub Issues](https://github.com/DoronBrayer/shuffrand/issues)**.
+- **Found a defect? Have a good idea?** Please open an issue on our **[GitHub Issues](https://github.com/DoronBrayer/monorand/issues)**.
 - **Want to contribute code?** Please read our **[Contributing Guidelines](CONTRIBUTING.md)** and **[Code of Conduct](CODE_OF_CONDUCT.md)** first.
