@@ -1,7 +1,7 @@
 {
     "//": "./shuffrand/package.json",
     "name": "shuffrand",
-    "version": "1.8.0",
+    "version": "1.8.1",
     "description": "Cryptographically secure randomness and shuffling — with soul.",
     "type": "module",
     "types": "dist/index.d.ts",
@@ -130,7 +130,6 @@
     "publishConfig": {
         "access": "public"
     },
-    "dependencies": {},
     "peerDependencies": {
         "arktype": "^2.1.20"
     },
@@ -140,13 +139,14 @@
         }
     },
     "devDependencies": {
-        "arktype": "^2.1.20",
         "@types/node": "^24.0.0",
         "@vitest/browser": "4.0.0-beta.7",
+        "arktype": "^2.1.20",
         "eslint": "^9.32.0",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-prettier": "^5.5.4",
         "prettier": "^3.6.2",
+        "terser": "^5.43.1",
         "typescript": "^5.9.2",
         "typescript-eslint": "^8.39.0",
         "vite": "^7.1.0",

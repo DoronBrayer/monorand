@@ -1,5 +1,4 @@
 # Monorepo Architecture Dilemma: Integrating `datrand` into `shuffrand`
-
 As the `shuffrand` project evolves beyond its initial scope to include the new `datrand` library, a critical architectural decision arises regarding the monorepo's structure and naming. The current monorepo is named `shuffrand` and primarily contains `shuffrand` files. The integration of `datrand` necessitates a thoughtful approach to ensure clarity, maintainability, and effective branding.
 
 Here are the proposed options for structuring the monorepo:
