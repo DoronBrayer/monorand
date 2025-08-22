@@ -4,7 +4,8 @@ name: Continuous Deployment (CD) — publishing the package(s)
 on:
     push:
         tags:
-            - '[a-zA-Z]{2,}-v[0-9]+.[0-9]+.[0-9]+'
+            - shuffrand-v[0-9]+.[0-9]+.[0-9]+
+            - datrand-v[0-9]+.[0-9]+.[0-9]+
     workflow_dispatch: {}
 
 concurrency:
