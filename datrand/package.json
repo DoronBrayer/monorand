@@ -1,7 +1,7 @@
 {
     "//": "./datrand/package.json | Library primary configuration",
     "name": "datrand",
-    "version": "0.1.4",
+    "version": "0.1.6",
     "description": "Synthetic data weaver — with **soul**.",
     "type": "module",
     "private": false,
@@ -19,7 +19,11 @@
         "test": "npx vitest run --config ../vitest.config.ts",
         "benchmark": "npx vitest bench --run --config ../vitest.config.ts"
     },
-    "files": ["dist", "README.md", "LICENSE"],
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
     "keywords": [
         "string-generator",
         "mock",

@@ -1,7 +1,7 @@
 {
     "//": "./shuffrand/package.json",
     "name": "shuffrand",
-    "version": "1.8.4",
+    "version": "1.8.6",
     "description": "Cryptographically secure randomizer and shuffler.",
     "type": "module",
     "types": "dist/index.d.ts",
@@ -17,7 +17,11 @@
         "test": "npx vitest run --config ../vitest.config.ts",
         "benchmark": "node ../benchmark-overseer.mjs shuffrand"
     },
-    "files": ["dist", "README.md", "LICENSE"],
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
     "keywords": [
         "monorepo",
         "typescript",
