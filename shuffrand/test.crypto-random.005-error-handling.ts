@@ -12,11 +12,11 @@
  * @license MIT
  */
 
-import { describe, it, expect } from 'vitest'
+import { TraversalError } from 'arktype' // Import TraversalError from ArkType
 // Import from the published package path, resolved by tsconfig.test.json paths
 import { cryptoRandom } from 'shuffrand'
+import { describe, expect, it } from 'vitest'
 import { Constants } from './src.constants.js'
-import { TraversalError } from 'arktype' // Import TraversalError from ArkType
 // TRULY needed: Correctly import randomParamsSchema directly from its source
 import { randomParamsSchema } from './src.types.js'
 

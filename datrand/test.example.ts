@@ -1,5 +1,5 @@
 // ./datrand/test.example.ts | Placeholder test file
-import { test, expect } from 'vitest'
+import { expect, test } from 'vitest'
 
 test('datrand exists', () => {
     const result = true

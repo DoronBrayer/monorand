@@ -1,6 +1,6 @@
 // ./clean.mjs
 
-import { rmSync, readdirSync } from 'fs'
+import { readdirSync, rmSync } from 'fs'
 import { join } from 'path'
 
 const dirsToRemove = ['dist', 'reports']

@@ -1,3 +1,9 @@
 {
-    "typescript.tsdk": "node_modules\\typescript\\lib"
+    "typescript.tsdk": "node_modules\\typescript\\lib",
+    "json.schemas": [
+        {
+            "fileMatch": ["biome.json"],
+            "url": "./node_modules/@biomejs/biome/configuration_schema.json"
+        }
+    ]
 }

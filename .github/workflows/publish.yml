@@ -2,46 +2,46 @@
 name: Continuous Deployment (CD) — publishing the package(s)
 
 on:
-  push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
-  workflow_dispatch: {}
+    push:
+        tags:
+            - 'v[0-9]+.[0-9]+.[0-9]+'
+    workflow_dispatch: {}
 
 concurrency:
-  group: publish-${{ github.ref_name }}
-  cancel-in-progress: true
+    group: publish-${{ github.ref_name }}
+    cancel-in-progress: true
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      id-token: write
+    publish:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            packages: write
+            id-token: write
 
-    steps:
-      - uses: actions/checkout@v4
+        steps:
+            - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org/'
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+                  registry-url: 'https://registry.npmjs.org/'
 
-      - name: Set up pnpm and install dependencies
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9
-          run_install: true
-          args: --frozen-lockfile
+            - name: Set up pnpm and install dependencies
+              uses: pnpm/action-setup@v3
+              with:
+                  version: 9
+                  run_install: true
+                  args: --frozen-lockfile
 
-      # --- REVISED STEP ---
-      # Run the full preflight validation (format, lint, test) before publishing.
-      # This ensures the code being published is fully validated.
-      - name: format → lint → [clean → build → compile (tsc) → test]
-        run: pnpm run preflight
-      # --- END REVISED STEP ---
+            # --- REVISED STEP ---
+            # Run the full preflight validation (format, lint, test) before publishing.
+            # This ensures the code being published is fully validated.
+            - name: format → lint → [clean → build → compile (tsc) → test]
+              run: pnpm run preflight
+            # --- END REVISED STEP ---
 
-      - name: Publish all packages
-        run: pnpm publish -r --no-git-checks --tag latest
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+            - name: Publish all packages
+              run: pnpm publish -r --no-git-checks --tag latest
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -11,10 +11,10 @@
  * @license MIT
  */
 
-// Essential Vitest imports
-import { describe, it, expect } from 'vitest'
 // Import library functions and constants from the published package path, resolved by tsconfig.test.json paths
-import { cryptoString, calculateStringEntropy } from 'shuffrand' // Updated import
+import { calculateStringEntropy, cryptoString } from 'shuffrand' // Updated import
+// Essential Vitest imports
+import { describe, expect, it } from 'vitest'
 import { Constants } from './src.constants.js' // Updated import
 
 // Define a top-level group for these tests

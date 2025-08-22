@@ -1,10 +1,11 @@
 // ./shuffrand/vite.config.ts | Package build configuration
 // This config forces Terser minification to ensure the output is truly minified.
-import { defineConfig } from 'vite'
-import dts from 'vite-plugin-dts'
+
 import { resolve } from 'path'
 // Import Terser manually to configure it directly
 import { minify } from 'terser' // This requires `terser` to be installed
+import { defineConfig } from 'vite'
+import dts from 'vite-plugin-dts'
 
 export default defineConfig({
     plugins: [

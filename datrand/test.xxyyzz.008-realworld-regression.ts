@@ -1,5 +1,5 @@
 // ./datrand/test.xxyyzz.008-realworld-regression.ts | Placeholder regression test
-import { test, expect, type Page } from '@playwright/test'
+import { expect, type Page, test } from '@playwright/test'
 
 // Define the URL for the corresponding HTML file.
 const url = new URL('test.xxyyzz.008b-webpage.html', import.meta.url).href

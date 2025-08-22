@@ -1,5 +1,7 @@
 // /shuffrand/test.crypto-shuffle.002-basics.ts
 
+// Import from the published package path, resolved by tsconfig.test.json paths
+import { cryptoShuffle } from 'shuffrand' // Updated import
 /**
  * Shuffrand Test Suite - cryptoShuffle: Basic Parameters & Array Types
  *
@@ -10,9 +12,7 @@
  * @author Doron Brayer <doronbrayer@outlook.com>
  * @license MIT
  */
-import { describe, it, expect } from 'vitest'
-// Import from the published package path, resolved by tsconfig.test.json paths
-import { cryptoShuffle } from 'shuffrand' // Updated import
+import { describe, expect, it } from 'vitest'
 // Import the deepCopyArray utility directly from its compiled location in dist
 import { deepCopyArray } from './test.util.deep-copy-array.js' // CORRECTED import path for compiled utility
 

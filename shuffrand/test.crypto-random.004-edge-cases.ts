@@ -12,9 +12,10 @@
  * @license MIT
  */
 
-import { describe, it, expect } from 'vitest'
 // Import from the published package path, resolved by tsconfig.test.json paths
 import { cryptoRandom } from 'shuffrand' // Updated import
+import { describe, expect, it } from 'vitest'
+
 // Removed: import { TypeError } from 'arktype/dist/errors.js'; // This import is not needed as cryptoRandom throws a global TypeError
 
 // Define a top-level group for these tests

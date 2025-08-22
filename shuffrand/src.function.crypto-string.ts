@@ -10,11 +10,11 @@
  * @license MIT
  */
 
-// Import types, Constants, and other shuffrand functions
-import { CryptoStringParams, cryptoStringParamsSchema } from './src.types.js'
+import { Constants } from './src.constants.js'
 import { cryptoRandom } from './src.function.crypto-random.js'
 import { cryptoShuffle } from './src.function.crypto-shuffle.js'
-import { Constants } from './src.constants.js'
+// Import types, Constants, and other shuffrand functions
+import { CryptoStringParams, cryptoStringParamsSchema } from './src.types.js'
 
 // Define standard character sets mapping to Constants for convenience and security
 const CHARACTER_SETS_MAP = {
@@ -67,10 +67,7 @@ export function cryptoString(rawParams: CryptoStringParams = {}): string {
     }
 
     let finalCharacterSet: string
-    if (
-        typeof effectiveCharacterSet === 'string' &&
-        Object.prototype.hasOwnProperty.call(CHARACTER_SETS_MAP, effectiveCharacterSet)
-    ) {
+    if (typeof effectiveCharacterSet === 'string' && Object.hasOwn(CHARACTER_SETS_MAP, effectiveCharacterSet)) {
         finalCharacterSet = CHARACTER_SETS_MAP[effectiveCharacterSet as keyof typeof CHARACTER_SETS_MAP]
     } else {
         finalCharacterSet = effectiveCharacterSet as string
@@ -148,10 +145,7 @@ export function calculateStringEntropy(params: CryptoStringParams = {}): number 
     const effectiveNoRepeat = params.noRepeat ?? false
 
     let finalCharacterSet: string
-    if (
-        typeof effectiveCharacterSet === 'string' &&
-        Object.prototype.hasOwnProperty.call(CHARACTER_SETS_MAP, effectiveCharacterSet)
-    ) {
+    if (typeof effectiveCharacterSet === 'string' && Object.hasOwn(CHARACTER_SETS_MAP, effectiveCharacterSet)) {
         finalCharacterSet = CHARACTER_SETS_MAP[effectiveCharacterSet as keyof typeof CHARACTER_SETS_MAP]
     } else {
         finalCharacterSet = effectiveCharacterSet as string

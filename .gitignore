@@ -101,6 +101,10 @@ Desktop.ini
 **/*-artifacts/
 **/*_artifacts/
 
+**/findings/
+**/*-findings/
+**/*_findings/
+
 **/analysis/
 **/*-analysis/
 **/*_analysis/

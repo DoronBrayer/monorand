@@ -1,6 +1,6 @@
 // ./datrand/inspection.performance-benchmark.ts | Placeholder benchmark file for the `datrand` package.
 
-import { expect, test, describe, bench } from 'vitest'
+import { bench, describe, expect, test } from 'vitest'
 
 describe('Datrand Placeholder Benchmark Suite', () => {
     bench(

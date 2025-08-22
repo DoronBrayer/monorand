@@ -1,6 +1,6 @@
 // /shuffrand/test.crypto-string.006-realworld-regression.ts
 
-import { test, expect, type Page } from '@playwright/test'
+import { expect, type Page, test } from '@playwright/test'
 
 // Note: Correcting the assumed filename for this pair.
 const testPageUrl = new URL('test.crypto-string.006b-webpage.html', import.meta.url).href

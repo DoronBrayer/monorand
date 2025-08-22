@@ -33,9 +33,7 @@ It is distinct from the public-facing 📄 `README.md`.
 _This section defines what `shuffrand` is, why it exists, and what it does. It is the core identity of the project._
 
 ### 01. 🧭 The Six W’s
-
 #### 👤 Who
-
 This library is engineered for developers who refuse to compromise on the integrity and quality of randomness. Our target cohorts are professionals who understand the risks of insecure randomization.
 
 - **Security-Conscious Developers & Library Authors** building authentication systems, token generators, or other security-critical utilities.
@@ -44,11 +42,9 @@ This library is engineered for developers who refuse to compromise on the integr
 - **Advanced TypeScript Users** who demand a lean, modern, and type-safe API with robust runtime validation.
 
 #### 🦆 What
-
 `shuffrand` (**shuff**le + **rand**om) is a zero-dependency, lightweight TypeScript utility library that provides a trio of cryptographically secure functions for randomization tasks. It is architected to be the definitive modern replacement for the insecure and insufficient native `Math.random()` and the non-secure utilities found in other common libraries.
 
 #### 📅 When
-
 `shuffrand` is the mandated choice in any scenario where the integrity of random data is non-negotiable and its failure would compromise security, fairness, or scientific validity.
 
 - **Security:** Generating session tokens, API keys, database salts, or unique identifiers.
@@ -57,7 +53,6 @@ This library is engineered for developers who refuse to compromise on the integr
 - **Automation:** Introducing unpredictable variability into scripts and automated processes.
 
 #### 📍 Where
-
 `shuffrand` is architected as a universal (isomorphic) JavaScript module with a clear focus on modern environments. This section defines both the ideal use-case environments and the technical runtime constraints.
 **Application Environments:**
 
@@ -72,11 +67,9 @@ This library is engineered for developers who refuse to compromise on the integr
 - **Module System:** Pure **ESM** (`import`/`export`), with no support for legacy CommonJS.
 
 #### 🧠 Why
-
 The modern JavaScript ecosystem suffers from a dangerous legacy: the pervasive use of `Math.random()`. This insecure, predictable pseudo-random number generator is a ticking time bomb in applications that silently rely on it for sensitive operations. `shuffrand` was forged from the conviction that secure randomness should not be an afterthought; it should be the default. It addresses this critical pain point by providing a robust, developer-friendly API that makes leveraging a true Cryptographically Secure Pseudo-Random Number Generator (CSPRNG) simple, safe, and standard.
 
 #### ⚙️ How
-
 The library is designed for a seamless developer experience, from installation to implementation.
 
 - **Installation:** `pnpm install shuffrand` (or `npm`/`yarn`/`bun`).
@@ -92,7 +85,6 @@ The library is designed for a seamless developer experience, from installation t
     ```
 
 ### 02. 🧱 Functional Architecture
-
 #### Core Functions
 
 | Function        | Description                                                | Key Options / Flags                                                                                                                                    |

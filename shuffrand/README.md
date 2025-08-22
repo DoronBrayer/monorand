@@ -1,10 +1,11 @@
 <!-- /shuffrand/README.md -->
+# shuffrand<br><small>Cryptographically secure randomizer and shuffler.</small>
+`shuffrand` offers three micro-tools: integer/double <mark>yielding</mark>, Fisher–Yates <mark>shuffling</mark>, and entropy-driven <mark>scrambling</mark>. Replaces "random enough" (step aside, `Math.random()`!) with runtime-validated fairness in a <mark>featherlight ESM bundle</mark>. For enterprise R&D teams and solo OSS maintainers alike — `shuffrand` seamlessly slips into <mark>Node/browser envs</mark> to provide <mark>rock-solid randomness</mark> exactly when and where needed.
 
-# `shuffrand` by [Doron B.](https://github.com/DoronBrayer)
+#### Etymology
+shuffle + random = shuffrand
 
-**shuff**le + **rand**om = shuffrand.
-
-🎲 Cryptographically secure randomness and shuffling — with **soul**.
+---
 
 The modern JavaScript ecosystem suffers from a dangerous legacy: the pervasive use of `Math.random()`. This insecure, predictable pseudo-random number generator is a ticking time bomb in applications that silently rely on it for sensitive operations.
 

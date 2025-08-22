@@ -10,9 +10,9 @@
  * @license MIT
  */
 
-import { describe, it, expect } from 'vitest'
 // Import from the published package path, resolved by tsconfig.test.json paths
 import { cryptoString } from 'shuffrand' // Updated import
+import { describe, expect, it } from 'vitest'
 import { Constants } from './src.constants.js' // Updated import
 
 // Define a top-level group for these tests

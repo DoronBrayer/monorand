@@ -1,5 +1,7 @@
 // /shuffrand/test.crypto-shuffle.004-subarray-shuffle.ts
 
+// Import from the published package path, resolved by tsconfig.test.json paths
+import { cryptoShuffle } from 'shuffrand'
 /**
  * Shuffrand Test Suite - cryptoShuffle: Subarray Shuffle
  *
@@ -12,11 +14,10 @@
  * @license MIT
  * @since 1.6.0
  */
-import { describe, it, expect } from 'vitest'
-// Import from the published package path, resolved by tsconfig.test.json paths
-import { cryptoShuffle } from 'shuffrand'
+import { describe, expect, it } from 'vitest'
 // Import the deepCopyArray utility for robust pre/post state comparison
 import { deepCopyArray } from './test.util.deep-copy-array.js'
+
 // Define a top-level group for these tests
 describe('cryptoShuffle: Subarray Shuffle', () => {
     // --- Basic Functionality Tests ---

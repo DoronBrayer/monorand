@@ -11,8 +11,8 @@
  * @license MIT
  */
 
-import { describe, it, expect } from 'vitest'
-import { cryptoString, calculateStringEntropy } from 'shuffrand'
+import { calculateStringEntropy, cryptoString } from 'shuffrand'
+import { describe, expect, it } from 'vitest'
 import { Constants } from './src.constants.js'
 
 describe('cryptoString: Edge Cases', () => {

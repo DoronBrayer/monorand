@@ -10,9 +10,9 @@
  * @license MIT
  */
 
+import { Constants } from './src.constants.js'
 // Import types, constants, and ArkType schema from their respective dot-categorized files
 import { RandomParams, randomParamsSchema } from './src.types.js'
-import { Constants } from './src.constants.js'
 
 /**
  * Generates a cryptographically secure random number within a specified range.

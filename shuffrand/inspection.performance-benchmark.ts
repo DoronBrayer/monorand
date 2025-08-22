@@ -10,12 +10,12 @@
  * @license MIT
  */
 
-import { bench, describe } from 'vitest'
 import { cryptoRandom, cryptoShuffle, cryptoString } from 'shuffrand'
-import { Constants } from './src.constants.js'
+import { bench, describe } from 'vitest'
 import { consume } from './inspection.util.consume.js'
 import { standardInplaceShuffle } from './inspection.util.shuffle.js'
 import { standardString } from './inspection.util.string-builder.js'
+import { Constants } from './src.constants.js'
 
 // --- 01. cryptoRandom ---
 describe('cryptoRandom compared with JavaScript’s Math.random()', () => {

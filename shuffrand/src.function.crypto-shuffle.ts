@@ -1,5 +1,6 @@
 // /shuffrand/src.function.crypto-shuffle.ts
 
+import { cryptoRandom } from './src.function.crypto-random.js'
 /**
  * shuffrand - Cryptographically Secure Array Shuffling
  *
@@ -11,7 +12,6 @@
  */
 // Import types and the cryptoRandom function from their respective dot-categorized files
 import { ShuffleParams, shuffleParamsSchema } from './src.types.js'
-import { cryptoRandom } from './src.function.crypto-random.js'
 
 /**
  * Shuffles an array using the cryptographically secure Fisher–Yates algorithm.
